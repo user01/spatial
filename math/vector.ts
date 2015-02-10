@@ -16,7 +16,7 @@ module Spatial {
 
 
     constructor(valueSet:Array<number>){
-      if (valueSet.length < 0 || valueSet.length > 4){
+      if (valueSet.length < 1 || valueSet.length > 4){
         throw new RangeException();
       }
       this._values = new Float32Array(valueSet);
