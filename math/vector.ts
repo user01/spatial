@@ -1,4 +1,4 @@
-/// <reference path="IRanged.ts" />
+/// <reference path="./IRanged.ts" />
 /// <reference path="../typings/node.d.ts" />
 
 module Spatial {
@@ -46,6 +46,10 @@ module Spatial {
         throw new RangeException();
       return true;
     }
+
+    protected static isArray = (arg) => {
+      return Object.prototype.toString.call(arg) === '[object Array]';
+    };
   }
 
   export class Vector2 extends Vector {
@@ -56,9 +60,13 @@ module Spatial {
       return this._values[1];
     }
 
-    constructor(_x:number|Array<number>,_y:number=null){
-      var values:any = (typeof _x == 'array') ? _x : [_x,_y];
-      super(values);
+    constructor(_x:number,_y:number){
+      super([_x,_y]);
+    }
+
+    public static build = (values:Array<number>) => {
+      if (values.length != 2) throw new RangeException();
+      return new Vector2(values[0],values[1]);
     }
   }
 
