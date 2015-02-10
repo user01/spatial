@@ -37,7 +37,7 @@ module Spatial {
       Vector.DimensionCheck(v1,v2);
       var total = 0;
       for (var i=0;i<v1.dimension;i++)
-        total += (v1.values[i] + v2.values[i]) * (v1.values[i] + v2.values[i]);
+        total += (v1.values[i] - v2.values[i]) * (v1.values[i] - v2.values[i]);
       return Math.sqrt(total);
     }
 
@@ -64,6 +64,14 @@ module Spatial {
       super([_x,_y]);
     }
 
+    public distanceTo = (v1:Vector2):number => {
+      return Vector2.DistanceTo(v1,this);
+    }
+    
+    public static DistanceTo = (v1:Vector2,v2:Vector2):number => {
+      return Vector.DistanceTo(v1,v2);
+    }
+        
     public static build = (values:Array<number>):Vector2 => {
       if (values.length != 2) throw new RangeException();
       return new Vector2(values[0],values[1]);

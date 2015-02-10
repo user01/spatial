@@ -23,6 +23,26 @@ describe('Vector2', () => {
         new spatial.build([7]);
       }).should.throw();
   });
+  describe('Distance', () => {
+    it('Simple static', () => {
+      var v2A = new spatial.Vector2(0,0);
+      var v2B = new spatial.Vector2(10,0);
+      var distance = spatial.Vector2.DistanceTo(v2A,v2B);
+      distance.should.be.exactly(10);
+    });
+    it('Simple', () => {
+      var v2A = new spatial.Vector2(0,0);
+      var v2B = new spatial.Vector2(10,0);
+      var distance = v2A.distanceTo(v2B);
+      distance.should.be.exactly(10);
+    });
+    it('Complex', () => {
+      var v2A = new spatial.Vector2(-10,-10);
+      var v2B = new spatial.Vector2(10,10);
+      var distance = v2A.distanceTo(v2B);
+      distance.should.be.approximately(28.28,0.05);
+    });
+  });
 });
 
 describe('Vector3', () => {
