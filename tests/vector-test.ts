@@ -17,10 +17,10 @@ describe('Vector2', () => {
   });
   it('Init Error', () => {
       (() => {
-        new spatial.build(7);
+        new spatial.Vector2.build(7);
       }).should.throw();
       (() => {
-        new spatial.build([7]);
+        new spatial.Vector2.build([7]);
       }).should.throw();
   });
   describe('Distance', () => {
@@ -46,6 +46,40 @@ describe('Vector2', () => {
 });
 
 describe('Vector3', () => {
+  it('Init', () => {
+    var v3 = new spatial.Vector3(5,10,90);
+    v3.x.should.be.exactly(5);
+    v3.y.should.be.exactly(10);
+    v3.z.should.be.exactly(90);
+  });
+  it('Init Error', () => {
+      (() => {
+        new spatial.build(7);
+      }).should.throw();
+      (() => {
+        new spatial.build([7]);
+      }).should.throw();
+  });
+  describe('Distance', () => {
+    it('Simple static', () => {
+      var v3A = new spatial.Vector3(0,0,0);
+      var v3B = new spatial.Vector3(10,0,0);
+      var distance = spatial.Vector3.DistanceTo(v3A,v3B);
+      distance.should.be.exactly(10);
+    });
+    it('Simple', () => {
+      var v3A = new spatial.Vector3(0,0,0);
+      var v3B = new spatial.Vector3(10,0,0);
+      var distance = v3A.distanceTo(v3B);
+      distance.should.be.exactly(10);
+    });
+    it('Complex', () => {
+      var v3A = new spatial.Vector3(-10,-10,-10);
+      var v3B = new spatial.Vector3(10,10,10);
+      var distance = v3A.distanceTo(v3B);
+      distance.should.be.approximately(34.64,0.05);
+    });
+  });
 
 
 });
