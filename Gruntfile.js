@@ -43,6 +43,10 @@ grunt.initConfig({
     dist: [
       "./dist/"
     ],
+    generated: [
+      "./math/**/*.js",
+      "./tests/**/*.js"
+    ],
   },
 
   //*********************************
@@ -86,7 +90,6 @@ grunt.registerTask('test', [
 ]);
 
 grunt.registerTask('dist', [
-  'clean:dist',
   'typescript:all',
   'uglify:all'
 ]);
@@ -96,5 +99,6 @@ grunt.registerTask('build', [
   'typescript:build'
 ]);
 
-};
 
+
+};
