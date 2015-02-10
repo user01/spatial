@@ -64,7 +64,7 @@ module Spatial {
       super([_x,_y]);
     }
 
-    public static build = (values:Array<number>) => {
+    public static build = (values:Array<number>):Vector2 => {
       if (values.length != 2) throw new RangeException();
       return new Vector2(values[0],values[1]);
     }
@@ -80,10 +80,14 @@ module Spatial {
     public get z():number {
       return this._values[2];
     }
+    
+    constructor(_x:number,_y:number,_z:number){
+      super([_x,_y,_z]);
+    }
 
-    constructor(_x:number|Array<number>,_y:number=null,_z:number=null){
-      var values:any = (typeof _x == 'array') ? _x : [_x,_y,_z];
-      super(values);
+    public static build = (values:Array<number>):Vector3 => {
+      if (values.length != 3) throw new RangeException();
+      return new Vector3(values[0],values[1],values[2]);
     }
   }
 
@@ -101,13 +105,14 @@ module Spatial {
     public get w():number {
       return this._values[3];
     }
-
-    constructor(_x:number|Array<number>,
-                _y:number=null,
-                _z:number=null,
-                _w:number=null){
-      var values:any = (typeof _x == 'array') ? _x : [_x,_y,_z,_w];
-      super(values);
+    
+    constructor(_x:number,_y:number,_z:number,_w:number){
+      super([_x,_y,_z,_w]);
+    }
+    
+    public static build = (values:Array<number>):Vector4 => {
+      if (values.length != 4) throw new RangeException();
+      return new Vector4(values[0],values[1],values[2],values[3]);
     }
   }
 }
