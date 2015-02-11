@@ -1,7 +1,7 @@
 /// <reference path="./IRanged.ts" />
 /// <reference path="../typings/node.d.ts" />
 
-var common = require('common');
+var common = require('./common');
 
 module Spatial {
   export class Vector implements IRanged {
@@ -55,7 +55,7 @@ module Spatial {
       Vector.DimensionCheck(v1,v2);
       var values:Array<number> = new Array<number>();
       for (var i=0;i<v1.dimension;i++)
-        values.push(v1.values[i] + v1.values[i]);
+        values.push(v1.values[i] + v2.values[i]);
       return new Vector(values);
     }
 
@@ -82,6 +82,14 @@ module Spatial {
       return true;
     }
 
+    public static Dot = (v1:Vector,v2:Vector):number => {
+        Vector.DimensionCheck(v1,v2);
+        var result:number = 0;
+        for (var i=0;i<v1.dimension;i++)
+          result += v1.values[i] * v2.values[i];
+        return result;
+    }
+
 
     private static DimensionCheck = (v1:Vector,v2:Vector):boolean => {
       if (v1.dimension != v2.dimension)
@@ -104,14 +112,6 @@ module Spatial {
 
     constructor(_x:number,_y:number){
       super([_x,_y]);
-    }
-
-    public distanceTo = (v1:Vector2):number => {
-      return Vector2.DistanceTo(v1,this);
-    }
-
-    public static DistanceTo = (v1:Vector2,v2:Vector2):number => {
-      return Vector.DistanceTo(v1,v2);
     }
 
     public static build = (values:Array<number>):Vector2 => {
