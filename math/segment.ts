@@ -51,6 +51,8 @@ module Spatial {
       return <Segment2>new Segment(Vector2.Add(s.Base,v),Vector2.Add(s.Tip,v));
     }
   }
+  
+  
   export class Segment3 extends Segment {
     public get Base():Vector3 {
       return <Vector3>this._base;
@@ -62,7 +64,15 @@ module Spatial {
     constructor(base:Vector3,tip:Vector3){
       super(base,tip);
     }
+    public push = (v:Vector3):Segment3 => {
+      return Segment3.Push(this,v);
+    }
+    public static Push = (s:Segment3,v:Vector3):Segment3 => {
+      return <Segment3>new Segment(Vector3.Add(s.Base,v),Vector3.Add(s.Tip,v));
+    }
   }
+  
+  
   export class Segment4 extends Segment {
     public get Base():Vector4 {
       return <Vector4>this._base;
@@ -72,6 +82,12 @@ module Spatial {
     }
     constructor(base:Vector4,tip:Vector4){
       super(base,tip);
+    }
+    public push = (v:Vector4):Segment4 => {
+      return Segment4.Push(this,v);
+    }
+    public static Push = (s:Segment4,v:Vector4):Segment4 => {
+      return <Segment4>new Segment(Vector4.Add(s.Base,v),Vector4.Add(s.Tip,v));
     }
   }
 
