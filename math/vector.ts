@@ -4,7 +4,7 @@
 var common = require('./common');
 
 module Spatial {
-  export class Vector implements IRanged {
+  export class Vector implements IRanged, ISerializable {
     protected _values:Float32Array;
 
     public get values():Float32Array {
@@ -27,6 +27,26 @@ module Spatial {
     public clone = ():Vector => {
       return Vector.Clone(this);
     }
+    
+    public toObj = ():any => {
+      return {
+        t:'v' + this.dimension,
+        v:this._values
+      };
+    }
+    
+    public toStr = ():string => {
+      return JSON.stringify(this.toObj());
+    }
+    
+    public static fromObj = (obj:any):Vector => {
+      return new Vector(obj.v);
+    }
+    
+    public static fromStr = (str:string):Vector => {
+      return Vector.fromObj(JSON.parse(str));
+    }
+    
 
 
     public distanceTo = (v:Vector):number => {
@@ -113,7 +133,13 @@ module Spatial {
     constructor(_x:number,_y:number){
       super([_x,_y]);
     }
-
+    
+    public static fromObj = (obj:any):Vector2 => {
+      return new Vector2(obj.v[0],obj.v[1]);
+    }
+    public static fromStr = (str:string):Vector2 => {
+      return Vector2.fromObj(JSON.parse(str));
+    }
     public static build = (values:Array<number>):Vector2 => {
       if (values.length != 2) throw new RangeException();
       return new Vector2(values[0],values[1]);
@@ -134,7 +160,13 @@ module Spatial {
     constructor(_x:number,_y:number,_z:number){
       super([_x,_y,_z]);
     }
-
+    
+    public static fromObj = (obj:any):Vector3 => {
+      return new Vector3(obj.v[0],obj.v[1],obj.v[2]);
+    }
+    public static fromStr = (str:string):Vector3 => {
+      return Vector3.fromObj(JSON.parse(str));
+    }
     public static build = (values:Array<number>):Vector3 => {
       if (values.length != 3) throw new RangeException();
       return new Vector3(values[0],values[1],values[2]);
@@ -159,7 +191,13 @@ module Spatial {
     constructor(_x:number,_y:number,_z:number,_w:number){
       super([_x,_y,_z,_w]);
     }
-
+    
+    public static fromObj = (obj:any):Vector4 => {
+      return new Vector4(obj.v[0],obj.v[1],obj.v[2],obj.v[3]);
+    }
+    public static fromStr = (str:string):Vector4 => {
+      return Vector4.fromObj(JSON.parse(str));
+    }
     public static build = (values:Array<number>):Vector4 => {
       if (values.length != 4) throw new RangeException();
       return new Vector4(values[0],values[1],values[2],values[3]);
