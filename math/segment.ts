@@ -28,11 +28,24 @@ module Spatial {
     }
   }
   export class Segment3 extends Segement {
+    public get Base():Vector3 {
+      return <Vector3>this._base;
+    }
+    public get Tip():Vector3 {
+      return <Vector3>this._tip;
+    }
+    
     constructor(base:Vector3,tip:Vector3){
       super(base,tip);
     }
   }
   export class Segment4 extends Segement {
+    public get Base():Vector4 {
+      return <Vector4>this._base;
+    }
+    public get Tip():Vector4 {
+      return <Vector4>this._tip;
+    }
     constructor(base:Vector4,tip:Vector4){
       super(base,tip);
     }
