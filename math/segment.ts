@@ -48,7 +48,7 @@ module Spatial {
       return Segment2.Push(this,v);
     }
     public static Push = (s:Segment2,v:Vector2):Segment2 => {
-      return <Segment2>new Segment(Vector2.Add(s.Base,v),Vector2.Add(s.Tip,v));
+      return <Segment2>Segment.Push(s,v);
     }
   }
   
@@ -68,7 +68,7 @@ module Spatial {
       return Segment3.Push(this,v);
     }
     public static Push = (s:Segment3,v:Vector3):Segment3 => {
-      return <Segment3>new Segment(Vector3.Add(s.Base,v),Vector3.Add(s.Tip,v));
+      return <Segment3>Segment.Push(s,v);
     }
   }
   
@@ -87,7 +87,7 @@ module Spatial {
       return Segment4.Push(this,v);
     }
     public static Push = (s:Segment4,v:Vector4):Segment4 => {
-      return <Segment4>new Segment(Vector4.Add(s.Base,v),Vector4.Add(s.Tip,v));
+      return <Segment4>Segment.Push(s,v);
     }
   }
 
