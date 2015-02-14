@@ -4,7 +4,7 @@
 var common = require('./common');
 
 module Spatial {
-  export class Vector implements IRanged, ISerializable {
+  export class Vector implements IRanged, ISerializable, IEquality<Vector> {
     protected _values:Float32Array;
 
     public get values():Float32Array {
@@ -47,7 +47,9 @@ module Spatial {
       return Vector.fromObj(JSON.parse(str));
     }
     
-
+    public equal = (v:Vector):boolean => {
+      return Vector.Equal(this,v);
+    }
 
     public distanceTo = (v:Vector):number => {
       return Vector.DistanceTo(this,v);
