@@ -1,8 +1,10 @@
 /// <reference path="../typings/node.d.ts" />
 /// <reference path="./vector.ts" />
 
+var vector = require('./vector');
+
 module Spatial {
-  export class Segment {
+  export class Segment implements ISerializable {
     
     public get Base():Vector {
       return this._base;
@@ -30,6 +32,25 @@ module Spatial {
     public static Push = (s:Segment,v:Vector):Segment => {
       if (s.dimension != v.dimension) throw new RangeException();
       return new Segment(Vector.Add(s.Base,v),Vector.Add(s.Tip,v));
+    }
+    
+    
+    public toObj = ():any => {
+      return {
+        t:'s' + this.dimension,
+        b:this.Base.toObj(),
+        e:this.Tip.toObj()
+      };
+    }
+    public toStr = ():string => {
+      return JSON.stringify(this.toObj());
+    }
+    
+    public static fromObj = (obj:any):Segment => {
+      return new Segment(Vector.fromObj(obj.b),Vector.fromObj(obj.e));
+    }
+    public static fromStr = (str:string):Segment => {
+      return Segment.fromObj(JSON.parse(str));
     }
   }
 
