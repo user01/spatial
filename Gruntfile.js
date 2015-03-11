@@ -90,6 +90,7 @@ grunt.registerTask('test', [
 ]);
 
 grunt.registerTask('dist', [
+  'clean:dist',
   'typescript:all',
   'uglify:all'
 ]);

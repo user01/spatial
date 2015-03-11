@@ -1,7 +1,7 @@
 /// <reference path="IRanged.ts" />
 /// <reference path="../typings/node.d.ts" />
 
-module Spatial {
+module Ramps {
   export class Ramp {
 
 
@@ -186,6 +186,4 @@ module Spatial {
 //}
 
 
-if (typeof exports != 'undefined') {
-  exports.Ramp = Spatial.Ramp;
-}
+module.exports = Ramps;

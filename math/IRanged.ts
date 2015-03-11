@@ -1,9 +1,9 @@
 /// <reference path="./vector.ts" />
 
-module Spatial {
+module Interfaces {
   export interface IRanged {
-    distanceTo(v:Vector):number;
-    intensityAt(v:Vector):number;
-    closestVector(v:Vector):Vector;
+    distanceTo(v:Vectors.Vector):number;
+    intensityAt(v:Vectors.Vector):number;
+    closestVector(v:Vectors.Vector):Vectors.Vector;
   }
 }

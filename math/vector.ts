@@ -3,8 +3,8 @@
 
 var common = require('./common');
 
-module Spatial {
-  export class Vector implements IRanged, ISerializable, IEquality<Vector> {
+module Vectors {
+  export class Vector implements Interfaces.IRanged, Interfaces.ISerializable, Interfaces.IEquality<Vector> {
     protected _values:Float32Array;
 
     public get values():Float32Array {
@@ -207,8 +207,4 @@ module Spatial {
   }
 }
 
-if (typeof exports != 'undefined') {
-  exports.Vector2 = Spatial.Vector2;
-  exports.Vector3 = Spatial.Vector3;
-  exports.Vector4 = Spatial.Vector4;
-}
+module.exports = Vectors;
