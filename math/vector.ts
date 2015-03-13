@@ -1,10 +1,16 @@
+
+
 /// <reference path="./IRanged.ts" />
+/// <reference path="./ISerializable.ts" />
+/// <reference path="./IEquality.ts" />
 /// <reference path="../typings/node.d.ts" />
 
-var common = require('./common');
 
-module Vectors {
-  export class Vector implements Interfaces.IRanged, Interfaces.ISerializable, Interfaces.IEquality<Vector> {
+module Spatial {
+
+  var common = require('./common');
+
+  export class Vector implements IRanged, ISerializable, IEquality<Vector> {
     protected _values:Float32Array;
 
     public get values():Float32Array {
@@ -27,26 +33,26 @@ module Vectors {
     public clone = ():Vector => {
       return Vector.Clone(this);
     }
-    
+
     public toObj = ():any => {
       return {
         t:'v' + this.dimension,
         v:this._values
       };
     }
-    
+
     public toStr = ():string => {
       return JSON.stringify(this.toObj());
     }
-    
+
     public static fromObj = (obj:any):Vector => {
       return new Vector(obj.v);
     }
-    
+
     public static fromStr = (str:string):Vector => {
       return Vector.fromObj(JSON.parse(str));
     }
-    
+
     public equal = (v:Vector):boolean => {
       return Vector.Equal(this,v);
     }
@@ -135,7 +141,7 @@ module Vectors {
     constructor(_x:number,_y:number){
       super([_x,_y]);
     }
-    
+
     public static fromObj = (obj:any):Vector2 => {
       return new Vector2(obj.v[0],obj.v[1]);
     }
@@ -162,7 +168,7 @@ module Vectors {
     constructor(_x:number,_y:number,_z:number){
       super([_x,_y,_z]);
     }
-    
+
     public static fromObj = (obj:any):Vector3 => {
       return new Vector3(obj.v[0],obj.v[1],obj.v[2]);
     }
@@ -193,7 +199,7 @@ module Vectors {
     constructor(_x:number,_y:number,_z:number,_w:number){
       super([_x,_y,_z,_w]);
     }
-    
+
     public static fromObj = (obj:any):Vector4 => {
       return new Vector4(obj.v[0],obj.v[1],obj.v[2],obj.v[3]);
     }
@@ -207,4 +213,7 @@ module Vectors {
   }
 }
 
-module.exports = Vectors;
+exports.Vector = Spatial.Vector;
+exports.Vector2 = Spatial.Vector2;
+exports.Vector3 = Spatial.Vector3;
+exports.Vector4 = Spatial.Vector4;

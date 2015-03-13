@@ -1,6 +1,7 @@
 /// <reference path="IRanged.ts" />
 /// <reference path="../typings/node.d.ts" />
 
+
 module Ramps {
   export class Ramp {
 

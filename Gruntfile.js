@@ -20,15 +20,16 @@ grunt.initConfig({
   typescript: {
     build: {
       src: [
+        './index.ts',
         './math/**/*.ts',
         './tests/**/*.ts'
       ],
       dest: './built/',
       options: typescriptPureOptions
     },
-    all: {
+    defintion: {
       src: ['math/**/*.ts'],
-      dest: './dist/spatial.js',
+      dest: './defintion/spatial.js',
       options: typescriptPureOptions
     }
   },
@@ -44,6 +45,7 @@ grunt.initConfig({
       "./dist/"
     ],
     generated: [
+      "./index.js",
       "./math/**/*.js",
       "./tests/**/*.js"
     ],
@@ -91,8 +93,8 @@ grunt.registerTask('test', [
 
 grunt.registerTask('dist', [
   'clean:dist',
-  'typescript:all',
-  'uglify:all'
+  'typescript:defintion',
+  //'uglify:all'
 ]);
 
 grunt.registerTask('build', [
