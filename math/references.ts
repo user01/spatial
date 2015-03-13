@@ -1,5 +1,4 @@
 
-/// <reference path="./utility.ts" />
 
 /// <reference path="./IRanged.ts" />
 /// <reference path="./ISerializable.ts" />

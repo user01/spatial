@@ -5,7 +5,8 @@
 module Spatial {
 
 
-  export class Vector implements IRanged, ISerializable, IEquality<Vector> {
+  //export class Vector implements IRanged, ISerializable, IEquality<Vector> {
+  export class Vector {
     protected _values:Float32Array;
 
     public get values():Float32Array {
@@ -126,6 +127,7 @@ module Spatial {
     };
   }
 
+
   export class Vector2 extends Vector {
     public get x():number {
       return this._values[0];
@@ -207,4 +209,6 @@ module Spatial {
       return new Vector4(values[0],values[1],values[2],values[3]);
     }
   }
+
+
 }

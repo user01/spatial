@@ -1,6 +1,8 @@
+.DS_Store
 node_modules/*
 npm-debug.log
-built/*
 math/**/*.js
+math/**/*.d.ts
+math/**/*.js.map
 tests/**/*.js
 **/tsconfig.json

@@ -1,4 +1,18 @@
 
+function extend() {
+  var newObj = {};
+  for (var i = 0; i < arguments.length; i++) {
+    for (var key in arguments[i]) {
+      if (arguments[i].hasOwnProperty(key)) {
+          newObj[key] = arguments[i][key];
+      }
+    }
+  }
+  return newObj;
+}
+
+var buildDirectory = './built/';
+
 var typescriptPureOptions =
   {
     module: 'commonjs',
@@ -7,6 +21,14 @@ var typescriptPureOptions =
     comments: true,
     declaration: true
   };
+
+var typescriptBrowserOptions =
+  extend(typescriptPureOptions,
+          { sourceMap: false });
+
+var typescriptNodeOptions =
+  extend(typescriptPureOptions,
+          { declaration: false });
 
 module.exports = function(grunt) {
 
@@ -22,13 +44,18 @@ grunt.initConfig({
       src: [
         './tests/**/*.ts'
       ],
-      dest: './built/',
+      dest: buildDirectory,
       options: typescriptPureOptions
     },
-    library: {
+    node: {
       src: ['./math/main.ts'],
-      dest: './built/spatial.js',
-      options: typescriptPureOptions
+      dest: buildDirectory + 'spatial.node.js',
+      options: typescriptNodeOptions
+    },
+    browser: {
+      src: ['./math/references.ts'],
+      dest: buildDirectory + 'spatial.browser.js',
+      options: typescriptBrowserOptions
     }
   },
 
@@ -37,7 +64,7 @@ grunt.initConfig({
   //*********************************
   clean: {
     built: [
-      "./built/"
+      buildDirectory
     ],
     generated: [
       "./math/**/*.js",
@@ -49,16 +76,14 @@ grunt.initConfig({
   //  Uglify the code
   //*********************************
   uglify: {
-    all: {
+    browser: {
       options: {
         beautify: false,
         mangle:true,
-        sourceMapIn: 'dist/spatial.js.map',
-        sourceMap: 'dist/spatial.min.js.map'
       },
       files: [{
-          src: 'dist/spatial.js',
-          dest: 'dist/spatial.min.js'
+          src: buildDirectory + 'spatial.browser.js',
+          dest: buildDirectory + 'spatial.min.js'
       }]
     },
   },
@@ -75,8 +100,23 @@ grunt.initConfig({
         ui: 'bdd',
         //reporter: 'dot'
       },
-      all: { src: ['./built/tests/**/*.js'] }
+    all: { src: [buildDirectory + 'tests/**/*.js'] }
+  },
+
+  //*********************************
+  //  Copy Operations
+  //*********************************
+  copy: {
+    definition: {
+      files: [
+        {
+          src: [buildDirectory + 'spatial.browser.d.ts'],
+          dest: buildDirectory + 'spatial.d.ts',
+        },
+      ]
     },
+  },
+
 });
 
 
@@ -88,12 +128,14 @@ grunt.registerTask('test', [
 
 grunt.registerTask('production', [
   'build',
-  'uglify:all'
+  'uglify:browser'
 ]);
 
 grunt.registerTask('build', [
   'clean:built',
-  'typescript:library'
+  'typescript:node',
+  'typescript:browser',
+  'copy:definition'
 ]);
 
 

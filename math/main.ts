@@ -1,8 +1,10 @@
 /// <reference path="references.ts" />
 
+declare var module:any;
 
-Spatial.exportCommonjs({
-  Vector2:Spatial.Vector2,
-  Vector3:Spatial.Vector3,
-  Vector4:Spatial.Vector4
-});
+
+/*Spatial.Utility.exportCommonjs({
+  Spatial:Spatial
+});*/
+
+module.exports = Spatial;
