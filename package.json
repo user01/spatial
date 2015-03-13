@@ -6,6 +6,10 @@
   "scripts": {
     "test": "grunt test"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:erik_langenborg/spatial.git"
+  },
   "author": "Codex10",
   "license": "MIT",
   "dependencies": {},
