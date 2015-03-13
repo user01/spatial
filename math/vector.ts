@@ -1,14 +1,9 @@
 
-
-/// <reference path="./IRanged.ts" />
-/// <reference path="./ISerializable.ts" />
-/// <reference path="./IEquality.ts" />
-/// <reference path="../typings/node.d.ts" />
+/// <reference path="references.ts" />
 
 
 module Spatial {
 
-  var common = require('./common');
 
   export class Vector implements IRanged, ISerializable, IEquality<Vector> {
     protected _values:Float32Array;
@@ -105,7 +100,8 @@ module Spatial {
     public static Equal = (v1:Vector,v2:Vector):boolean => {
       if (v1.dimension != v2.dimension) return false;
       for (var i=0;i<v1.dimension;i++)
-        if (Math.abs(v1.values[i] - v2.values[i]) > common.MARGIN_OF_ERROR)
+        //if (Math.abs(v1.values[i] - v2.values[i]) > common.MARGIN_OF_ERROR)
+        if (Math.abs(v1.values[i] - v2.values[i]) > 0.05)
           return false;
       return true;
     }
@@ -212,8 +208,3 @@ module Spatial {
     }
   }
 }
-
-exports.Vector = Spatial.Vector;
-exports.Vector2 = Spatial.Vector2;
-exports.Vector3 = Spatial.Vector3;
-exports.Vector4 = Spatial.Vector4;

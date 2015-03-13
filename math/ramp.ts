@@ -1,4 +1,4 @@
-/// <reference path="IRanged.ts" />
+/*/// <reference path="IRanged.ts" />
 /// <reference path="../typings/node.d.ts" />
 
 
@@ -41,7 +41,7 @@ module Ramps {
      * All rights reserved.
      * https://raw.github.com/danro/jquery-easing/master/LICENSE
      * ======================================================== */
-    private static Ease = (type:RampType):number => {
+    /*private static Ease = (type:RampType):number => {
       switch (type) {
         case RampType.Linear:
         default:
@@ -53,7 +53,7 @@ module Ramps {
   export enum RampType {
     Linear
   }
-}
+}*/
 
 
 //def: 'easeOutQuad',
@@ -187,4 +187,4 @@ module Ramps {
 //}
 
 
-module.exports = Ramps;
+//module.exports = Ramps;

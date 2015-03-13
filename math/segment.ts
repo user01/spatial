@@ -1,5 +1,5 @@
 
-
+/*
 /// <reference path="../typings/node.d.ts" />
 /// <reference path="./ISerializable.ts" />
 /// <reference path="./vector.ts" />
@@ -123,3 +123,4 @@ exports.Segment = Spatial.Segment;
 exports.Segment2 = Spatial.Segment2;
 exports.Segment3 = Spatial.Segment3;
 exports.Segment4 = Spatial.Segment4;
+*/

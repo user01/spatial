@@ -18,18 +18,16 @@ grunt.initConfig({
   //  Compile Typescript to ES
   //*********************************
   typescript: {
-    build: {
+    tests: {
       src: [
-        './index.ts',
-        './math/**/*.ts',
         './tests/**/*.ts'
       ],
       dest: './built/',
       options: typescriptPureOptions
     },
-    defintion: {
-      src: ['math/**/*.ts'],
-      dest: './defintion/spatial.js',
+    library: {
+      src: ['./math/main.ts'],
+      dest: './built/spatial.js',
       options: typescriptPureOptions
     }
   },
@@ -38,14 +36,10 @@ grunt.initConfig({
   //  Empty out the built files
   //*********************************
   clean: {
-    build: [
+    built: [
       "./built/"
     ],
-    dist: [
-      "./dist/"
-    ],
     generated: [
-      "./index.js",
       "./math/**/*.js",
       "./tests/**/*.js"
     ],
@@ -88,18 +82,18 @@ grunt.initConfig({
 
 grunt.registerTask('test', [
   'build',
+  'typescript:tests',
   'simplemocha:all'
 ]);
 
-grunt.registerTask('dist', [
-  'clean:dist',
-  'typescript:defintion',
-  //'uglify:all'
+grunt.registerTask('production', [
+  'build',
+  'uglify:all'
 ]);
 
 grunt.registerTask('build', [
-  'clean:build',
-  'typescript:build'
+  'clean:built',
+  'typescript:library'
 ]);
 
 
