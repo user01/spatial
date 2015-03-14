@@ -87,6 +87,17 @@ module Spatial {
       return <Ramp>r;
     }
 
+    public static Mix = (r1:Ramp,
+                          r2:Ramp,
+                          fraction:number=0.5,
+                          range:number=0):number => {
+      fraction = Math.min(1,Math.max(0,fraction));
+      var c1 = r1.valueAt(range);
+      var c2 = r2.valueAt(range);
+      var sum = c1 * fraction + c2 * (1 - fraction);
+      return sum;
+    }
+
     public static Ease = (func:string='easeOutQuad',
                             currentTime:number=0,
                             beginingValue:number=0,

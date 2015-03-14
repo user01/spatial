@@ -41,7 +41,10 @@ module Spatial {
       return Segment.DistanceTo(this,v);
     };
     public intensityAt = (v:Vector):number => {
-      return 0;
+      var fraction = this.closestFraction(v);
+      var range = this.distanceTo(v);
+      var intensity = Ramp.Mix(this.Base.ramp,this.Tip.ramp,fraction,range);
+      return intensity;
     };
     public closestVector = (v:Vector):Vector => {
       var t = this.closestFraction(v);
@@ -49,6 +52,7 @@ module Spatial {
       return newSegment.Tip.clone();
     };
     private closestFraction = (v:Vector):number => {
+      Segment.DimensionCheck(this,v);
       var length = this.length;
       if (length < 0.001) return 0;
 
@@ -78,7 +82,8 @@ module Spatial {
     }
     public static DistanceTo = (s:Segment, v:Vector):number => {
       Segment.DimensionCheck(s,v);
-      return 0;
+      var vOnSegment = s.closestVector(v);
+      return vOnSegment.distanceTo(v);
     }
 
     public toObj = ():any => {
