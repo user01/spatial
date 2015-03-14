@@ -6,15 +6,17 @@ module Spatial {
 
     private valueChange:number=0;
     private duration:number=0;
-    constructor(public type:string='easeOutQuad',
-                public valueStart:number=1,
-                valueEnd:number=0,
+    constructor(public valueStart:number=1,
+                public valueEnd:number=0,
                 public rangeStart:number=0,
-                public rangeEnd:number=0
+                public rangeEnd:number=0,
+                public type:string='easeOutQuad'
                 ){
+      this.rangeStart = Math.abs(this.rangeStart);
+      this.rangeEnd = Math.abs(this.rangeEnd);
       if (this.rangeStart > this.rangeEnd) this.rangeEnd = this.rangeStart;
-      this.duration = this.rangeStart - this.rangeEnd;
-      this.valueChange = valueEnd - this.valueStart;
+      this.duration = Math.abs(this.rangeEnd - this.rangeStart);
+      this.valueChange = this.valueEnd - this.valueStart;
     }
 
     public valueAt = (range:number):number => {
@@ -23,8 +25,8 @@ module Spatial {
 
     public static ValueAt = (ramp:Ramp,range:number):number => {
       range = Math.abs(range);
-      if (range >= ramp.rangeEnd) return ramp.rangeEnd;
-      if (range <= ramp.rangeStart) return ramp.rangeStart;
+      if (range >= ramp.rangeEnd) return ramp.valueEnd;
+      if (range <= ramp.rangeStart) return ramp.valueStart;
       var fractionComplete = (range - ramp.rangeStart) /
                               (ramp.rangeEnd - ramp.rangeStart);
       //fractionComplete = Math.max(Math.min(1,fractionComplete),0);
