@@ -8,6 +8,7 @@ declare var it:any;
 
 var should:Internal = require('should');
 var spatial = require('../spatial.node');
+var tolerance = 0.05;
 
 //var vector2:Spatial.Vector2 = spatial.Vector2;
 var ramp = spatial.Ramp;
@@ -18,5 +19,12 @@ describe('Ramp', () => {
     var r1:Spatial.Ramp = new ramp();
     r1.type.should.be.a.String.and.be.exactly('easeOutQuad');
     //true.should.be.exactly(false);
+  });
+  describe('Ease', () => {
+    var Ease = ramp.Ease;
+    it('Default', () => {
+      var result = Ease();
+      result.should.be.a.Number.and.be.approximately(0,tolerance);
+    });
   });
 });

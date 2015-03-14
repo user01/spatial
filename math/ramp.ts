@@ -40,7 +40,7 @@ module Spatial {
     }
 
 
-    private static Ease = (func:string='linear',
+    public static Ease = (func:string='easeOutQuad',
                             currentTime:number=0,
                             beginingValue:number=0,
                             changeInValue:number=0,
@@ -50,10 +50,11 @@ module Spatial {
         func = 'easeOutQuad';
       }
 
-      return Ramp.EasingFunctions[func](currentTime,
-                                        beginingValue,
-                                        changeInValue,
-                                        duration);
+      var result = Ramp.EasingFunctions[func](currentTime,
+                                              beginingValue,
+                                              changeInValue,
+                                              duration);
+      return isNaN(result) ? beginingValue : result;
     }
 
     /* ============================================================
