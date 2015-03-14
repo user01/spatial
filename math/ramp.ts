@@ -6,11 +6,12 @@ module Spatial {
 
     private valueChange:number=0;
     private duration:number=0;
-    constructor(public valueStart:number=1,
+    constructor(
+                public type:string='easeOutQuad',
+                public valueStart:number=1,
                 public valueEnd:number=0,
                 public rangeStart:number=0,
-                public rangeEnd:number=10,
-                public type:string='easeOutQuad'
+                public rangeEnd:number=10
                 ){
       this.rangeStart = Math.abs(this.rangeStart);
       this.rangeEnd = Math.abs(this.rangeEnd);
@@ -42,7 +43,7 @@ module Spatial {
     }
 
     public static fromObj = (obj:any):Ramp => {
-      return new Ramp(obj.vs,obj.ve,obj.rs,obj.re,obj.t);
+      return new Ramp(obj.t,obj.vs,obj.ve,obj.rs,obj.re);
     }
 
     public static fromStr = (str:string):Ramp => {
@@ -77,6 +78,14 @@ module Spatial {
       return Math.abs(delta) < 0.02;
     }
 
+    public static Build = (r:Ramp|string=null):Ramp => {
+      if (r == null){
+        return new Ramp();//default values
+      } else if (typeof r == 'string'){
+        return Ramp.fromStr(<string>r);
+      }
+      return <Ramp>r;
+    }
 
     public static Ease = (func:string='easeOutQuad',
                             currentTime:number=0,

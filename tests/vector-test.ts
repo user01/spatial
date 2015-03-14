@@ -72,7 +72,7 @@ describe('Vector2', () => {
 
   describe('Intensity', () => {
     it('Simple', () => {
-      var ramp:Spatial.Ramp = new spatial.Ramp(10,0,10,110,'linear');
+      var ramp:Spatial.Ramp = new spatial.Ramp('linear',10,0,10,110);
       var v2A:Spatial.Vector2 = new spatial.Vector2(0,0,ramp);
 
       var v2B:Spatial.Vector2 = new spatial.Vector2(0,0);

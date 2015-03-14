@@ -1,6 +1,5 @@
 
 /// <reference path="references.ts" />
-//var vectors = require('./vector');
 
 module Spatial {
   export class Segment implements ISerializable, IRanged {
@@ -11,17 +10,30 @@ module Spatial {
     public get Tip():Vector {
       return this._tip;
     }
+    public get TipWithoutBase():Vector {
+      return Vector.Subtract(this._tip,this._base);
+    }
     public get length():number {
       return this._base.distanceTo(this._tip);
     }
     public get dimension():number {
       return this._tip.dimension;
     }
+    protected _ramp:Ramp;
+    public get Ramp():Ramp {
+      return this._ramp;
+    }
 
-    constructor(protected _base:Vector, protected _tip:Vector){
+    constructor(protected _base:Vector,
+                protected _tip:Vector,
+                r:Ramp|string=null){
       if (this._base.dimension != this._tip.dimension){
         throw new RangeException();
       }
+      var tempRamp = Ramp.Build(r);
+      //force the new ramp to conform to the 0,1 0,1 to handle
+      // scaling along segment and fraction to give to each end
+      this._ramp = new Ramp(tempRamp.type,0,1,0,1);
     }
 
 
@@ -32,13 +44,34 @@ module Spatial {
       return 0;
     };
     public closestVector = (v:Vector):Vector => {
-      return null;
+      var t = this.closestFraction(v);
+      var newSegment = this.scale(t);
+      return newSegment.Tip.clone();
     };
+    private closestFraction = (v:Vector):number => {
+      var length = this.length;
+      if (length < 0.001) return 0;
+
+      var vWithoutBase = Vector.Subtract(v,this.Base);
+      var t = Vector.Dot(vWithoutBase,this.TipWithoutBase) / (length * length);
+      return Math.max(0,Math.min(1,t));
+    }
+    public restoreBase = (v:Vector):Vector => {
+      return Vector.Add(this.Base,v);
+    }
     public push = (v:Vector):Segment => {
       return Segment.Push(this,v);
     }
+    public scale = (factor:number):Segment => {
+      return Segment.Scale(this,factor);
+    }
 
 
+    public static Scale = (s:Segment,factor:number):Segment => {
+      var newTip = s.restoreBase(
+        Vector.Scale(s.TipWithoutBase,factor))
+      return new Segment(s.Base.clone(),newTip);
+    }
     public static Push = (s:Segment,v:Vector):Segment => {
       if (s.dimension != v.dimension) throw new RangeException();
       return new Segment(Vector.Add(s.Base,v),Vector.Add(s.Tip,v));
@@ -52,7 +85,8 @@ module Spatial {
       return {
         t:'s' + this.dimension,
         b:this.Base.toObj(),
-        e:this.Tip.toObj()
+        e:this.Tip.toObj(),
+        r:this.Ramp.toObj()
       };
     }
     public toStr = ():string => {
@@ -68,7 +102,9 @@ module Spatial {
 
 
     public static fromObj = (obj:any):Segment => {
-      return new Segment(Vector.fromObj(obj.b),Vector.fromObj(obj.e));
+      return new Segment(Vector.fromObj(obj.b),
+                          Vector.fromObj(obj.e),
+                          Ramp.fromObj(obj.r));
     }
     public static fromStr = (str:string):Segment => {
       return Segment.fromObj(JSON.parse(str));

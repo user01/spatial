@@ -4,7 +4,6 @@
 
 module Spatial {
 
-
   export class Vector implements IRanged, ISerializable, IEquality<Vector> {
     protected _values:Float32Array;
 
@@ -14,7 +13,7 @@ module Spatial {
     public get dimension():number {
       return this._values.length;
     }
-    private _ramp:Ramp;
+    protected _ramp:Ramp;
     public get ramp():Ramp {
       return this._ramp;
     }
@@ -23,13 +22,7 @@ module Spatial {
       if (valueSet.length < 1 || valueSet.length > 4){
         throw new RangeException();
       }
-      if (r == null){
-        this._ramp = new Ramp();//default values
-      } else if (typeof r == 'string'){
-        this._ramp = Ramp.fromStr(<string>r);
-      } else {
-        this._ramp = <Ramp>r;
-      }
+      this._ramp = Ramp.Build(r);
       this._values = new Float32Array(valueSet);
     }
 

@@ -22,21 +22,21 @@ describe('Ramp', () => {
   });
   describe('Basic', () => {
     it('Linear', () => {
-      var r:Spatial.Ramp = new spatial.Ramp(-1,1,0,10,'linear');
+      var r:Spatial.Ramp = new spatial.Ramp('linear',-1,1,0,10);
 
       r.valueAt(0).should.be.approximately(-1,tolerance);
       r.valueAt(10).should.be.approximately(1,tolerance);
       r.valueAt(5).should.be.approximately(0,tolerance);
     });
     it('Serial', () => {
-      var r:Spatial.Ramp = new spatial.Ramp(-1,1,0,10,'linear');
+      var r:Spatial.Ramp = new spatial.Ramp('linear',-1,1,0,10);
 
       var str = r.toStr();
       var rClone = spatial.Ramp.fromStr(str);
       r.equal(rClone).should.be.true;
     });
     it('Standard', () => {
-      var r:Spatial.Ramp = new spatial.Ramp(-1,1,5,15);
+      var r:Spatial.Ramp = new spatial.Ramp('easeOutQuad',-1,1,5,15);
 
       r.valueAt(0).should.be.approximately(-1,tolerance);
       r.valueAt(3).should.be.approximately(-1,tolerance);
