@@ -1,13 +1,9 @@
 
-/*
-/// <reference path="../typings/node.d.ts" />
-/// <reference path="./ISerializable.ts" />
-/// <reference path="./vector.ts" />
-
-var vectors = require('./vector');
+/// <reference path="references.ts" />
+//var vectors = require('./vector');
 
 module Spatial {
-  export class Segment implements ISerializable {
+  export class Segment implements ISerializable, IRanged {
 
     public get Base():Vector {
       return this._base;
@@ -22,21 +18,35 @@ module Spatial {
       return this._tip.dimension;
     }
 
-
     constructor(protected _base:Vector, protected _tip:Vector){
       if (this._base.dimension != this._tip.dimension){
         throw new RangeException();
       }
     }
 
+
+    public distanceTo = (v:Vector):number => {
+      return Segment.DistanceTo(this,v);
+    };
+    public intensityAt = (v:Vector):number => {
+      return 0;
+    };
+    public closestVector = (v:Vector):Vector => {
+      return null;
+    };
     public push = (v:Vector):Segment => {
       return Segment.Push(this,v);
     }
+
+
     public static Push = (s:Segment,v:Vector):Segment => {
       if (s.dimension != v.dimension) throw new RangeException();
       return new Segment(Vector.Add(s.Base,v),Vector.Add(s.Tip,v));
     }
-
+    public static DistanceTo = (s:Segment, v:Vector):number => {
+      Segment.DimensionCheck(s,v);
+      return 0;
+    }
 
     public toObj = ():any => {
       return {
@@ -48,6 +58,14 @@ module Spatial {
     public toStr = ():string => {
       return JSON.stringify(this.toObj());
     }
+
+
+    private static DimensionCheck = (s:Segment,v:Vector):boolean => {
+      if (s.dimension != v.dimension)
+        throw new RangeException();
+      return true;
+    }
+
 
     public static fromObj = (obj:any):Segment => {
       return new Segment(Vector.fromObj(obj.b),Vector.fromObj(obj.e));
@@ -116,11 +134,3 @@ module Spatial {
   }
 
 }
-
-
-
-exports.Segment = Spatial.Segment;
-exports.Segment2 = Spatial.Segment2;
-exports.Segment3 = Spatial.Segment3;
-exports.Segment4 = Spatial.Segment4;
-*/
