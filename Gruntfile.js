@@ -11,7 +11,7 @@ function extend() {
   return newObj;
 }
 
-var buildDirectory = './built/';
+var buildDirectory = './build/';
 
 var typescriptPureOptions =
   {

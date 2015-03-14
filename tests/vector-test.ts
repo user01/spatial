@@ -7,7 +7,7 @@ declare var describe:any;
 declare var it:any;
 
 var should:Internal = require('should');
-var spatial = require('../spatial');
+var spatial = require('../spatial.node');
 
 //var vector2:Spatial.Vector2 = spatial.Vector2;
 var vector2 = spatial.Vector2;

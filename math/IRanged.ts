@@ -1,4 +1,4 @@
-/*/// <reference path="./vector.ts" />
+/// <reference path='references.ts'/>
 
 module Spatial {
   export interface IRanged {
@@ -6,4 +6,4 @@ module Spatial {
     intensityAt(v:Vector):number;
     closestVector(v:Vector):Vector;
   }
-}*/
+}

@@ -5,19 +5,15 @@
 module Spatial {
 
 
-  //export class Vector implements IRanged, ISerializable, IEquality<Vector> {
-  export class Vector {
+  export class Vector implements IRanged, ISerializable, IEquality<Vector> {
     protected _values:Float32Array;
 
     public get values():Float32Array {
       return this._values;
     }
-
-
     public get dimension():number {
       return this._values.length;
     }
-
 
     constructor(valueSet:Array<number>){
       if (valueSet.length < 1 || valueSet.length > 4){
