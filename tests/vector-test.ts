@@ -70,6 +70,33 @@ describe('Vector2', () => {
     });
   });
 
+  describe('Intensity', () => {
+    it('Simple', () => {
+      var ramp:Spatial.Ramp = new spatial.Ramp(10,0,10,110,'linear');
+      var v2A:Spatial.Vector2 = new spatial.Vector2(0,0,ramp);
+
+      var v2B:Spatial.Vector2 = new spatial.Vector2(0,0);
+      var intensity = v2A.intensityAt(v2B);
+      intensity.should.be.exactly(10);
+
+      v2B = new spatial.Vector2(0,10);
+      intensity = v2A.intensityAt(v2B);
+      intensity.should.be.exactly(10);
+
+      v2B = new spatial.Vector2(0,60);
+      intensity = v2A.intensityAt(v2B);
+      intensity.should.be.exactly(5);
+
+      v2B = new spatial.Vector2(0,110);
+      intensity = v2A.intensityAt(v2B);
+      intensity.should.be.exactly(0);
+
+      v2B = new spatial.Vector2(-500,110);
+      intensity = v2A.intensityAt(v2B);
+      intensity.should.be.exactly(0);
+    });
+  });
+
 
 });
 

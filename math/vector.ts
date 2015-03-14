@@ -65,7 +65,7 @@ module Spatial {
       return Vector.DistanceTo(this,v);
     };
     public intensityAt = (v:Vector):number => {
-      return 0;
+      return this.ramp.valueAt(this.distanceTo(v));
     };
     public closestVector = (v:Vector):Vector => {
       return this.clone();
@@ -80,7 +80,7 @@ module Spatial {
     }
 
     public static Clone = (v1:Vector):Vector => {
-      return new Vector(Array.prototype.slice.call(v1.values));
+      return Vector.fromObj(v1.toObj());
     }
 
     public static Add = (v1:Vector,v2:Vector):Vector => {
@@ -88,7 +88,7 @@ module Spatial {
       var values:Array<number> = new Array<number>();
       for (var i=0;i<v1.dimension;i++)
         values.push(v1.values[i] + v2.values[i]);
-      return new Vector(values);
+      return new Vector(values,v1.ramp.toStr());
     }
 
     public static Subtract = (v1:Vector,v2:Vector):Vector => {
@@ -99,7 +99,7 @@ module Spatial {
       var values:Array<number> = new Array<number>();
       for (var i=0;i<v1.dimension;i++)
         values.push(v1.values[i] * factor);
-      return new Vector(values);
+      return new Vector(values,v1.ramp.toStr());
     }
 
     public static Negate = (v1:Vector):Vector => {
@@ -145,8 +145,8 @@ module Spatial {
       return this._values[1];
     }
 
-    constructor(_x:number,_y:number){
-      super([_x,_y]);
+    constructor(_x:number,_y:number,_ramp:string|Ramp=null){
+      super([_x,_y],_ramp);
     }
 
     public static fromObj = (obj:any):Vector2 => {
@@ -172,8 +172,8 @@ module Spatial {
       return this._values[2];
     }
 
-    constructor(_x:number,_y:number,_z:number){
-      super([_x,_y,_z]);
+    constructor(_x:number,_y:number,_z:number,_ramp:string|Ramp=null){
+      super([_x,_y,_z],_ramp);
     }
 
     public static fromObj = (obj:any):Vector3 => {
@@ -203,8 +203,8 @@ module Spatial {
       return this._values[3];
     }
 
-    constructor(_x:number,_y:number,_z:number,_w:number){
-      super([_x,_y,_z,_w]);
+    constructor(_x:number,_y:number,_z:number,_w:number,_ramp:string|Ramp=null){
+      super([_x,_y,_z,_w],_ramp);
     }
 
     public static fromObj = (obj:any):Vector4 => {
