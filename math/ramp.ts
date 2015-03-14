@@ -9,7 +9,7 @@ module Spatial {
     constructor(public valueStart:number=1,
                 public valueEnd:number=0,
                 public rangeStart:number=0,
-                public rangeEnd:number=0,
+                public rangeEnd:number=10,
                 public type:string='easeOutQuad'
                 ){
       this.rangeStart = Math.abs(this.rangeStart);

@@ -23,6 +23,13 @@ describe('Vector2', () => {
     v2.y.should.be.exactly(10);
   });
 
+  it('Serial', () => {
+    var v2:Spatial.Vector2 = new vector2(5,10);
+    var str = v2.toStr();
+    var v2Clone = vector2.fromStr(str);
+    v2.equal(v2Clone).should.be.true;
+  });
+
 
   it('Init Error', () => {
       (() => {

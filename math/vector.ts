@@ -14,10 +14,21 @@ module Spatial {
     public get dimension():number {
       return this._values.length;
     }
+    private _ramp:Ramp;
+    public get ramp():Ramp {
+      return this._ramp;
+    }
 
-    constructor(valueSet:Array<number>){
+    constructor(valueSet:Array<number>,r:Ramp|string=null){
       if (valueSet.length < 1 || valueSet.length > 4){
         throw new RangeException();
+      }
+      if (r == null){
+        this._ramp = new Ramp();//default values
+      } else if (typeof r == 'string'){
+        this._ramp = Ramp.fromStr(<string>r);
+      } else {
+        this._ramp = <Ramp>r;
       }
       this._values = new Float32Array(valueSet);
     }
@@ -29,7 +40,8 @@ module Spatial {
     public toObj = ():any => {
       return {
         t:'v' + this.dimension,
-        v:this._values
+        v:this._values,
+        r:this.ramp.toStr()
       };
     }
 
@@ -96,6 +108,7 @@ module Spatial {
 
     public static Equal = (v1:Vector,v2:Vector):boolean => {
       if (v1.dimension != v2.dimension) return false;
+      if (!v1.ramp.equal(v2.ramp)) return false;
       for (var i=0;i<v1.dimension;i++)
         //if (Math.abs(v1.values[i] - v2.values[i]) > common.MARGIN_OF_ERROR)
         if (Math.abs(v1.values[i] - v2.values[i]) > 0.05)
