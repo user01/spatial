@@ -1,12 +1,12 @@
 /// <reference path='references.ts'/>
 
 
-module Ramps {
+module Spatial {
   export class Ramp {
 
     private valueChange:number=0;
     private duration:number=0;
-    constructor(public type:string='swing',
+    constructor(public type:string='easeOutQuad',
                 public valueStart:number=1,
                 valueEnd:number=0,
                 public rangeStart:number=0,
@@ -47,7 +47,7 @@ module Ramps {
                             duration:number=0
                             ):number => {
       if (!Ramp.EasingFunctions.hasOwnProperty(func)){
-        func = 'linear';
+        func = 'easeOutQuad';
       }
 
       return Ramp.EasingFunctions[func](currentTime,
