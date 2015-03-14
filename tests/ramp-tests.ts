@@ -28,6 +28,13 @@ describe('Ramp', () => {
       r.valueAt(10).should.be.approximately(1,tolerance);
       r.valueAt(5).should.be.approximately(0,tolerance);
     });
+    it('Serial', () => {
+      var r:Spatial.Ramp = new spatial.Ramp(-1,1,0,10,'linear');
+
+      var str = r.toStr();
+      var rClone = spatial.Ramp.fromStr(str);
+      r.equal(rClone).should.be.true;
+    });
     it('Standard', () => {
       var r:Spatial.Ramp = new spatial.Ramp(-1,1,5,15);
 

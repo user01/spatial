@@ -2,7 +2,7 @@
 
 
 module Spatial {
-  export class Ramp {
+  export class Ramp implements ISerializable, IEquality<Ramp> {
 
     private valueChange:number=0;
     private duration:number=0;
@@ -23,6 +23,32 @@ module Spatial {
       return Ramp.ValueAt(this,range);
     }
 
+    public equal = (b:Ramp):boolean => {
+      return Ramp.Equal(this,b);
+    }
+
+    public toObj = ():any => {
+      return {
+        vs:this.valueStart,
+        ve:this.valueEnd,
+        rs:this.rangeStart,
+        re:this.rangeEnd,
+        t:this.type
+      };
+    }
+
+    public toStr = ():string => {
+      return JSON.stringify(this.toObj());
+    }
+
+    public static fromObj = (obj:any):Ramp => {
+      return new Ramp(obj.vs,obj.ve,obj.rs,obj.re,obj.t);
+    }
+
+    public static fromStr = (str:string):Ramp => {
+      return Ramp.fromObj(JSON.parse(str));
+    }
+
     public static ValueAt = (ramp:Ramp,range:number):number => {
       range = Math.abs(range);
       if (range >= ramp.rangeEnd) return ramp.valueEnd;
@@ -39,6 +65,16 @@ module Spatial {
                         ramp.duration);
 
       //return valueRange * Ramp.Ease(ramp.type,fractionComplete) + ramp.valueStart;
+    }
+
+    public static Equal = (r1:Ramp,r2:Ramp):boolean => {
+      if (r1.type != r2.type) return false;
+      var delta =  (r1.valueStart - r2.valueStart) +
+                    (r1.valueEnd - r2.valueEnd) +
+                    (r1.rangeStart - r2.rangeStart) +
+                    (r1.rangeEnd - r2.rangeEnd);
+
+      return Math.abs(delta) < 0.02;
     }
 
 
@@ -60,10 +96,11 @@ module Spatial {
     }
 
     /* ============================================================
-     * These functions are adapted from this
+     * Open source under the BSD License.
+     *
+     * These functions are adapted from
      * jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
      *
-     * Open source under the BSD License.
      *
      * Copyright © 2008 George McGinley Smith
      * All rights reserved.
