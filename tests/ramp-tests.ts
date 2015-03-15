@@ -49,6 +49,32 @@ describe('Ramp', () => {
       r.valueAt(12).should.be.approximately(0.81,tolerance);
     });
   });
+  describe('Mix', () => {
+    var Mix = ramp.Mix;
+    it('Simple', () => {
+      var r1:Spatial.Ramp = new spatial.Ramp('linear',0,1,0,10);
+      var r2:Spatial.Ramp = new spatial.Ramp('linear',1,2,0,10);
+
+      //r1,r2,fraction 0-1,range
+      var mix = Mix(r1,r2,0,0);
+      mix.should.be.a.Number.and.be.approximately(0,tolerance);
+      mix = Mix(r1,r2,0,10);
+      mix.should.be.a.Number.and.be.approximately(1,tolerance);
+
+      mix = Mix(r1,r2,1,0);
+      mix.should.be.a.Number.and.be.approximately(1,tolerance);
+      mix = Mix(r1,r2,1,10);
+      mix.should.be.a.Number.and.be.approximately(2,tolerance);
+
+      mix = Mix(r1,r2,0.5,0);
+      mix.should.be.a.Number.and.be.approximately(0.5,tolerance);
+      mix = Mix(r1,r2,0.5,10);
+      mix.should.be.a.Number.and.be.approximately(0.5 * 1 + 0.5 * 2,tolerance);
+      mix = Mix(r1,r2,0.5,105);
+      mix.should.be.a.Number.and.be.approximately(0.5 * 1 + 0.5 * 2,tolerance);
+
+    });
+  });
   describe('Ease', () => {
     var Ease = ramp.Ease;
     it('Default', () => {

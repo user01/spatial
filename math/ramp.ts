@@ -94,7 +94,7 @@ module Spatial {
       fraction = Math.min(1,Math.max(0,fraction));
       var c1 = r1.valueAt(range);
       var c2 = r2.valueAt(range);
-      var sum = c1 * fraction + c2 * (1 - fraction);
+      var sum = c1 * (1 - fraction) + c2 * fraction;
       return sum;
     }
 
