@@ -2,7 +2,7 @@
 /// <reference path="references.ts" />
 
 module Spatial {
-  export class Segment implements ISerializable, IRanged {
+  export class Segment implements ISerializable, IRanged, IEquality<Segment> {
 
     public get Base():Vector {
       return this._base;
@@ -71,8 +71,16 @@ module Spatial {
     public scale = (factor:number):Segment => {
       return Segment.Scale(this,factor);
     }
+    public equal = (s:Segment):boolean => {
+      return Segment.Equal(this,s);
+    }
 
-
+    public static Equal = (s:Segment,s2:Segment):boolean => {
+      if (!s.Tip.equal(s2.Tip)) return false;
+      if (!s.Base.equal(s2.Base)) return false;
+      if (!s.Ramp.equal(s2.Ramp)) return false;
+      return true;
+    }
     public static Scale = (s:Segment,factor:number):Segment => {
       var newTip = s.restoreBase(
         Vector.Scale(s.TipWithoutBase,factor))
