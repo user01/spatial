@@ -38,9 +38,10 @@ module Spatial {
       var closestVectorFound = null;
       var closestDistance = Number.MAX_VALUE;
       var closestIntensity = 0;
+
       for(var i=0; i < this.segments.length; i++){
         var computedVector = this.segments[i].closestVector(v);
-        var computedDistance = this.segments[i].distanceTo(computedVector);
+        var computedDistance = this.segments[i].distanceTo(v);
         if (closestVectorFound == null || computedDistance < closestDistance) {
           closestVectorFound = computedVector;
           closestDistance = computedDistance;

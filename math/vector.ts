@@ -30,6 +30,13 @@ module Spatial {
       return Vector.Clone(this);
     }
 
+    public readableStr = ():string => {
+      var str = 'V' + this.dimension + '[';
+      for (var i=0;i<this._values.length;i++)
+        str += this._values[i] + ',';
+      return str + ']';
+    }
+
     public toObj = ():any => {
       return {
         t:'v' + this.dimension,

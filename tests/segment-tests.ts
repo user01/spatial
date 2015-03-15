@@ -56,6 +56,50 @@ describe('Segment2', () => {
     tester = new Vector2(15,5);
     dist = s.distanceTo(tester);
     dist.should.be.a.Number.and.be.approximately(7.071,tolerance);
+
+  });
+
+  it('Distance 2', () => {
+    var s:Spatial.Segment2 = new segment2(
+        new Vector2(0,10),
+        new Vector2(10,10)
+      );
+
+    var tester = new Vector2(5,10);
+    var dist = s.distanceTo(tester);
+    dist.should.be.a.Number.and.be.approximately(0,tolerance);
+
+    tester = new Vector2(5,10);
+    dist = s.distanceTo(tester);
+    dist.should.be.a.Number.and.be.approximately(0,tolerance);
+
+    tester = new Vector2(5,8);
+    dist = s.distanceTo(tester);
+    dist.should.be.a.Number.and.be.approximately(2,tolerance);
+  });
+
+  describe('Closest Vector', () => {
+    it('Simple', () => {
+      var s:Spatial.Segment2 = new segment2(
+          new Vector2(0,10),
+          new Vector2(10,10)
+        );
+
+      var tester = new Vector2(5,10);
+      var result = s.closestVector(tester);
+      result.equal(tester).should.be.true;
+    });
+    it('Off', () => {
+      var s:Spatial.Segment2 = new segment2(
+          new Vector2(0,10),
+          new Vector2(10,10)
+        );
+
+      var tester = new Vector2(5,12);
+      var hand = new Vector2(5,10);
+      var result = s.closestVector(tester);
+      result.equal(hand).should.be.true;
+    });
   });
 
   describe('Intensity', () => {
@@ -124,6 +168,31 @@ describe('Segment2', () => {
                                   new Vector3(10,0,10))
             ]);
         }).should.throw();
+    });
+    it('Closest', () => {
+      var s2:Spatial.Vector2 = new spatial.Segment2(new Vector2(0,0),
+                                                    new Vector2(10,0));
+      var ss:Spatial.SegmentSet = new spatial.SegmentSet([s2]);
+      var v = new Vector2(5,5);
+
+      ss.closestVector(v).equal(s2.closestVector(v)).should.be.true;
+
+    });
+    it('Closest Complex', () => {
+      var s2:Spatial.Vector2 = new spatial.Segment2(new Vector2(0,0),
+                                                    new Vector2(10,0));
+      var s2B:Spatial.Vector2 = new spatial.Segment2(new Vector2(0,10),
+                                                    new Vector2(10,10));
+      var ss:Spatial.SegmentSet = new spatial.SegmentSet([s2,s2B]);
+      var v = new Vector2(2,15);
+
+      var ssV = ss.closestVector(v);
+      var sBV = s2B.closestVector(v);
+
+      //console.log(ssV.readableStr(),sBV.readableStr());
+
+      ssV.equal(sBV).should.be.true;
+
     });
 
   });
