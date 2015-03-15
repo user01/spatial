@@ -27,7 +27,8 @@ module Spatial {
     constructor(protected _base:Vector,
                 protected _tip:Vector,
                 r:Ramp|string=null){
-      if (this._base.dimension != this._tip.dimension){
+      if (!this._base || !this._tip ||
+          (this._base.dimension != this._tip.dimension)){
         throw new RangeException();
       }
       var tempRamp = Ramp.Build(r);
@@ -42,6 +43,7 @@ module Spatial {
     };
     public intensityAt = (v:Vector):number => {
       var fraction = this.closestFraction(v);
+      fraction = this.Ramp.valueAt(fraction);
       var range = this.distanceTo(v);
       var intensity = Ramp.Mix(this.Base.ramp,this.Tip.ramp,fraction,range);
       return intensity;
