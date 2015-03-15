@@ -49,6 +49,7 @@ declare module Spatial {
         ramp: Ramp;
         constructor(valueSet: Array<number>, r?: Ramp | string);
         clone: () => Vector;
+        readableStr: () => string;
         toObj: () => any;
         toStr: () => string;
         static fromObj: (obj: any) => Vector;
@@ -67,33 +68,6 @@ declare module Spatial {
         static Dot: (v1: Vector, v2: Vector) => number;
         private static DimensionCheck;
         protected static isArray: (arg: any) => boolean;
-    }
-    class Vector2 extends Vector {
-        x: number;
-        y: number;
-        constructor(_x: number, _y: number, _ramp?: string | Ramp);
-        static fromObj: (obj: any) => Vector2;
-        static fromStr: (str: string) => Vector2;
-        static build: (values: number[]) => Vector2;
-    }
-    class Vector3 extends Vector {
-        x: number;
-        y: number;
-        z: number;
-        constructor(_x: number, _y: number, _z: number, _ramp?: string | Ramp);
-        static fromObj: (obj: any) => Vector3;
-        static fromStr: (str: string) => Vector3;
-        static build: (values: number[]) => Vector3;
-    }
-    class Vector4 extends Vector {
-        x: number;
-        y: number;
-        z: number;
-        w: number;
-        constructor(_x: number, _y: number, _z: number, _w: number, _ramp?: string | Ramp);
-        static fromObj: (obj: any) => Vector4;
-        static fromStr: (str: string) => Vector4;
-        static build: (values: number[]) => Vector4;
     }
 }
 declare module Spatial {
@@ -126,6 +100,8 @@ declare module Spatial {
         static fromObj: (obj: any) => Segment;
         static fromStr: (str: string) => Segment;
     }
+}
+declare module Spatial {
     class Segment2 extends Segment {
         Base: Vector2;
         Tip: Vector2;
@@ -133,6 +109,8 @@ declare module Spatial {
         push: (v: Vector2) => Segment2;
         static Push: (s: Segment2, v: Vector2) => Segment2;
     }
+}
+declare module Spatial {
     class Segment3 extends Segment {
         Base: Vector3;
         Tip: Vector3;
@@ -140,11 +118,58 @@ declare module Spatial {
         push: (v: Vector3) => Segment3;
         static Push: (s: Segment3, v: Vector3) => Segment3;
     }
+}
+declare module Spatial {
     class Segment4 extends Segment {
         Base: Vector4;
         Tip: Vector4;
         constructor(base: Vector4, tip: Vector4);
         push: (v: Vector4) => Segment4;
         static Push: (s: Segment4, v: Vector4) => Segment4;
+    }
+}
+declare module Spatial {
+    class SegmentSet implements IRanged {
+        private segments;
+        private _dimension;
+        dimension: number;
+        constructor(segments: Array<Segment>);
+        distanceTo: (v: Vector) => number;
+        intensityAt: (v: Vector) => number;
+        closestVector: (v: Vector) => Vector;
+        protected closestVectorDistanceIntensity: (v: Vector) => [Vector, number, number];
+    }
+}
+declare module Spatial {
+    class Vector2 extends Vector {
+        x: number;
+        y: number;
+        constructor(_x: number, _y: number, _ramp?: string | Ramp);
+        static fromObj: (obj: any) => Vector2;
+        static fromStr: (str: string) => Vector2;
+        static build: (values: number[]) => Vector2;
+    }
+}
+declare module Spatial {
+    class Vector3 extends Vector {
+        x: number;
+        y: number;
+        z: number;
+        constructor(_x: number, _y: number, _z: number, _ramp?: string | Ramp);
+        static fromObj: (obj: any) => Vector3;
+        static fromStr: (str: string) => Vector3;
+        static build: (values: number[]) => Vector3;
+    }
+}
+declare module Spatial {
+    class Vector4 extends Vector {
+        x: number;
+        y: number;
+        z: number;
+        w: number;
+        constructor(_x: number, _y: number, _z: number, _w: number, _ramp?: string | Ramp);
+        static fromObj: (obj: any) => Vector4;
+        static fromStr: (str: string) => Vector4;
+        static build: (values: number[]) => Vector4;
     }
 }

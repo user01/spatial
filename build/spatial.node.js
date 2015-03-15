@@ -285,12 +285,6 @@ var Spatial;
     Spatial.Ramp = Ramp;
 })(Spatial || (Spatial = {}));
 /// <reference path="references.ts" />
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 var Spatial;
 (function (Spatial) {
     var Vector = (function () {
@@ -299,6 +293,12 @@ var Spatial;
             if (r === void 0) { r = null; }
             this.clone = function () {
                 return Vector.Clone(_this);
+            };
+            this.readableStr = function () {
+                var str = 'V' + _this.dimension + '[';
+                for (var i = 0; i < _this._values.length; i++)
+                    str += _this._values[i] + ',';
+                return str + ']';
             };
             this.toObj = function () {
                 return {
@@ -413,129 +413,6 @@ var Spatial;
         return Vector;
     })();
     Spatial.Vector = Vector;
-    var Vector2 = (function (_super) {
-        __extends(Vector2, _super);
-        function Vector2(_x, _y, _ramp) {
-            if (_ramp === void 0) { _ramp = null; }
-            _super.call(this, [_x, _y], _ramp);
-        }
-        Object.defineProperty(Vector2.prototype, "x", {
-            get: function () {
-                return this._values[0];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Vector2.prototype, "y", {
-            get: function () {
-                return this._values[1];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Vector2.fromObj = function (obj) {
-            return new Vector2(obj.v[0], obj.v[1]);
-        };
-        Vector2.fromStr = function (str) {
-            return Vector2.fromObj(JSON.parse(str));
-        };
-        Vector2.build = function (values) {
-            if (values.length != 2)
-                throw new RangeException();
-            return new Vector2(values[0], values[1]);
-        };
-        return Vector2;
-    })(Vector);
-    Spatial.Vector2 = Vector2;
-    var Vector3 = (function (_super) {
-        __extends(Vector3, _super);
-        function Vector3(_x, _y, _z, _ramp) {
-            if (_ramp === void 0) { _ramp = null; }
-            _super.call(this, [_x, _y, _z], _ramp);
-        }
-        Object.defineProperty(Vector3.prototype, "x", {
-            get: function () {
-                return this._values[0];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Vector3.prototype, "y", {
-            get: function () {
-                return this._values[1];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Vector3.prototype, "z", {
-            get: function () {
-                return this._values[2];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Vector3.fromObj = function (obj) {
-            return new Vector3(obj.v[0], obj.v[1], obj.v[2]);
-        };
-        Vector3.fromStr = function (str) {
-            return Vector3.fromObj(JSON.parse(str));
-        };
-        Vector3.build = function (values) {
-            if (values.length != 3)
-                throw new RangeException();
-            return new Vector3(values[0], values[1], values[2]);
-        };
-        return Vector3;
-    })(Vector);
-    Spatial.Vector3 = Vector3;
-    var Vector4 = (function (_super) {
-        __extends(Vector4, _super);
-        function Vector4(_x, _y, _z, _w, _ramp) {
-            if (_ramp === void 0) { _ramp = null; }
-            _super.call(this, [_x, _y, _z, _w], _ramp);
-        }
-        Object.defineProperty(Vector4.prototype, "x", {
-            get: function () {
-                return this._values[0];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Vector4.prototype, "y", {
-            get: function () {
-                return this._values[1];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Vector4.prototype, "z", {
-            get: function () {
-                return this._values[2];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Vector4.prototype, "w", {
-            get: function () {
-                return this._values[3];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Vector4.fromObj = function (obj) {
-            return new Vector4(obj.v[0], obj.v[1], obj.v[2], obj.v[3]);
-        };
-        Vector4.fromStr = function (str) {
-            return Vector4.fromObj(JSON.parse(str));
-        };
-        Vector4.build = function (values) {
-            if (values.length != 4)
-                throw new RangeException();
-            return new Vector4(values[0], values[1], values[2], values[3]);
-        };
-        return Vector4;
-    })(Vector);
-    Spatial.Vector4 = Vector4;
 })(Spatial || (Spatial = {}));
 /// <reference path="references.ts" />
 var Spatial;
@@ -680,6 +557,16 @@ var Spatial;
         return Segment;
     })();
     Spatial.Segment = Segment;
+})(Spatial || (Spatial = {}));
+/// <reference path="references.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var Spatial;
+(function (Spatial) {
     var Segment2 = (function (_super) {
         __extends(Segment2, _super);
         function Segment2(base, tip) {
@@ -704,11 +591,15 @@ var Spatial;
             configurable: true
         });
         Segment2.Push = function (s, v) {
-            return Segment.Push(s, v);
+            return Spatial.Segment.Push(s, v);
         };
         return Segment2;
-    })(Segment);
+    })(Spatial.Segment);
     Spatial.Segment2 = Segment2;
+})(Spatial || (Spatial = {}));
+/// <reference path="references.ts" />
+var Spatial;
+(function (Spatial) {
     var Segment3 = (function (_super) {
         __extends(Segment3, _super);
         function Segment3(base, tip) {
@@ -733,11 +624,15 @@ var Spatial;
             configurable: true
         });
         Segment3.Push = function (s, v) {
-            return Segment.Push(s, v);
+            return Spatial.Segment.Push(s, v);
         };
         return Segment3;
-    })(Segment);
+    })(Spatial.Segment);
     Spatial.Segment3 = Segment3;
+})(Spatial || (Spatial = {}));
+/// <reference path="references.ts" />
+var Spatial;
+(function (Spatial) {
     var Segment4 = (function (_super) {
         __extends(Segment4, _super);
         function Segment4(base, tip) {
@@ -762,11 +657,198 @@ var Spatial;
             configurable: true
         });
         Segment4.Push = function (s, v) {
-            return Segment.Push(s, v);
+            return Spatial.Segment.Push(s, v);
         };
         return Segment4;
-    })(Segment);
+    })(Spatial.Segment);
     Spatial.Segment4 = Segment4;
+})(Spatial || (Spatial = {}));
+/// <reference path="references.ts" />
+var Spatial;
+(function (Spatial) {
+    var SegmentSet = (function () {
+        function SegmentSet(segments) {
+            var _this = this;
+            this.segments = segments;
+            this._dimension = 0;
+            this.distanceTo = function (v) {
+                return _this.closestVectorDistanceIntensity(v)[1];
+            };
+            this.intensityAt = function (v) {
+                return _this.closestVectorDistanceIntensity(v)[2];
+            };
+            this.closestVector = function (v) {
+                return _this.closestVectorDistanceIntensity(v)[0];
+            };
+            this.closestVectorDistanceIntensity = function (v) {
+                var closestVectorFound = null;
+                var closestDistance = Number.MAX_VALUE;
+                var closestIntensity = 0;
+                for (var i = 0; i < _this.segments.length; i++) {
+                    var computedVector = _this.segments[i].closestVector(v);
+                    var computedDistance = _this.segments[i].distanceTo(v);
+                    if (closestVectorFound == null || computedDistance < closestDistance) {
+                        closestVectorFound = computedVector;
+                        closestDistance = computedDistance;
+                        closestIntensity = _this.segments[i].intensityAt(computedVector);
+                    }
+                }
+                return [closestVectorFound, closestDistance, closestIntensity];
+            };
+            if ((segments === void 0) || segments.length < 1)
+                throw new RangeException();
+            this._dimension = segments[0].dimension;
+            for (var i = 0; i < this.segments.length; i++) {
+                if (segments[i].dimension != this._dimension) {
+                    throw new RangeException();
+                }
+            }
+        }
+        Object.defineProperty(SegmentSet.prototype, "dimension", {
+            get: function () {
+                return this._dimension;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return SegmentSet;
+    })();
+    Spatial.SegmentSet = SegmentSet;
+})(Spatial || (Spatial = {}));
+/// <reference path="references.ts" />
+var Spatial;
+(function (Spatial) {
+    var Vector2 = (function (_super) {
+        __extends(Vector2, _super);
+        function Vector2(_x, _y, _ramp) {
+            if (_ramp === void 0) { _ramp = null; }
+            _super.call(this, [_x, _y], _ramp);
+        }
+        Object.defineProperty(Vector2.prototype, "x", {
+            get: function () {
+                return this._values[0];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector2.prototype, "y", {
+            get: function () {
+                return this._values[1];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Vector2.fromObj = function (obj) {
+            return new Vector2(obj.v[0], obj.v[1]);
+        };
+        Vector2.fromStr = function (str) {
+            return Vector2.fromObj(JSON.parse(str));
+        };
+        Vector2.build = function (values) {
+            if (values.length != 2)
+                throw new RangeException();
+            return new Vector2(values[0], values[1]);
+        };
+        return Vector2;
+    })(Spatial.Vector);
+    Spatial.Vector2 = Vector2;
+})(Spatial || (Spatial = {}));
+/// <reference path="references.ts" />
+var Spatial;
+(function (Spatial) {
+    var Vector3 = (function (_super) {
+        __extends(Vector3, _super);
+        function Vector3(_x, _y, _z, _ramp) {
+            if (_ramp === void 0) { _ramp = null; }
+            _super.call(this, [_x, _y, _z], _ramp);
+        }
+        Object.defineProperty(Vector3.prototype, "x", {
+            get: function () {
+                return this._values[0];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector3.prototype, "y", {
+            get: function () {
+                return this._values[1];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector3.prototype, "z", {
+            get: function () {
+                return this._values[2];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Vector3.fromObj = function (obj) {
+            return new Vector3(obj.v[0], obj.v[1], obj.v[2]);
+        };
+        Vector3.fromStr = function (str) {
+            return Vector3.fromObj(JSON.parse(str));
+        };
+        Vector3.build = function (values) {
+            if (values.length != 3)
+                throw new RangeException();
+            return new Vector3(values[0], values[1], values[2]);
+        };
+        return Vector3;
+    })(Spatial.Vector);
+    Spatial.Vector3 = Vector3;
+})(Spatial || (Spatial = {}));
+/// <reference path="references.ts" />
+var Spatial;
+(function (Spatial) {
+    var Vector4 = (function (_super) {
+        __extends(Vector4, _super);
+        function Vector4(_x, _y, _z, _w, _ramp) {
+            if (_ramp === void 0) { _ramp = null; }
+            _super.call(this, [_x, _y, _z, _w], _ramp);
+        }
+        Object.defineProperty(Vector4.prototype, "x", {
+            get: function () {
+                return this._values[0];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector4.prototype, "y", {
+            get: function () {
+                return this._values[1];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector4.prototype, "z", {
+            get: function () {
+                return this._values[2];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector4.prototype, "w", {
+            get: function () {
+                return this._values[3];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Vector4.fromObj = function (obj) {
+            return new Vector4(obj.v[0], obj.v[1], obj.v[2], obj.v[3]);
+        };
+        Vector4.fromStr = function (str) {
+            return Vector4.fromObj(JSON.parse(str));
+        };
+        Vector4.build = function (values) {
+            if (values.length != 4)
+                throw new RangeException();
+            return new Vector4(values[0], values[1], values[2], values[3]);
+        };
+        return Vector4;
+    })(Spatial.Vector);
+    Spatial.Vector4 = Vector4;
 })(Spatial || (Spatial = {}));
 /// <reference path="./IRanged.ts" />
 /// <reference path="./ISerializable.ts" />
@@ -774,6 +856,13 @@ var Spatial;
 /// <reference path="./ramp.ts" />
 /// <reference path="./vector.ts" />
 /// <reference path="./segment.ts" />
+/// <reference path="./segment2.ts" />
+/// <reference path="./segment3.ts" />
+/// <reference path="./segment4.ts" />
+/// <reference path="./segmentSet.ts" />
+/// <reference path="./vector2.ts" />
+/// <reference path="./vector3.ts" />
+/// <reference path="./vector4.ts" />
 /// <reference path="references.ts" />
 /*Spatial.Utility.exportCommonjs({
   Spatial:Spatial
