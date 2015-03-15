@@ -13,6 +13,8 @@
 /// <reference path="./segment3.ts" />
 /// <reference path="./segment4.ts" />
 
+/// <reference path="./segmentSet.ts" />
+
 /// <reference path="./vector2.ts" />
 /// <reference path="./vector3.ts" />
 /// <reference path="./vector4.ts" />

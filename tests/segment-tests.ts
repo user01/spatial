@@ -12,6 +12,7 @@ var tolerance = 0.05;
 
 var segment2 = spatial.Segment2;
 var Vector2 = spatial.Vector2;
+var Vector3 = spatial.Vector3;
 var Ramp = spatial.Ramp;
 
 describe('Segment', () => {
@@ -103,5 +104,27 @@ describe('Segment2', () => {
 
 });
 
+  describe('SegmentSets', () => {
+    it('Init', () => {
+      var ss:Spatial.SegmentSet = new spatial.SegmentSet([
+        new spatial.Segment2(new Vector2(0,0),
+                              new Vector2(10,0))
+        ]);
+    });
 
+    it('Init Error', () => {
+        (() => {
+          new spatial.SegmentSet()
+        }).should.throw();
+        (() => {
+          var ss:Spatial.SegmentSet = new spatial.SegmentSet([
+            new spatial.Segment2(new Vector2(0,0),
+                                  new Vector2(10,0)),
+            new spatial.Segment3(new Vector3(0,0,0),
+                                  new Vector3(10,0,10))
+            ]);
+        }).should.throw();
+    });
+
+  });
 });
