@@ -37,9 +37,11 @@ module Spatial {
         t:this.type
       };
     }
-
     public toStr = ():string => {
       return JSON.stringify(this.toObj());
+    }
+    public clone = ():Ramp => {
+      return Ramp.Clone(this);
     }
 
     public static fromObj = (obj:any):Ramp => {
@@ -48,6 +50,10 @@ module Spatial {
 
     public static fromStr = (str:string):Ramp => {
       return Ramp.fromObj(JSON.parse(str));
+    }
+
+    public static Clone = (r:Ramp):Ramp => {
+      return Ramp.fromObj(r.toObj());
     }
 
     public static ValueAt = (ramp:Ramp,range:number):number => {

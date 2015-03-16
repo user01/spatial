@@ -20,6 +20,12 @@ describe('Ramp', () => {
     r1.type.should.be.a.String.and.be.exactly('easeOutQuad');
     //true.should.be.exactly(false);
   });
+  it('Clone', () => {
+    var r:Spatial.Ramp = new spatial.Ramp('linear',-1,1,0,10);
+    var clone = r.clone();
+    r.equal(clone).should.be.true;
+    //true.should.be.exactly(false);
+  });
   describe('Basic', () => {
     it('Linear', () => {
       var r:Spatial.Ramp = new spatial.Ramp('linear',-1,1,0,10);
