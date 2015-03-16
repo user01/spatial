@@ -35,6 +35,9 @@ var Spatial;
             this.toStr = function () {
                 return JSON.stringify(_this.toObj());
             };
+            this.clone = function () {
+                return Ramp.Clone(_this);
+            };
             this.rangeStart = Math.abs(this.rangeStart);
             this.rangeEnd = Math.abs(this.rangeEnd);
             if (this.rangeStart > this.rangeEnd)
@@ -47,6 +50,9 @@ var Spatial;
         };
         Ramp.fromStr = function (str) {
             return Ramp.fromObj(JSON.parse(str));
+        };
+        Ramp.Clone = function (r) {
+            return Ramp.fromObj(r.toObj());
         };
         Ramp.ValueAt = function (ramp, range) {
             range = Math.abs(range);
@@ -302,9 +308,9 @@ var Spatial;
             };
             this.toObj = function () {
                 return {
-                    t: 'v' + _this.dimension,
+                    t: _this.dimension,
                     v: _this._values,
-                    r: _this.ramp.toStr()
+                    r: _this.ramp.toObj()
                 };
             };
             this.toStr = function () {
@@ -350,7 +356,15 @@ var Spatial;
             configurable: true
         });
         Vector.fromObj = function (obj) {
-            return new Vector(obj.v);
+            switch (obj.t) {
+                case 2:
+                    return Spatial.Vector2.fromObj(obj);
+                case 3:
+                    return Spatial.Vector3.fromObj(obj);
+                case 4:
+                    return Spatial.Vector4.fromObj(obj);
+            }
+            return new Vector(obj.v, Spatial.Ramp.fromObj(obj.r));
         };
         Vector.fromStr = function (str) {
             return Vector.fromObj(JSON.parse(str));
@@ -461,7 +475,7 @@ var Spatial;
             };
             this.toObj = function () {
                 return {
-                    t: 's' + _this.dimension,
+                    t: _this.dimension,
                     b: _this.Base.toObj(),
                     e: _this.Tip.toObj(),
                     r: _this.Ramp.toObj()
@@ -549,6 +563,15 @@ var Spatial;
             return true;
         };
         Segment.fromObj = function (obj) {
+            switch (obj.t) {
+                case 2:
+                    return new Spatial.Segment2(Spatial.Vector2.fromObj(obj.b), Spatial.Vector2.fromObj(obj.e), Spatial.Ramp.fromObj(obj.r));
+                case 3:
+                    return new Spatial.Segment3(Spatial.Vector3.fromObj(obj.b), Spatial.Vector3.fromObj(obj.e), Spatial.Ramp.fromObj(obj.r));
+                case 4:
+                    return new Spatial.Segment4(Spatial.Vector4.fromObj(obj.b), Spatial.Vector4.fromObj(obj.e), Spatial.Ramp.fromObj(obj.r));
+            }
+            //default untyped
             return new Segment(Spatial.Vector.fromObj(obj.b), Spatial.Vector.fromObj(obj.e), Spatial.Ramp.fromObj(obj.r));
         };
         Segment.fromStr = function (str) {
@@ -569,9 +592,10 @@ var Spatial;
 (function (Spatial) {
     var Segment2 = (function (_super) {
         __extends(Segment2, _super);
-        function Segment2(base, tip) {
+        function Segment2(base, tip, r) {
             var _this = this;
-            _super.call(this, base, tip);
+            if (r === void 0) { r = null; }
+            _super.call(this, base, tip, r);
             this.push = function (v) {
                 return Segment2.Push(_this, v);
             };
@@ -602,9 +626,10 @@ var Spatial;
 (function (Spatial) {
     var Segment3 = (function (_super) {
         __extends(Segment3, _super);
-        function Segment3(base, tip) {
+        function Segment3(base, tip, r) {
             var _this = this;
-            _super.call(this, base, tip);
+            if (r === void 0) { r = null; }
+            _super.call(this, base, tip, r);
             this.push = function (v) {
                 return Segment3.Push(_this, v);
             };
@@ -623,8 +648,22 @@ var Spatial;
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(Segment3.prototype, "TipWithoutBase", {
+            get: function () {
+                return Spatial.Vector.Subtract(this._tip, this._base);
+            },
+            enumerable: true,
+            configurable: true
+        });
         Segment3.Push = function (s, v) {
             return Spatial.Segment.Push(s, v);
+        };
+        Segment3.Cross = function (sA, sB) {
+            var aTip = Spatial.Vector3.Cast(sA.TipWithoutBase.clone());
+            var bTip = Spatial.Vector3.Cast(sB.TipWithoutBase.clone());
+            var cross = aTip.cross(bTip);
+            var newTip = Spatial.Vector3.Cast(sA.restoreBase(cross));
+            return new Segment3(Spatial.Vector3.Cast(sA.Base), newTip);
         };
         return Segment3;
     })(Spatial.Segment);
@@ -635,9 +674,10 @@ var Spatial;
 (function (Spatial) {
     var Segment4 = (function (_super) {
         __extends(Segment4, _super);
-        function Segment4(base, tip) {
+        function Segment4(base, tip, r) {
             var _this = this;
-            _super.call(this, base, tip);
+            if (r === void 0) { r = null; }
+            _super.call(this, base, tip, r);
             this.push = function (v) {
                 return Segment4.Push(_this, v);
             };
@@ -680,6 +720,22 @@ var Spatial;
             this.closestVector = function (v) {
                 return _this.closestVectorDistanceIntensity(v)[0];
             };
+            this.clone = function () {
+                return SegmentSet.Clone(_this);
+            };
+            this.equal = function (ss) {
+                return SegmentSet.Equal(_this, ss);
+            };
+            this.toObj = function () {
+                return {
+                    s: _this.segments.map(function (s) {
+                        return s.toObj();
+                    })
+                };
+            };
+            this.toStr = function () {
+                return JSON.stringify(_this.toObj());
+            };
             this.closestVectorDistanceIntensity = function (v) {
                 var closestVectorFound = null;
                 var closestDistance = Number.MAX_VALUE;
@@ -711,6 +767,32 @@ var Spatial;
             enumerable: true,
             configurable: true
         });
+        SegmentSet.fromObj = function (obj) {
+            var segs = obj.s.map(function (s) {
+                return Spatial.Segment.fromObj(s);
+            });
+            return new SegmentSet(segs);
+        };
+        SegmentSet.fromStr = function (str) {
+            return SegmentSet.fromObj(JSON.parse(str));
+        };
+        SegmentSet.Clone = function (ss) {
+            return SegmentSet.fromObj(ss.toObj());
+        };
+        SegmentSet.Equal = function (ssA, ssB) {
+            if (ssA.segments.length != ssB.segments.length)
+                return false;
+            for (var i = 0; i < ssA.segments.length; i++) {
+                if (!ssA.segments[i].equal(ssB.segments[i]))
+                    return false;
+            }
+            return true;
+        };
+        SegmentSet.Merge = function (ssA, ssB) {
+            if (ssA.dimension != ssB.dimension)
+                throw new RangeException();
+            return new SegmentSet(ssA.segments.concat(ssB.segments));
+        };
         return SegmentSet;
     })();
     Spatial.SegmentSet = SegmentSet;
@@ -739,7 +821,7 @@ var Spatial;
             configurable: true
         });
         Vector2.fromObj = function (obj) {
-            return new Vector2(obj.v[0], obj.v[1]);
+            return new Vector2(obj.v[0], obj.v[1], Spatial.Ramp.fromObj(obj.r));
         };
         Vector2.fromStr = function (str) {
             return Vector2.fromObj(JSON.parse(str));
@@ -759,8 +841,12 @@ var Spatial;
     var Vector3 = (function (_super) {
         __extends(Vector3, _super);
         function Vector3(_x, _y, _z, _ramp) {
+            var _this = this;
             if (_ramp === void 0) { _ramp = null; }
             _super.call(this, [_x, _y, _z], _ramp);
+            this.cross = function (vOther) {
+                return Vector3.Cross(_this, vOther);
+            };
         }
         Object.defineProperty(Vector3.prototype, "x", {
             get: function () {
@@ -783,8 +869,19 @@ var Spatial;
             enumerable: true,
             configurable: true
         });
+        Vector3.Cross = function (vA, vB) {
+            var x = vA.y * vB.z - vA.z * vB.y;
+            var y = vA.z * vB.x - vA.x * vB.z;
+            var z = vA.x * vB.y - vA.y * vB.x;
+            return new Vector3(x, y, z, vA.ramp.clone());
+        };
+        Vector3.Cast = function (v) {
+            if (v.values.length != 3)
+                throw new RangeException();
+            return new Vector3(v.values[0], v.values[1], v.values[2], v.ramp);
+        };
         Vector3.fromObj = function (obj) {
-            return new Vector3(obj.v[0], obj.v[1], obj.v[2]);
+            return new Vector3(obj.v[0], obj.v[1], obj.v[2], Spatial.Ramp.fromObj(obj.r));
         };
         Vector3.fromStr = function (str) {
             return Vector3.fromObj(JSON.parse(str));
@@ -836,7 +933,7 @@ var Spatial;
             configurable: true
         });
         Vector4.fromObj = function (obj) {
-            return new Vector4(obj.v[0], obj.v[1], obj.v[2], obj.v[3]);
+            return new Vector4(obj.v[0], obj.v[1], obj.v[2], obj.v[3], Spatial.Ramp.fromObj(obj.r));
         };
         Vector4.fromStr = function (str) {
             return Vector4.fromObj(JSON.parse(str));

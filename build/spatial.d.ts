@@ -30,8 +30,10 @@ declare module Spatial {
         equal: (b: Ramp) => boolean;
         toObj: () => any;
         toStr: () => string;
+        clone: () => Ramp;
         static fromObj: (obj: any) => Ramp;
         static fromStr: (str: string) => Ramp;
+        static Clone: (r: Ramp) => Ramp;
         static ValueAt: (ramp: Ramp, range: number) => number;
         static Equal: (r1: Ramp, r2: Ramp) => boolean;
         static Build: (r?: string | Ramp) => Ramp;
@@ -105,7 +107,7 @@ declare module Spatial {
     class Segment2 extends Segment {
         Base: Vector2;
         Tip: Vector2;
-        constructor(base: Vector2, tip: Vector2);
+        constructor(base: Vector2, tip: Vector2, r?: Ramp | string);
         push: (v: Vector2) => Segment2;
         static Push: (s: Segment2, v: Vector2) => Segment2;
     }
@@ -114,22 +116,24 @@ declare module Spatial {
     class Segment3 extends Segment {
         Base: Vector3;
         Tip: Vector3;
-        constructor(base: Vector3, tip: Vector3);
+        TipWithoutBase: Vector;
+        constructor(base: Vector3, tip: Vector3, r?: Ramp | string);
         push: (v: Vector3) => Segment3;
         static Push: (s: Segment3, v: Vector3) => Segment3;
+        static Cross: (sA: Segment3, sB: Segment3) => Segment3;
     }
 }
 declare module Spatial {
     class Segment4 extends Segment {
         Base: Vector4;
         Tip: Vector4;
-        constructor(base: Vector4, tip: Vector4);
+        constructor(base: Vector4, tip: Vector4, r?: Ramp | string);
         push: (v: Vector4) => Segment4;
         static Push: (s: Segment4, v: Vector4) => Segment4;
     }
 }
 declare module Spatial {
-    class SegmentSet implements IRanged {
+    class SegmentSet implements IRanged, IEquality<SegmentSet>, ISerializable {
         private segments;
         private _dimension;
         dimension: number;
@@ -137,6 +141,15 @@ declare module Spatial {
         distanceTo: (v: Vector) => number;
         intensityAt: (v: Vector) => number;
         closestVector: (v: Vector) => Vector;
+        clone: () => SegmentSet;
+        equal: (ss: SegmentSet) => boolean;
+        toObj: () => any;
+        toStr: () => string;
+        static fromObj: (obj: any) => SegmentSet;
+        static fromStr: (str: string) => SegmentSet;
+        static Clone: (ss: SegmentSet) => SegmentSet;
+        static Equal: (ssA: SegmentSet, ssB: SegmentSet) => boolean;
+        static Merge: (ssA: SegmentSet, ssB: SegmentSet) => SegmentSet;
         protected closestVectorDistanceIntensity: (v: Vector) => [Vector, number, number];
     }
 }
@@ -156,6 +169,9 @@ declare module Spatial {
         y: number;
         z: number;
         constructor(_x: number, _y: number, _z: number, _ramp?: string | Ramp);
+        cross: (vOther: Vector3) => Vector3;
+        static Cross: (vA: Vector3, vB: Vector3) => Vector3;
+        static Cast: (v: Vector) => Vector3;
         static fromObj: (obj: any) => Vector3;
         static fromStr: (str: string) => Vector3;
         static build: (values: number[]) => Vector3;
