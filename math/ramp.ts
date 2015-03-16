@@ -47,7 +47,6 @@ module Spatial {
     public static fromObj = (obj:any):Ramp => {
       return new Ramp(obj.t,obj.vs,obj.ve,obj.rs,obj.re);
     }
-
     public static fromStr = (str:string):Ramp => {
       return Ramp.fromObj(JSON.parse(str));
     }

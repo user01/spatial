@@ -146,6 +146,22 @@ describe('Vector3', () => {
       distance.should.be.approximately(34.64,0.05);
     });
   });
+  describe('Cross', () => {
+    it('Simple static', () => {
+      var v3A = new spatial.Vector3(4,4,4);
+      var v3B = new spatial.Vector3(-3,-3,-3);
+      var v3Crossed = new spatial.Vector3(0,0,0);
+      var cross = spatial.Vector3.Cross(v3A,v3B);
+      cross.equal(v3Crossed).should.be.true;
+    });
+    it('Simple', () => {
+      var v3A = new spatial.Vector3(1/4,-1/2,1);
+      var v3B = new spatial.Vector3(1/3,1,-2/3);
+      var v3Crossed = new spatial.Vector3(-2/3,1/2,5/12);
+      var cross = v3A.cross(v3B);
+      cross.equal(v3Crossed).should.be.true;
+    });
+  });
 
 
 });
