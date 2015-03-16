@@ -156,13 +156,35 @@ describe('Segment2', () => {
         ]);
     });
     it('Clone', () => {
-      debugger;
       var ss:Spatial.SegmentSet = new spatial.SegmentSet([
         new spatial.Segment2(new Vector2(0,0),
                               new Vector2(10,0))
         ]);
       var c = ss.clone();
       c.equal(ss).should.be.true;
+    });
+    it('Merge', () => {
+      var ssA:Spatial.SegmentSet = new spatial.SegmentSet([
+        new spatial.Segment2(new Vector2(0,0),
+                              new Vector2(10,0))
+        ]);
+      var ssB:Spatial.SegmentSet = new spatial.SegmentSet([
+        new spatial.Segment2(new Vector2(40,40),
+                              new Vector2(410,40)),
+        new spatial.Segment2(new Vector2(60,60),
+                              new Vector2(310,10))
+        ]);
+      var merged:Spatial.SegmentSet = new spatial.SegmentSet([
+        new spatial.Segment2(new Vector2(0,0),
+                              new Vector2(10,0)),
+        new spatial.Segment2(new Vector2(40,40),
+                              new Vector2(410,40)),
+        new spatial.Segment2(new Vector2(60,60),
+                              new Vector2(310,10))
+        ]);
+
+      var result = spatial.SegmentSet.Merge(ssA,ssB);
+      merged.equal(result).should.be.true;
     });
 
     it('Init Error', () => {

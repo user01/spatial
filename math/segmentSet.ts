@@ -73,6 +73,11 @@ module Spatial {
       return true;
     }
 
+    public static Merge = (ssA:SegmentSet,ssB:SegmentSet):SegmentSet => {
+      if (ssA.dimension != ssB.dimension) throw new RangeException();
+      return new SegmentSet(ssA.segments.concat(ssB.segments));
+    }
+
     protected closestVectorDistanceIntensity = (v:Vector):[Vector,number,number] => {
       var closestVectorFound = null;
       var closestDistance = Number.MAX_VALUE;
