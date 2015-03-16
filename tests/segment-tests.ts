@@ -155,6 +155,15 @@ describe('Segment2', () => {
                               new Vector2(10,0))
         ]);
     });
+    it('Clone', () => {
+      debugger;
+      var ss:Spatial.SegmentSet = new spatial.SegmentSet([
+        new spatial.Segment2(new Vector2(0,0),
+                              new Vector2(10,0))
+        ]);
+      var c = ss.clone();
+      c.equal(ss).should.be.true;
+    });
 
     it('Init Error', () => {
         (() => {

@@ -30,6 +30,12 @@ describe('Vector2', () => {
     v2.equal(v2Clone).should.be.true;
   });
 
+  it('Clone', () => {
+    var v2:Spatial.Vector2 = new vector2(5,10);
+    var v2Clone = v2.clone();
+    v2.equal(v2Clone).should.be.true;
+  });
+
 
   it('Init Error', () => {
       (() => {

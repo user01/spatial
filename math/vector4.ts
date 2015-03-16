@@ -26,7 +26,7 @@ module Spatial {
     }
 
     public static fromObj = (obj:any):Vector4 => {
-      return new Vector4(obj.v[0],obj.v[1],obj.v[2],obj.v[3]);
+      return new Vector4(obj.v[0],obj.v[1],obj.v[2],obj.v[3],Ramp.fromObj(obj.r));
     }
     public static fromStr = (str:string):Vector4 => {
       return Vector4.fromObj(JSON.parse(str));

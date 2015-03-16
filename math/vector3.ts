@@ -22,7 +22,7 @@ module Spatial {
     }
 
     public static fromObj = (obj:any):Vector3 => {
-      return new Vector3(obj.v[0],obj.v[1],obj.v[2]);
+      return new Vector3(obj.v[0],obj.v[1],obj.v[2],Ramp.fromObj(obj.r));
     }
     public static fromStr = (str:string):Vector3 => {
       return Vector3.fromObj(JSON.parse(str));

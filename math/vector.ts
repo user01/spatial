@@ -41,7 +41,7 @@ module Spatial {
       return {
         t:'v' + this.dimension,
         v:this._values,
-        r:this.ramp.toStr()
+        r:this.ramp.toObj()
       };
     }
 
@@ -50,7 +50,7 @@ module Spatial {
     }
 
     public static fromObj = (obj:any):Vector => {
-      return new Vector(obj.v);
+      return new Vector(obj.v,Ramp.fromObj(obj.r));
     }
 
     public static fromStr = (str:string):Vector => {
