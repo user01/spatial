@@ -39,7 +39,7 @@ module Spatial {
 
     public toObj = ():any => {
       return {
-        t:'v' + this.dimension,
+        t:this.dimension,
         v:this._values,
         r:this.ramp.toObj()
       };
@@ -50,6 +50,14 @@ module Spatial {
     }
 
     public static fromObj = (obj:any):Vector => {
+      switch (obj.t) {
+        case 2:
+          return Vector2.fromObj(obj);
+        case 3:
+          return Vector3.fromObj(obj);
+        case 4:
+          return Vector4.fromObj(obj);
+      }
       return new Vector(obj.v,Ramp.fromObj(obj.r));
     }
 
@@ -117,11 +125,11 @@ module Spatial {
     }
 
     public static Dot = (v1:Vector,v2:Vector):number => {
-        Vector.DimensionCheck(v1,v2);
-        var result:number = 0;
-        for (var i=0;i<v1.dimension;i++)
-          result += v1.values[i] * v2.values[i];
-        return result;
+      Vector.DimensionCheck(v1,v2);
+      var result:number = 0;
+      for (var i=0;i<v1.dimension;i++)
+        result += v1.values[i] * v2.values[i];
+      return result;
     }
 
 
