@@ -12,8 +12,8 @@ module Spatial {
       return <Vector3>this._tip;
     }
 
-    constructor(base:Vector3,tip:Vector3){
-      super(base,tip);
+    constructor(base:Vector3,tip:Vector3,r:Ramp|string=null){
+      super(base,tip,r);
     }
     public push = (v:Vector3):Segment3 => {
       return Segment3.Push(this,v);

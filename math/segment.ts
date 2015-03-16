@@ -98,7 +98,7 @@ module Spatial {
 
     public toObj = ():any => {
       return {
-        t:'s' + this.dimension,
+        t:this.dimension,
         b:this.Base.toObj(),
         e:this.Tip.toObj(),
         r:this.Ramp.toObj()
@@ -117,6 +117,22 @@ module Spatial {
 
 
     public static fromObj = (obj:any):Segment => {
+      switch (obj.t){
+        case 2:
+          return new Segment2(Vector2.fromObj(obj.b),
+                              Vector2.fromObj(obj.e),
+                              Ramp.fromObj(obj.r));
+        case 3:
+          return new Segment3(Vector3.fromObj(obj.b),
+                              Vector3.fromObj(obj.e),
+                              Ramp.fromObj(obj.r));
+        case 4:
+          return new Segment4(Vector4.fromObj(obj.b),
+                              Vector4.fromObj(obj.e),
+                              Ramp.fromObj(obj.r));
+      }
+
+      //default untyped
       return new Segment(Vector.fromObj(obj.b),
                           Vector.fromObj(obj.e),
                           Ramp.fromObj(obj.r));

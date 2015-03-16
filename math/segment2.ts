@@ -11,8 +11,8 @@ module Spatial {
       return <Vector2>this._tip;
     }
 
-    constructor(base:Vector2,tip:Vector2){
-      super(base,tip);
+    constructor(base:Vector2,tip:Vector2,r:Ramp|string=null){
+      super(base,tip,r);
     }
     public push = (v:Vector2):Segment2 => {
       return Segment2.Push(this,v);
