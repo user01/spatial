@@ -1,5 +1,5 @@
-/// <reference path='references.ts'/>
-/// <reference path='references.ts'/>
+/// <reference path='../references.ts'/>
+/// <reference path='../references.ts'/>
 var Spatial;
 (function (Spatial) {
     var Ramp = (function () {
@@ -290,7 +290,7 @@ var Spatial;
     })();
     Spatial.Ramp = Ramp;
 })(Spatial || (Spatial = {}));
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 var Spatial;
 (function (Spatial) {
     var Vector = (function () {
@@ -428,7 +428,7 @@ var Spatial;
     })();
     Spatial.Vector = Vector;
 })(Spatial || (Spatial = {}));
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 var Spatial;
 (function (Spatial) {
     var Segment = (function () {
@@ -581,7 +581,7 @@ var Spatial;
     })();
     Spatial.Segment = Segment;
 })(Spatial || (Spatial = {}));
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -621,7 +621,7 @@ var Spatial;
     })(Spatial.Segment);
     Spatial.Segment2 = Segment2;
 })(Spatial || (Spatial = {}));
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 var Spatial;
 (function (Spatial) {
     var Segment3 = (function (_super) {
@@ -669,7 +669,7 @@ var Spatial;
     })(Spatial.Segment);
     Spatial.Segment3 = Segment3;
 })(Spatial || (Spatial = {}));
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 var Spatial;
 (function (Spatial) {
     var Segment4 = (function (_super) {
@@ -703,7 +703,7 @@ var Spatial;
     })(Spatial.Segment);
     Spatial.Segment4 = Segment4;
 })(Spatial || (Spatial = {}));
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 var Spatial;
 (function (Spatial) {
     var SegmentSet = (function () {
@@ -797,7 +797,7 @@ var Spatial;
     })();
     Spatial.SegmentSet = SegmentSet;
 })(Spatial || (Spatial = {}));
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 var Spatial;
 (function (Spatial) {
     var Vector2 = (function (_super) {
@@ -835,7 +835,7 @@ var Spatial;
     })(Spatial.Vector);
     Spatial.Vector2 = Vector2;
 })(Spatial || (Spatial = {}));
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 var Spatial;
 (function (Spatial) {
     var Vector3 = (function (_super) {
@@ -895,7 +895,7 @@ var Spatial;
     })(Spatial.Vector);
     Spatial.Vector3 = Vector3;
 })(Spatial || (Spatial = {}));
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 var Spatial;
 (function (Spatial) {
     var Vector4 = (function (_super) {
@@ -947,22 +947,21 @@ var Spatial;
     })(Spatial.Vector);
     Spatial.Vector4 = Vector4;
 })(Spatial || (Spatial = {}));
-/// <reference path="./IRanged.ts" />
-/// <reference path="./ISerializable.ts" />
-/// <reference path="./IEquality.ts" />
-/// <reference path="./ramp.ts" />
-/// <reference path="./vector.ts" />
-/// <reference path="./segment.ts" />
-/// <reference path="./segment2.ts" />
-/// <reference path="./segment3.ts" />
-/// <reference path="./segment4.ts" />
-/// <reference path="./segmentSet.ts" />
-/// <reference path="./vector2.ts" />
-/// <reference path="./vector3.ts" />
-/// <reference path="./vector4.ts" />
+/// <reference path="../typings/node.d.ts" />
+/// <reference path="../typings/lib.d.ts" />
+/// <reference path="./interfaces/IRanged.ts" />
+/// <reference path="./interfaces/ISerializable.ts" />
+/// <reference path="./interfaces/IEquality.ts" />
+/// <reference path="./ramp/ramp.ts" />
+/// <reference path="./vector/vector.ts" />
+/// <reference path="./segment/segment.ts" />
+/// <reference path="./segment/segment2.ts" />
+/// <reference path="./segment/segment3.ts" />
+/// <reference path="./segment/segment4.ts" />
+/// <reference path="./segment/segmentSet.ts" />
+/// <reference path="./vector/vector2.ts" />
+/// <reference path="./vector/vector3.ts" />
+/// <reference path="./vector/vector4.ts" />
 /// <reference path="references.ts" />
-/*Spatial.Utility.exportCommonjs({
-  Spatial:Spatial
-});*/
 module.exports = Spatial;
 //# sourceMappingURL=spatial.node.js.map

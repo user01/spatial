@@ -1,3 +1,5 @@
+/// <reference path="../typings/node.d.ts" />
+/// <reference path="../typings/lib.d.ts" />
 declare module Spatial {
     interface IRanged {
         distanceTo(v: Vector): number;

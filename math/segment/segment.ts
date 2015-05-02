@@ -1,5 +1,5 @@
 
-/// <reference path="references.ts" />
+/// <reference path="../references.ts" />
 
 module Spatial {
   export class Segment implements ISerializable, IRanged, IEquality<Segment> {
