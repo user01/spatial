@@ -7,42 +7,39 @@ declare var describe:any;
 declare var it:any;
 
 var should:Internal = require('should');
-var spatial = require('../spatial.node');
 var tolerance = 0.05;
 
-//var vector2:Spatial.Vector2 = spatial.Vector2;
-var ramp = spatial.Ramp;
 
 
 describe('Ramp', () => {
   it('Construct', () => {
-    var r1:Spatial.Ramp = new ramp();
+    var r1:Spatial.Ramp = new Spatial.Ramp();
     r1.type.should.be.a.String.and.be.exactly('easeOutQuad');
     //true.should.be.exactly(false);
   });
   it('Clone', () => {
-    var r:Spatial.Ramp = new spatial.Ramp('linear',-1,1,0,10);
+    var r:Spatial.Ramp = new Spatial.Ramp('linear',-1,1,0,10);
     var clone = r.clone();
     r.equal(clone).should.be.true;
     //true.should.be.exactly(false);
   });
   describe('Basic', () => {
     it('Linear', () => {
-      var r:Spatial.Ramp = new spatial.Ramp('linear',-1,1,0,10);
+      var r:Spatial.Ramp = new Spatial.Ramp('linear',-1,1,0,10);
 
       r.valueAt(0).should.be.approximately(-1,tolerance);
       r.valueAt(10).should.be.approximately(1,tolerance);
       r.valueAt(5).should.be.approximately(0,tolerance);
     });
     it('Serial', () => {
-      var r:Spatial.Ramp = new spatial.Ramp('linear',-1,1,0,10);
+      var r:Spatial.Ramp = new Spatial.Ramp('linear',-1,1,0,10);
 
       var str = r.toStr();
-      var rClone = spatial.Ramp.fromStr(str);
+      var rClone = Spatial.Ramp.fromStr(str);
       r.equal(rClone).should.be.true;
     });
     it('Standard', () => {
-      var r:Spatial.Ramp = new spatial.Ramp('easeOutQuad',-1,1,5,15);
+      var r:Spatial.Ramp = new Spatial.Ramp('easeOutQuad',-1,1,5,15);
 
       r.valueAt(0).should.be.approximately(-1,tolerance);
       r.valueAt(3).should.be.approximately(-1,tolerance);
@@ -56,10 +53,10 @@ describe('Ramp', () => {
     });
   });
   describe('Mix', () => {
-    var Mix = ramp.Mix;
+    var Mix = Spatial.Ramp.Mix;
     it('Simple', () => {
-      var r1:Spatial.Ramp = new spatial.Ramp('linear',0,1,0,10);
-      var r2:Spatial.Ramp = new spatial.Ramp('linear',1,2,0,10);
+      var r1:Spatial.Ramp = new Spatial.Ramp('linear',0,1,0,10);
+      var r2:Spatial.Ramp = new Spatial.Ramp('linear',1,2,0,10);
 
       //r1,r2,fraction 0-1,range
       var mix = Mix(r1,r2,0,0);
@@ -82,7 +79,7 @@ describe('Ramp', () => {
     });
   });
   describe('Ease', () => {
-    var Ease = ramp.Ease;
+    var Ease = Spatial.Ramp.Ease;
     it('Default', () => {
       var result = Ease();
       result.should.be.a.Number.and.be.approximately(0,tolerance);
