@@ -7,3 +7,4 @@ math/**/*.js.map
 tests/**/*.js
 **/tsconfig.json
 build/spatial.browser*
+build/*
