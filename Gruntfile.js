@@ -47,7 +47,7 @@ grunt.initConfig({
       src: [
         './tests/**/*.ts'
       ],
-      dest: buildDirectory,
+      dest: buildDirectory + '/tests/run.js',
       options: typescriptPureOptions
     },
     node: {
