@@ -28,7 +28,10 @@ var typescriptBrowserOptions =
 
 var typescriptNodeOptions =
   extend(typescriptPureOptions,
-          { declaration: false });
+          {
+            declaration: false,
+            comments: false
+          });
 
 module.exports = function(grunt) {
 
