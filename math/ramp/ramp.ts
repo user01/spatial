@@ -9,6 +9,8 @@ module Spatial {
     public get ValueEnd(): number { return this._valueEnd; }
     public get RangeStart(): number { return this._rangeStart; }
     public get RangeEnd(): number { return this._rangeEnd; }
+    public get Duration(): number { return this._rangeEnd - this._rangeStart; }
+    public get ValueChange(): number { return this._valueEnd - this._valueStart; }
 
     public set Type(newType: string) {
       this._type = newType;
@@ -31,8 +33,6 @@ module Spatial {
       this.validateSelf();
     }
 
-    private valueChange: number = 0;
-    private duration: number = 0;
     constructor(
       private _type: string = 'easeOutQuad',
       private _valueStart: number = 1,
@@ -44,15 +44,11 @@ module Spatial {
     }
 
     private validateSelf = (): void => {
-      this._rangeStart = Math.abs(this._rangeStart);
-      this._rangeEnd = Math.abs(this._rangeEnd);
       if (this._rangeStart > this._rangeEnd) this._rangeEnd = this._rangeStart;
-      this.duration = Math.abs(this._rangeEnd - this._rangeStart);
-      this.valueChange = this._valueEnd - this._valueStart;
     }
 
-    public ValueAt = (range: number): number => {
-      return Ramp.ValueAt(this, range);
+    public ValueAt = (location: number): number => {
+      return Ramp.ValueAtStatic(this, location);
     }
 
     public Equal = (b: Ramp): boolean => {
@@ -86,21 +82,17 @@ module Spatial {
       return Ramp.FromObj(r.ToObj());
     }
 
-    public static ValueAt = (ramp: Ramp, range: number): number => {
-      if (range >= ramp._rangeEnd) return ramp._valueEnd;
-      if (range <= ramp._rangeStart) return ramp._valueStart;
-      var fractionComplete = (range - ramp._rangeStart) /
-        (ramp._rangeEnd - ramp._rangeStart);
-      //fractionComplete = Math.max(Math.min(1,fractionComplete),0);
-      var currentTime = (range - ramp._rangeStart);
+    public static ValueAtStatic = (ramp: Ramp, location: number): number => {
+      if (location >= ramp.RangeEnd) return ramp.ValueEnd;
+      if (location <= ramp.RangeStart) return ramp.ValueStart;
+      var fractionComplete = (location - ramp.RangeStart) / ramp.Duration;
+      var currentTime = (location - ramp._rangeStart);
 
       return Ramp.Ease(ramp._type,
         currentTime,
-        ramp._valueStart,
-        ramp.valueChange,
-        ramp.duration);
-
-      //return valueRange * Ramp.Ease(ramp.type,fractionComplete) + ramp.valueStart;
+        ramp.ValueStart,
+        ramp.ValueChange,
+        ramp.Duration);
     }
 
     public static Equal = (r1: Ramp, r2: Ramp): boolean => {
