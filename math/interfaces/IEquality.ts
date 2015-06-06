@@ -1,6 +1,6 @@
 
 module Spatial {
   export interface IEquality<T> {
-    equal(a:T,b:T):boolean;
+    Equal(a:T,b:T):boolean;
   }
 }

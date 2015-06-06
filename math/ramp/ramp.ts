@@ -20,15 +20,15 @@ module Spatial {
       this.valueChange = this.valueEnd - this.valueStart;
     }
 
-    public valueAt = (range:number):number => {
+    public ValueAt = (range:number):number => {
       return Ramp.ValueAt(this,range);
     }
 
-    public equal = (b:Ramp):boolean => {
+    public Equal = (b:Ramp):boolean => {
       return Ramp.Equal(this,b);
     }
 
-    public toObj = ():any => {
+    public ToObj = ():any => {
       return {
         vs:this.valueStart,
         ve:this.valueEnd,
@@ -37,22 +37,22 @@ module Spatial {
         t:this.type
       };
     }
-    public toStr = ():string => {
-      return JSON.stringify(this.toObj());
+    public ToStr = ():string => {
+      return JSON.stringify(this.ToObj());
     }
-    public clone = ():Ramp => {
-      return Ramp.Clone(this);
+    public Clone = ():Ramp => {
+      return Ramp.CloneStatic(this);
     }
 
-    public static fromObj = (obj:any):Ramp => {
+    public static FromObj = (obj:any):Ramp => {
       return new Ramp(obj.t,obj.vs,obj.ve,obj.rs,obj.re);
     }
-    public static fromStr = (str:string):Ramp => {
-      return Ramp.fromObj(JSON.parse(str));
+    public static FromStr = (str:string):Ramp => {
+      return Ramp.FromObj(JSON.parse(str));
     }
 
-    public static Clone = (r:Ramp):Ramp => {
-      return Ramp.fromObj(r.toObj());
+    public static CloneStatic = (r:Ramp):Ramp => {
+      return Ramp.FromObj(r.ToObj());
     }
 
     public static ValueAt = (ramp:Ramp,range:number):number => {
@@ -87,7 +87,7 @@ module Spatial {
       if (r == null){
         return new Ramp();//default values
       } else if (typeof r == 'string'){
-        return Ramp.fromStr(<string>r);
+        return Ramp.FromStr(<string>r);
       }
       return <Ramp>r;
     }
@@ -97,8 +97,8 @@ module Spatial {
                           fraction:number=0.5,
                           range:number=0):number => {
       fraction = Math.min(1,Math.max(0,fraction));
-      var c1 = r1.valueAt(range);
-      var c2 = r2.valueAt(range);
+      var c1 = r1.ValueAt(range);
+      var c2 = r2.ValueAt(range);
       var sum = c1 * (1 - fraction) + c2 * fraction;
       return sum;
     }

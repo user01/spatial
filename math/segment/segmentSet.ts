@@ -8,73 +8,73 @@ module Spatial {
           IRanged, IEquality<SegmentSet>, ISerializable {
 
     private _dimension:number=0;
-    public get dimension():number {
+    public get Dimension():number {
       return this._dimension;
     }
 
     constructor(private segments:Array<Segment>){
       if ((segments === void 0) || segments.length < 1)
         throw new RangeException();
-      this._dimension = segments[0].dimension;
+      this._dimension = segments[0].Dimension;
 
       // Ensure all dimensions match
       for(var i=0; i < this.segments.length; i++){
-        if (segments[i].dimension != this._dimension){
+        if (segments[i].Dimension != this._dimension){
           throw new RangeException();
         }
       }
     }
 
-    public distanceTo = (v:Vector):number => {
+    public DistanceTo = (v:Vector):number => {
       return this.closestVectorDistanceIntensity(v)[1];
     }
-    public intensityAt = (v:Vector):number => {
+    public IntensityAt = (v:Vector):number => {
       return this.closestVectorDistanceIntensity(v)[2];
     }
-    public closestVector = (v:Vector):Vector => {
+    public ClosestVector = (v:Vector):Vector => {
       return this.closestVectorDistanceIntensity(v)[0];
     }
 
-    public clone = ():SegmentSet => {
-      return SegmentSet.Clone(this);
+    public Clone = ():SegmentSet => {
+      return SegmentSet.CloneStatic(this);
     }
-    public equal = (ss:SegmentSet):boolean => {
-      return SegmentSet.Equal(this,ss);
+    public Equal = (ss:SegmentSet):boolean => {
+      return SegmentSet.EqualStatic(this,ss);
     }
-    public toObj = ():any => {
+    public ToObj = ():any => {
       return {
-        s:this.segments.map((s:Segment):any=>{ return s.toObj(); })
+        s:this.segments.map((s:Segment):any=>{ return s.ToObj(); })
       };
     }
-    public toStr = ():string => {
-      return JSON.stringify(this.toObj());
+    public ToStr = ():string => {
+      return JSON.stringify(this.ToObj());
     }
 
-    public static fromObj = (obj:any):SegmentSet => {
+    public static FromObj = (obj:any):SegmentSet => {
       var segs = obj.s.map((s:any):Segment=>{
-          return Segment.fromObj(s);
+          return Segment.FromObj(s);
         });
       return new SegmentSet(segs);
     }
 
-    public static fromStr = (str:string):SegmentSet => {
-      return SegmentSet.fromObj(JSON.parse(str));
+    public static FromStr = (str:string):SegmentSet => {
+      return SegmentSet.FromObj(JSON.parse(str));
     }
 
-    public static Clone = (ss:SegmentSet):SegmentSet => {
-      return SegmentSet.fromObj(ss.toObj());
+    public static CloneStatic = (ss:SegmentSet):SegmentSet => {
+      return SegmentSet.FromObj(ss.ToObj());
     }
 
-    public static Equal = (ssA:SegmentSet,ssB:SegmentSet):boolean => {
+    public static EqualStatic = (ssA:SegmentSet,ssB:SegmentSet):boolean => {
       if (ssA.segments.length != ssB.segments.length) return false;
       for (var i=0;i<ssA.segments.length;i++){
-        if (!ssA.segments[i].equal(ssB.segments[i])) return false;
+        if (!ssA.segments[i].Equal(ssB.segments[i])) return false;
       }
       return true;
     }
 
     public static Merge = (ssA:SegmentSet,ssB:SegmentSet):SegmentSet => {
-      if (ssA.dimension != ssB.dimension) throw new RangeException();
+      if (ssA.Dimension != ssB.Dimension) throw new RangeException();
       return new SegmentSet(ssA.segments.concat(ssB.segments));
     }
 
@@ -84,12 +84,12 @@ module Spatial {
       var closestIntensity = 0;
 
       for(var i=0; i < this.segments.length; i++){
-        var computedVector = this.segments[i].closestVector(v);
-        var computedDistance = this.segments[i].distanceTo(v);
+        var computedVector = this.segments[i].ClosestVector(v);
+        var computedDistance = this.segments[i].DistanceTo(v);
         if (closestVectorFound == null || computedDistance < closestDistance) {
           closestVectorFound = computedVector;
           closestDistance = computedDistance;
-          closestIntensity = this.segments[i].intensityAt(computedVector);
+          closestIntensity = this.segments[i].IntensityAt(computedVector);
         }
       }
       return [closestVectorFound,closestDistance,closestIntensity];

@@ -27,7 +27,7 @@ describe('Segment2', () => {
   });
   it('Init Error', () => {
       (() => {
-        Spatial.Vector4.build([7]);
+        Spatial.Vector4.Build([7]);
       }).should.throw();
   });
 
@@ -38,15 +38,15 @@ describe('Segment2', () => {
       );
 
     var tester = new Spatial.Vector2(5,0);
-    var dist = s.distanceTo(tester);
+    var dist = s.DistanceTo(tester);
     dist.should.be.a.Number.and.be.approximately(0,tolerance);
 
     tester = new Spatial.Vector2(5,1);
-    dist = s.distanceTo(tester);
+    dist = s.DistanceTo(tester);
     dist.should.be.a.Number.and.be.approximately(1,tolerance);
 
     tester = new Spatial.Vector2(15,5);
-    dist = s.distanceTo(tester);
+    dist = s.DistanceTo(tester);
     dist.should.be.a.Number.and.be.approximately(7.071,tolerance);
 
   });
@@ -58,15 +58,15 @@ describe('Segment2', () => {
       );
 
     var tester = new Spatial.Vector2(5,10);
-    var dist = s.distanceTo(tester);
+    var dist = s.DistanceTo(tester);
     dist.should.be.a.Number.and.be.approximately(0,tolerance);
 
     tester = new Spatial.Vector2(5,10);
-    dist = s.distanceTo(tester);
+    dist = s.DistanceTo(tester);
     dist.should.be.a.Number.and.be.approximately(0,tolerance);
 
     tester = new Spatial.Vector2(5,8);
-    dist = s.distanceTo(tester);
+    dist = s.DistanceTo(tester);
     dist.should.be.a.Number.and.be.approximately(2,tolerance);
   });
 
@@ -78,8 +78,8 @@ describe('Segment2', () => {
         );
 
       var tester = new Spatial.Vector2(5,10);
-      var result = s.closestVector(tester);
-      result.equal(tester).should.be.true;
+      var result = s.ClosestVector(tester);
+      result.Equal(tester).should.be.true;
     });
     it('Off', () => {
       var s:Spatial.Segment2 = new Spatial.Segment2(
@@ -89,8 +89,8 @@ describe('Segment2', () => {
 
       var tester = new Spatial.Vector2(5,12);
       var hand = new Spatial.Vector2(5,10);
-      var result = s.closestVector(tester);
-      result.equal(hand).should.be.true;
+      var result = s.ClosestVector(tester);
+      result.Equal(hand).should.be.true;
     });
   });
 
@@ -102,27 +102,27 @@ describe('Segment2', () => {
         );
 
       var tester = new Spatial.Vector2(0,0);
-      var intensity = s.intensityAt(tester);
+      var intensity = s.IntensityAt(tester);
       intensity.should.be.a.Number.and.be.approximately(1,tolerance);
 
       tester = new Spatial.Vector2(0,-2);
-      intensity = s.intensityAt(tester);
+      intensity = s.IntensityAt(tester);
       intensity.should.be.a.Number.and.be.approximately(0.64,tolerance);
 
       tester = new Spatial.Vector2(0,-5);
-      intensity = s.intensityAt(tester);
+      intensity = s.IntensityAt(tester);
       intensity.should.be.a.Number.and.be.approximately(0.25,tolerance);
 
       tester = new Spatial.Vector2(0,-7);
-      intensity = s.intensityAt(tester);
+      intensity = s.IntensityAt(tester);
       intensity.should.be.a.Number.and.be.approximately(0.09,tolerance);
 
       tester = new Spatial.Vector2(0,-10);
-      intensity = s.intensityAt(tester);
+      intensity = s.IntensityAt(tester);
       intensity.should.be.a.Number.and.be.approximately(0,tolerance);
 
       tester = new Spatial.Vector2(0,-100);
-      intensity = s.intensityAt(tester);
+      intensity = s.IntensityAt(tester);
       intensity.should.be.a.Number.and.be.approximately(0,tolerance);
 
     });
@@ -133,9 +133,9 @@ describe('Segment2', () => {
         new Spatial.Vector2(0,0),
         new Spatial.Vector2(10,0)
       );
-    var str = s.toStr();
-    var s2 = Spatial.Segment2.fromStr(str);
-    s.equal(s2).should.be.true;
+    var str = s.ToStr();
+    var s2 = Spatial.Segment2.FromStr(str);
+    s.Equal(s2).should.be.true;
   });
 
 });
@@ -152,8 +152,8 @@ describe('Segment2', () => {
         new Spatial.Segment2(new Spatial.Vector2(0,0),
                               new Spatial.Vector2(10,0))
         ]);
-      var c = ss.clone();
-      c.equal(ss).should.be.true;
+      var c = ss.Clone();
+      c.Equal(ss).should.be.true;
     });
     it('Merge', () => {
       var ssA:Spatial.SegmentSet = new Spatial.SegmentSet([
@@ -176,7 +176,7 @@ describe('Segment2', () => {
         ]);
 
       var result = Spatial.SegmentSet.Merge(ssA,ssB);
-      merged.equal(result).should.be.true;
+      merged.Equal(result).should.be.true;
     });
 
     it('Init Error', () => {
@@ -195,7 +195,7 @@ describe('Segment2', () => {
       var ss:Spatial.SegmentSet = new Spatial.SegmentSet([s2]);
       var v = new Spatial.Vector2(5,5);
 
-      ss.closestVector(v).equal(s2.closestVector(v)).should.be.true;
+      ss.ClosestVector(v).Equal(s2.ClosestVector(v)).should.be.true;
 
     });
     it('Closest Complex', () => {
@@ -206,12 +206,12 @@ describe('Segment2', () => {
       var ss:Spatial.SegmentSet = new Spatial.SegmentSet([s2,s2B]);
       var v = new Spatial.Vector2(2,15);
 
-      var ssV = ss.closestVector(v);
-      var sBV = s2B.closestVector(v);
+      var ssV = ss.ClosestVector(v);
+      var sBV = s2B.ClosestVector(v);
 
       //console.log(ssV.readableStr(),sBV.readableStr());
 
-      ssV.equal(sBV).should.be.true;
+      ssV.Equal(sBV).should.be.true;
 
     });
 

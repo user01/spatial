@@ -13,11 +13,11 @@ module Spatial {
     public get TipWithoutBase():Vector {
       return Vector.Subtract(this._tip,this._base);
     }
-    public get length():number {
-      return this._base.distanceTo(this._tip);
+    public get Length():number {
+      return this._base.DistanceTo(this._tip);
     }
-    public get dimension():number {
-      return this._tip.dimension;
+    public get Dimension():number {
+      return this._tip.Dimension;
     }
     protected _ramp:Ramp;
     public get Ramp():Ramp {
@@ -28,7 +28,7 @@ module Spatial {
                 protected _tip:Vector,
                 r:Ramp|string=null){
       if (!this._base || !this._tip ||
-          (this._base.dimension != this._tip.dimension)){
+          (this._base.Dimension != this._tip.Dimension)){
         throw new RangeException();
       }
       var tempRamp = Ramp.Build(r);
@@ -38,107 +38,107 @@ module Spatial {
     }
 
 
-    public distanceTo = (v:Vector):number => {
-      return Segment.DistanceTo(this,v);
+    public DistanceTo = (v:Vector):number => {
+      return Segment.DistanceToStatic(this,v);
     };
-    public intensityAt = (v:Vector):number => {
+    public IntensityAt = (v:Vector):number => {
       var fraction = this.closestFraction(v);
-      fraction = this.Ramp.valueAt(fraction);
-      var range = this.distanceTo(v);
-      var intensity = Ramp.Mix(this.Base.ramp,this.Tip.ramp,fraction,range);
+      fraction = this.Ramp.ValueAt(fraction);
+      var range = this.DistanceTo(v);
+      var intensity = Ramp.Mix(this.Base.Ramp,this.Tip.Ramp,fraction,range);
       return intensity;
     };
-    public closestVector = (v:Vector):Vector => {
+    public ClosestVector = (v:Vector):Vector => {
       var t = this.closestFraction(v);
-      var newSegment = this.scale(t);
-      return newSegment.Tip.clone();
+      var newSegment = this.Scale(t);
+      return newSegment.Tip.Clone();
     };
     private closestFraction = (v:Vector):number => {
       Segment.DimensionCheck(this,v);
-      var length = this.length;
+      var length = this.Length;
       if (length < 0.001) return 0;
 
       var vWithoutBase = Vector.Subtract(v,this.Base);
       var t = Vector.Dot(vWithoutBase,this.TipWithoutBase) / (length * length);
       return Math.max(0,Math.min(1,t));
     }
-    public restoreBase = (v:Vector):Vector => {
+    public RestoreBase = (v:Vector):Vector => {
       return Vector.Add(this.Base,v);
     }
-    public push = (v:Vector):Segment => {
+    public Push = (v:Vector):Segment => {
       return Segment.Push(this,v);
     }
-    public scale = (factor:number):Segment => {
+    public Scale = (factor:number):Segment => {
       return Segment.Scale(this,factor);
     }
-    public equal = (s:Segment):boolean => {
-      return Segment.Equal(this,s);
+    public Equal = (s:Segment):boolean => {
+      return Segment.EqualStatic(this,s);
     }
 
-    public static Equal = (s:Segment,s2:Segment):boolean => {
-      if (!s.Tip.equal(s2.Tip)) return false;
-      if (!s.Base.equal(s2.Base)) return false;
-      if (!s.Ramp.equal(s2.Ramp)) return false;
+    public static EqualStatic = (s:Segment,s2:Segment):boolean => {
+      if (!s.Tip.Equal(s2.Tip)) return false;
+      if (!s.Base.Equal(s2.Base)) return false;
+      if (!s.Ramp.Equal(s2.Ramp)) return false;
       return true;
     }
     public static Scale = (s:Segment,factor:number):Segment => {
-      var newTip = s.restoreBase(
+      var newTip = s.RestoreBase(
         Vector.Scale(s.TipWithoutBase,factor))
-      return new Segment(s.Base.clone(),newTip);
+      return new Segment(s.Base.Clone(),newTip);
     }
     public static Push = (s:Segment,v:Vector):Segment => {
-      if (s.dimension != v.dimension) throw new RangeException();
+      if (s.Dimension != v.Dimension) throw new RangeException();
       return new Segment(Vector.Add(s.Base,v),Vector.Add(s.Tip,v));
     }
-    public static DistanceTo = (s:Segment, v:Vector):number => {
+    public static DistanceToStatic = (s:Segment, v:Vector):number => {
       Segment.DimensionCheck(s,v);
-      var vOnSegment = s.closestVector(v);
-      return vOnSegment.distanceTo(v);
+      var vOnSegment = s.ClosestVector(v);
+      return vOnSegment.DistanceTo(v);
     }
 
-    public toObj = ():any => {
+    public ToObj = ():any => {
       return {
-        t:this.dimension,
-        b:this.Base.toObj(),
-        e:this.Tip.toObj(),
-        r:this.Ramp.toObj()
+        t:this.Dimension,
+        b:this.Base.ToObj(),
+        e:this.Tip.ToObj(),
+        r:this.Ramp.ToObj()
       };
     }
-    public toStr = ():string => {
-      return JSON.stringify(this.toObj());
+    public ToStr = ():string => {
+      return JSON.stringify(this.ToObj());
     }
 
 
     private static DimensionCheck = (s:Segment,v:Vector):boolean => {
-      if (s.dimension != v.dimension)
+      if (s.Dimension != v.Dimension)
         throw new RangeException();
       return true;
     }
 
 
-    public static fromObj = (obj:any):Segment => {
+    public static FromObj = (obj:any):Segment => {
       switch (obj.t){
         case 2:
-          return new Segment2(Vector2.fromObj(obj.b),
-                              Vector2.fromObj(obj.e),
-                              Ramp.fromObj(obj.r));
+          return new Segment2(Vector2.FromObj(obj.b),
+                              Vector2.FromObj(obj.e),
+                              Ramp.FromObj(obj.r));
         case 3:
-          return new Segment3(Vector3.fromObj(obj.b),
-                              Vector3.fromObj(obj.e),
-                              Ramp.fromObj(obj.r));
+          return new Segment3(Vector3.FromObj(obj.b),
+                              Vector3.FromObj(obj.e),
+                              Ramp.FromObj(obj.r));
         case 4:
-          return new Segment4(Vector4.fromObj(obj.b),
-                              Vector4.fromObj(obj.e),
-                              Ramp.fromObj(obj.r));
+          return new Segment4(Vector4.FromObj(obj.b),
+                              Vector4.FromObj(obj.e),
+                              Ramp.FromObj(obj.r));
       }
 
       //default untyped
-      return new Segment(Vector.fromObj(obj.b),
-                          Vector.fromObj(obj.e),
-                          Ramp.fromObj(obj.r));
+      return new Segment(Vector.FromObj(obj.b),
+                          Vector.FromObj(obj.e),
+                          Ramp.FromObj(obj.r));
     }
-    public static fromStr = (str:string):Segment => {
-      return Segment.fromObj(JSON.parse(str));
+    public static FromStr = (str:string):Segment => {
+      return Segment.FromObj(JSON.parse(str));
     }
   }
 

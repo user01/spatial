@@ -19,37 +19,37 @@ describe('Ramp', () => {
   });
   it('Clone', () => {
     var r:Spatial.Ramp = new Spatial.Ramp('linear',-1,1,0,10);
-    var clone = r.clone();
-    r.equal(clone).should.be.true;
+    var clone = r.Clone();
+    r.Equal(clone).should.be.true;
     //true.should.be.exactly(false);
   });
   describe('Basic', () => {
     it('Linear', () => {
       var r:Spatial.Ramp = new Spatial.Ramp('linear',-1,1,0,10);
 
-      r.valueAt(0).should.be.approximately(-1,tolerance);
-      r.valueAt(10).should.be.approximately(1,tolerance);
-      r.valueAt(5).should.be.approximately(0,tolerance);
+      r.ValueAt(0).should.be.approximately(-1,tolerance);
+      r.ValueAt(10).should.be.approximately(1,tolerance);
+      r.ValueAt(5).should.be.approximately(0,tolerance);
     });
     it('Serial', () => {
       var r:Spatial.Ramp = new Spatial.Ramp('linear',-1,1,0,10);
 
-      var str = r.toStr();
-      var rClone = Spatial.Ramp.fromStr(str);
-      r.equal(rClone).should.be.true;
+      var str = r.ToStr();
+      var rClone = Spatial.Ramp.FromStr(str);
+      r.Equal(rClone).should.be.true;
     });
     it('Standard', () => {
       var r:Spatial.Ramp = new Spatial.Ramp('easeOutQuad',-1,1,5,15);
 
-      r.valueAt(0).should.be.approximately(-1,tolerance);
-      r.valueAt(3).should.be.approximately(-1,tolerance);
-      r.valueAt(5).should.be.approximately(-1,tolerance);
-      r.valueAt(15).should.be.approximately(1,tolerance);
-      r.valueAt(25).should.be.approximately(1,tolerance);
+      r.ValueAt(0).should.be.approximately(-1,tolerance);
+      r.ValueAt(3).should.be.approximately(-1,tolerance);
+      r.ValueAt(5).should.be.approximately(-1,tolerance);
+      r.ValueAt(15).should.be.approximately(1,tolerance);
+      r.ValueAt(25).should.be.approximately(1,tolerance);
 
-      r.valueAt(10).should.be.approximately(0.5,tolerance);
-      r.valueAt(8).should.be.approximately(0.02,tolerance);
-      r.valueAt(12).should.be.approximately(0.81,tolerance);
+      r.ValueAt(10).should.be.approximately(0.5,tolerance);
+      r.ValueAt(8).should.be.approximately(0.02,tolerance);
+      r.ValueAt(12).should.be.approximately(0.81,tolerance);
     });
   });
   describe('Mix', () => {

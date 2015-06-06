@@ -2,8 +2,8 @@
 
 module Spatial {
   export interface IRanged {
-    distanceTo(v:Vector):number;
-    intensityAt(v:Vector):number;
-    closestVector(v:Vector):Vector;
+    DistanceTo(v:Vector):number;
+    IntensityAt(v:Vector):number;
+    ClosestVector(v:Vector):Vector;
   }
 }

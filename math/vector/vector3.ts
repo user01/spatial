@@ -21,28 +21,28 @@ module Spatial {
       super([_x,_y,_z],_ramp);
     }
 
-    public cross = (vOther:Vector3):Vector3 => {
-      return Vector3.Cross(this,vOther);
+    public Cross = (vOther:Vector3):Vector3 => {
+      return Vector3.CrossStatic(this,vOther);
     }
 
-    public static Cross = (vA:Vector3,vB:Vector3):Vector3 => {
+    public static CrossStatic = (vA:Vector3,vB:Vector3):Vector3 => {
       var x = vA.y * vB.z - vA.z * vB.y;
       var y = vA.z * vB.x - vA.x * vB.z;
       var z = vA.x * vB.y - vA.y * vB.x;
-      return new Vector3(x,y,z,vA.ramp.clone());
+      return new Vector3(x,y,z,vA.Ramp.Clone());
     }
     public static Cast =(v:Vector):Vector3 => {
-      if (v.values.length != 3) throw new RangeException();
-      return new Vector3(v.values[0],v.values[1],v.values[2],v.ramp);
+      if (v.Values.length != 3) throw new RangeException();
+      return new Vector3(v.Values[0],v.Values[1],v.Values[2],v.Ramp);
     }
 
-    public static fromObj = (obj:any):Vector3 => {
-      return new Vector3(obj.v[0],obj.v[1],obj.v[2],Ramp.fromObj(obj.r));
+    public static FromObj = (obj:any):Vector3 => {
+      return new Vector3(obj.v[0],obj.v[1],obj.v[2],Ramp.FromObj(obj.r));
     }
-    public static fromStr = (str:string):Vector3 => {
-      return Vector3.fromObj(JSON.parse(str));
+    public static FromStr = (str:string):Vector3 => {
+      return Vector3.FromObj(JSON.parse(str));
     }
-    public static build = (values:Array<number>):Vector3 => {
+    public static Build = (values:Array<number>):Vector3 => {
       if (values.length != 3) throw new RangeException();
       return new Vector3(values[0],values[1],values[2]);
     }

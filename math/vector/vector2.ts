@@ -16,13 +16,13 @@ module Spatial {
       super([_x,_y],_ramp);
     }
 
-    public static fromObj = (obj:any):Vector2 => {
-      return new Vector2(obj.v[0],obj.v[1],Ramp.fromObj(obj.r));
+    public static FromObj = (obj:any):Vector2 => {
+      return new Vector2(obj.v[0],obj.v[1],Ramp.FromObj(obj.r));
     }
-    public static fromStr = (str:string):Vector2 => {
-      return Vector2.fromObj(JSON.parse(str));
+    public static FromStr = (str:string):Vector2 => {
+      return Vector2.FromObj(JSON.parse(str));
     }
-    public static build = (values:Array<number>):Vector2 => {
+    public static Build = (values:Array<number>):Vector2 => {
       if (values.length != 2) throw new RangeException();
       return new Vector2(values[0],values[1]);
     }

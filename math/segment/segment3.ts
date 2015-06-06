@@ -18,17 +18,17 @@ module Spatial {
     constructor(base:Vector3,tip:Vector3,r:Ramp|string=null){
       super(base,tip,r);
     }
-    public push = (v:Vector3):Segment3 => {
+    public Push = (v:Vector3):Segment3 => {
       return Segment3.Push(this,v);
     }
     public static Push = (s:Segment3,v:Vector3):Segment3 => {
       return <Segment3>Segment.Push(s,v);
     }
     public static Cross = (sA:Segment3,sB:Segment3):Segment3 => {
-      var aTip = Vector3.Cast(sA.TipWithoutBase.clone());
-      var bTip = Vector3.Cast(sB.TipWithoutBase.clone());
-      var cross = aTip.cross(bTip);
-      var newTip = Vector3.Cast(sA.restoreBase(cross));
+      var aTip = Vector3.Cast(sA.TipWithoutBase.Clone());
+      var bTip = Vector3.Cast(sB.TipWithoutBase.Clone());
+      var cross = aTip.Cross(bTip);
+      var newTip = Vector3.Cast(sA.RestoreBase(cross));
       return new Segment3(Vector3.Cast(sA.Base),newTip);
     }
   }
