@@ -8,3 +8,6 @@ tests/**/*.js
 **/tsconfig.json
 build/spatial.browser*
 build/*
+!build/spatial.d.ts
+!build/spatial.min.js
+!build/spatial.node.js

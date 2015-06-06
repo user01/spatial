@@ -3,73 +3,125 @@
 var Spatial;
 (function (Spatial) {
     var Ramp = (function () {
-        function Ramp(type, valueStart, valueEnd, rangeStart, rangeEnd) {
+        function Ramp(_type, _valueStart, _valueEnd, _rangeStart, _rangeEnd) {
             var _this = this;
-            if (type === void 0) { type = 'easeOutQuad'; }
-            if (valueStart === void 0) { valueStart = 1; }
-            if (valueEnd === void 0) { valueEnd = 0; }
-            if (rangeStart === void 0) { rangeStart = 0; }
-            if (rangeEnd === void 0) { rangeEnd = 10; }
-            this.type = type;
-            this.valueStart = valueStart;
-            this.valueEnd = valueEnd;
-            this.rangeStart = rangeStart;
-            this.rangeEnd = rangeEnd;
-            this.valueChange = 0;
-            this.duration = 0;
-            this.valueAt = function (range) {
-                return Ramp.ValueAt(_this, range);
+            if (_type === void 0) { _type = 'easeOutQuad'; }
+            if (_valueStart === void 0) { _valueStart = 1; }
+            if (_valueEnd === void 0) { _valueEnd = 0; }
+            if (_rangeStart === void 0) { _rangeStart = 0; }
+            if (_rangeEnd === void 0) { _rangeEnd = 10; }
+            this._type = _type;
+            this._valueStart = _valueStart;
+            this._valueEnd = _valueEnd;
+            this._rangeStart = _rangeStart;
+            this._rangeEnd = _rangeEnd;
+            this.validateSelf = function () {
+                if (_this._rangeStart > _this._rangeEnd)
+                    _this._rangeEnd = _this._rangeStart;
             };
-            this.equal = function (b) {
+            this.ValueAt = function (location) {
+                return Ramp.ValueAtStatic(_this, location);
+            };
+            this.Equal = function (b) {
                 return Ramp.Equal(_this, b);
             };
-            this.toObj = function () {
+            this.ToObj = function () {
                 return {
-                    vs: _this.valueStart,
-                    ve: _this.valueEnd,
-                    rs: _this.rangeStart,
-                    re: _this.rangeEnd,
-                    t: _this.type
+                    vs: _this._valueStart,
+                    ve: _this._valueEnd,
+                    rs: _this._rangeStart,
+                    re: _this._rangeEnd,
+                    t: _this._type
                 };
             };
-            this.toStr = function () {
-                return JSON.stringify(_this.toObj());
+            this.ToStr = function () {
+                return JSON.stringify(_this.ToObj());
             };
-            this.clone = function () {
-                return Ramp.Clone(_this);
+            this.Clone = function () {
+                return Ramp.CloneRamp(_this);
             };
-            this.rangeStart = Math.abs(this.rangeStart);
-            this.rangeEnd = Math.abs(this.rangeEnd);
-            if (this.rangeStart > this.rangeEnd)
-                this.rangeEnd = this.rangeStart;
-            this.duration = Math.abs(this.rangeEnd - this.rangeStart);
-            this.valueChange = this.valueEnd - this.valueStart;
+            this.validateSelf();
         }
-        Ramp.fromObj = function (obj) {
+        Object.defineProperty(Ramp.prototype, "Type", {
+            get: function () { return this._type; },
+            set: function (newType) {
+                this._type = newType;
+                this.validateSelf();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Ramp.prototype, "ValueStart", {
+            get: function () { return this._valueStart; },
+            set: function (newValue) {
+                this._valueStart = newValue;
+                this.validateSelf();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Ramp.prototype, "ValueEnd", {
+            get: function () { return this._valueEnd; },
+            set: function (newValue) {
+                this._valueEnd = newValue;
+                this.validateSelf();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Ramp.prototype, "RangeStart", {
+            get: function () { return this._rangeStart; },
+            set: function (newValue) {
+                this._rangeStart = newValue;
+                this.validateSelf();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Ramp.prototype, "RangeEnd", {
+            get: function () { return this._rangeEnd; },
+            set: function (newValue) {
+                this._rangeEnd = newValue;
+                this.validateSelf();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Ramp.prototype, "Duration", {
+            get: function () { return this._rangeEnd - this._rangeStart; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Ramp.prototype, "ValueChange", {
+            get: function () { return this._valueEnd - this._valueStart; },
+            enumerable: true,
+            configurable: true
+        });
+        Ramp.FromObj = function (obj) {
             return new Ramp(obj.t, obj.vs, obj.ve, obj.rs, obj.re);
         };
-        Ramp.fromStr = function (str) {
-            return Ramp.fromObj(JSON.parse(str));
+        Ramp.FromStr = function (str) {
+            return Ramp.FromObj(JSON.parse(str));
         };
-        Ramp.Clone = function (r) {
-            return Ramp.fromObj(r.toObj());
+        Ramp.CloneRamp = function (r) {
+            return Ramp.FromObj(r.ToObj());
         };
-        Ramp.ValueAt = function (ramp, range) {
-            range = Math.abs(range);
-            if (range >= ramp.rangeEnd)
-                return ramp.valueEnd;
-            if (range <= ramp.rangeStart)
-                return ramp.valueStart;
-            var fractionComplete = (range - ramp.rangeStart) / (ramp.rangeEnd - ramp.rangeStart);
-            //fractionComplete = Math.max(Math.min(1,fractionComplete),0);
-            var currentTime = (range - ramp.rangeStart);
-            return Ramp.Ease(ramp.type, currentTime, ramp.valueStart, ramp.valueChange, ramp.duration);
-            //return valueRange * Ramp.Ease(ramp.type,fractionComplete) + ramp.valueStart;
+        Ramp.ValueAtStatic = function (ramp, location) {
+            if (location >= ramp.RangeEnd)
+                return ramp.ValueEnd;
+            if (location <= ramp.RangeStart)
+                return ramp.ValueStart;
+            var fractionComplete = (location - ramp.RangeStart) / ramp.Duration;
+            var currentTime = (location - ramp._rangeStart);
+            return Ramp.Ease(ramp._type, currentTime, ramp.ValueStart, ramp.ValueChange, ramp.Duration);
         };
         Ramp.Equal = function (r1, r2) {
-            if (r1.type != r2.type)
+            if (r1._type != r2._type)
                 return false;
-            var delta = (r1.valueStart - r2.valueStart) + (r1.valueEnd - r2.valueEnd) + (r1.rangeStart - r2.rangeStart) + (r1.rangeEnd - r2.rangeEnd);
+            var delta = (r1._valueStart - r2._valueStart) +
+                (r1._valueEnd - r2._valueEnd) +
+                (r1._rangeStart - r2._rangeStart) +
+                (r1._rangeEnd - r2._rangeEnd);
             return Math.abs(delta) < 0.02;
         };
         Ramp.Build = function (r) {
@@ -78,7 +130,7 @@ var Spatial;
                 return new Ramp(); //default values
             }
             else if (typeof r == 'string') {
-                return Ramp.fromStr(r);
+                return Ramp.FromStr(r);
             }
             return r;
         };
@@ -86,8 +138,8 @@ var Spatial;
             if (fraction === void 0) { fraction = 0.5; }
             if (range === void 0) { range = 0; }
             fraction = Math.min(1, Math.max(0, fraction));
-            var c1 = r1.valueAt(range);
-            var c2 = r2.valueAt(range);
+            var c1 = r1.ValueAt(range);
+            var c2 = r2.ValueAt(range);
             var sum = c1 * (1 - fraction) + c2 * fraction;
             return sum;
         };
@@ -297,36 +349,36 @@ var Spatial;
         function Vector(valueSet, r) {
             var _this = this;
             if (r === void 0) { r = null; }
-            this.clone = function () {
-                return Vector.Clone(_this);
+            this.Clone = function () {
+                return Vector.CloneStatic(_this);
             };
             this.readableStr = function () {
-                var str = 'V' + _this.dimension + '[';
+                var str = 'V' + _this.Dimension + '[';
                 for (var i = 0; i < _this._values.length; i++)
                     str += _this._values[i] + ',';
                 return str + ']';
             };
-            this.toObj = function () {
+            this.ToObj = function () {
                 return {
-                    t: _this.dimension,
+                    t: _this.Dimension,
                     v: _this._values,
-                    r: _this.ramp.toObj()
+                    r: _this.Ramp.ToObj()
                 };
             };
-            this.toStr = function () {
-                return JSON.stringify(_this.toObj());
+            this.ToStr = function () {
+                return JSON.stringify(_this.ToObj());
             };
-            this.equal = function (v) {
-                return Vector.Equal(_this, v);
+            this.Equal = function (v) {
+                return Vector.EqualStatic(_this, v);
             };
-            this.distanceTo = function (v) {
-                return Vector.DistanceTo(_this, v);
+            this.DistanceTo = function (v) {
+                return Vector.DistanceToStatic(_this, v);
             };
-            this.intensityAt = function (v) {
-                return _this.ramp.valueAt(_this.distanceTo(v));
+            this.IntensityAt = function (v) {
+                return _this.Ramp.ValueAt(_this.DistanceTo(v));
             };
-            this.closestVector = function (v) {
-                return _this.clone();
+            this.ClosestVector = function (v) {
+                return _this.Clone();
             };
             if (valueSet.length < 1 || valueSet.length > 4) {
                 throw new RangeException();
@@ -334,90 +386,90 @@ var Spatial;
             this._ramp = Spatial.Ramp.Build(r);
             this._values = new Float32Array(valueSet);
         }
-        Object.defineProperty(Vector.prototype, "values", {
+        Object.defineProperty(Vector.prototype, "Values", {
             get: function () {
                 return this._values;
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Vector.prototype, "dimension", {
+        Object.defineProperty(Vector.prototype, "Dimension", {
             get: function () {
                 return this._values.length;
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Vector.prototype, "ramp", {
+        Object.defineProperty(Vector.prototype, "Ramp", {
             get: function () {
                 return this._ramp;
             },
             enumerable: true,
             configurable: true
         });
-        Vector.fromObj = function (obj) {
+        Vector.FromObj = function (obj) {
             switch (obj.t) {
                 case 2:
-                    return Spatial.Vector2.fromObj(obj);
+                    return Spatial.Vector2.FromObj(obj);
                 case 3:
-                    return Spatial.Vector3.fromObj(obj);
+                    return Spatial.Vector3.FromObj(obj);
                 case 4:
-                    return Spatial.Vector4.fromObj(obj);
+                    return Spatial.Vector4.FromObj(obj);
             }
-            return new Vector(obj.v, Spatial.Ramp.fromObj(obj.r));
+            return new Vector(obj.v, Spatial.Ramp.FromObj(obj.r));
         };
-        Vector.fromStr = function (str) {
-            return Vector.fromObj(JSON.parse(str));
+        Vector.FromStr = function (str) {
+            return Vector.FromObj(JSON.parse(str));
         };
-        Vector.DistanceTo = function (v1, v2) {
+        Vector.DistanceToStatic = function (v1, v2) {
             Vector.DimensionCheck(v1, v2);
             var total = 0;
-            for (var i = 0; i < v1.dimension; i++)
-                total += (v1.values[i] - v2.values[i]) * (v1.values[i] - v2.values[i]);
+            for (var i = 0; i < v1.Dimension; i++)
+                total += (v1.Values[i] - v2.Values[i]) * (v1.Values[i] - v2.Values[i]);
             return Math.sqrt(total);
         };
-        Vector.Clone = function (v1) {
-            return Vector.fromObj(v1.toObj());
+        Vector.CloneStatic = function (v1) {
+            return Vector.FromObj(v1.ToObj());
         };
         Vector.Add = function (v1, v2) {
             Vector.DimensionCheck(v1, v2);
             var values = new Array();
-            for (var i = 0; i < v1.dimension; i++)
-                values.push(v1.values[i] + v2.values[i]);
-            return new Vector(values, v1.ramp.toStr());
+            for (var i = 0; i < v1.Dimension; i++)
+                values.push(v1.Values[i] + v2.Values[i]);
+            return new Vector(values, v1.Ramp.ToStr());
         };
         Vector.Subtract = function (v1, v2) {
             return Vector.Add(v1, Vector.Negate(v2));
         };
         Vector.Scale = function (v1, factor) {
             var values = new Array();
-            for (var i = 0; i < v1.dimension; i++)
-                values.push(v1.values[i] * factor);
-            return new Vector(values, v1.ramp.toStr());
+            for (var i = 0; i < v1.Dimension; i++)
+                values.push(v1.Values[i] * factor);
+            return new Vector(values, v1.Ramp.ToStr());
         };
         Vector.Negate = function (v1) {
             return Vector.Scale(v1, -1);
         };
-        Vector.Equal = function (v1, v2) {
-            if (v1.dimension != v2.dimension)
+        Vector.EqualStatic = function (v1, v2) {
+            if (v1.Dimension != v2.Dimension)
                 return false;
-            if (!v1.ramp.equal(v2.ramp))
+            if (!v1.Ramp.Equal(v2.Ramp))
                 return false;
-            for (var i = 0; i < v1.dimension; i++)
+            for (var i = 0; i < v1.Dimension; i++)
                 //if (Math.abs(v1.values[i] - v2.values[i]) > common.MARGIN_OF_ERROR)
-                if (Math.abs(v1.values[i] - v2.values[i]) > 0.05)
+                if (Math.abs(v1.Values[i] - v2.Values[i]) > 0.05)
                     return false;
             return true;
         };
         Vector.Dot = function (v1, v2) {
             Vector.DimensionCheck(v1, v2);
             var result = 0;
-            for (var i = 0; i < v1.dimension; i++)
-                result += v1.values[i] * v2.values[i];
+            for (var i = 0; i < v1.Dimension; i++)
+                result += v1.Values[i] * v2.Values[i];
             return result;
         };
         Vector.DimensionCheck = function (v1, v2) {
-            if (v1.dimension != v2.dimension)
+            if (v1.Dimension != v2.Dimension)
                 throw new RangeException();
             return true;
         };
@@ -437,60 +489,61 @@ var Spatial;
             if (r === void 0) { r = null; }
             this._base = _base;
             this._tip = _tip;
-            this.distanceTo = function (v) {
-                return Segment.DistanceTo(_this, v);
+            this.DistanceTo = function (v) {
+                return Segment.DistanceToStatic(_this, v);
             };
-            this.intensityAt = function (v) {
+            this.IntensityAt = function (v) {
                 var fraction = _this.closestFraction(v);
-                fraction = _this.Ramp.valueAt(fraction);
-                var range = _this.distanceTo(v);
-                var intensity = Spatial.Ramp.Mix(_this.Base.ramp, _this.Tip.ramp, fraction, range);
+                fraction = _this.Ramp.ValueAt(fraction);
+                var range = _this.DistanceTo(v);
+                var intensity = Spatial.Ramp.Mix(_this.Base.Ramp, _this.Tip.Ramp, fraction, range);
                 return intensity;
             };
-            this.closestVector = function (v) {
+            this.ClosestVector = function (v) {
                 var t = _this.closestFraction(v);
-                var newSegment = _this.scale(t);
-                return newSegment.Tip.clone();
+                var newSegment = _this.Scale(t);
+                return newSegment.Tip.Clone();
             };
             this.closestFraction = function (v) {
                 Segment.DimensionCheck(_this, v);
-                var length = _this.length;
+                var length = _this.Length;
                 if (length < 0.001)
                     return 0;
                 var vWithoutBase = Spatial.Vector.Subtract(v, _this.Base);
                 var t = Spatial.Vector.Dot(vWithoutBase, _this.TipWithoutBase) / (length * length);
                 return Math.max(0, Math.min(1, t));
             };
-            this.restoreBase = function (v) {
+            this.RestoreBase = function (v) {
                 return Spatial.Vector.Add(_this.Base, v);
             };
-            this.push = function (v) {
+            this.Push = function (v) {
                 return Segment.Push(_this, v);
             };
-            this.scale = function (factor) {
+            this.Scale = function (factor) {
                 return Segment.Scale(_this, factor);
             };
-            this.equal = function (s) {
-                return Segment.Equal(_this, s);
+            this.Equal = function (s) {
+                return Segment.EqualStatic(_this, s);
             };
-            this.toObj = function () {
+            this.ToObj = function () {
                 return {
-                    t: _this.dimension,
-                    b: _this.Base.toObj(),
-                    e: _this.Tip.toObj(),
-                    r: _this.Ramp.toObj()
+                    t: _this.Dimension,
+                    b: _this.Base.ToObj(),
+                    e: _this.Tip.ToObj(),
+                    r: _this.Ramp.ToObj()
                 };
             };
-            this.toStr = function () {
-                return JSON.stringify(_this.toObj());
+            this.ToStr = function () {
+                return JSON.stringify(_this.ToObj());
             };
-            if (!this._base || !this._tip || (this._base.dimension != this._tip.dimension)) {
+            if (!this._base || !this._tip ||
+                (this._base.Dimension != this._tip.Dimension)) {
                 throw new RangeException();
             }
             var tempRamp = Spatial.Ramp.Build(r);
             //force the new ramp to conform to the 0,1 0,1 to handle
             // scaling along segment and fraction to give to each end
-            this._ramp = new Spatial.Ramp(tempRamp.type, 0, 1, 0, 1);
+            this._ramp = new Spatial.Ramp(tempRamp.Type, 0, 1, 0, 1);
         }
         Object.defineProperty(Segment.prototype, "Base", {
             get: function () {
@@ -513,16 +566,16 @@ var Spatial;
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Segment.prototype, "length", {
+        Object.defineProperty(Segment.prototype, "Length", {
             get: function () {
-                return this._base.distanceTo(this._tip);
+                return this._base.DistanceTo(this._tip);
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Segment.prototype, "dimension", {
+        Object.defineProperty(Segment.prototype, "Dimension", {
             get: function () {
-                return this._tip.dimension;
+                return this._tip.Dimension;
             },
             enumerable: true,
             configurable: true
@@ -534,48 +587,48 @@ var Spatial;
             enumerable: true,
             configurable: true
         });
-        Segment.Equal = function (s, s2) {
-            if (!s.Tip.equal(s2.Tip))
+        Segment.EqualStatic = function (s, s2) {
+            if (!s.Tip.Equal(s2.Tip))
                 return false;
-            if (!s.Base.equal(s2.Base))
+            if (!s.Base.Equal(s2.Base))
                 return false;
-            if (!s.Ramp.equal(s2.Ramp))
+            if (!s.Ramp.Equal(s2.Ramp))
                 return false;
             return true;
         };
         Segment.Scale = function (s, factor) {
-            var newTip = s.restoreBase(Spatial.Vector.Scale(s.TipWithoutBase, factor));
-            return new Segment(s.Base.clone(), newTip);
+            var newTip = s.RestoreBase(Spatial.Vector.Scale(s.TipWithoutBase, factor));
+            return new Segment(s.Base.Clone(), newTip);
         };
         Segment.Push = function (s, v) {
-            if (s.dimension != v.dimension)
+            if (s.Dimension != v.Dimension)
                 throw new RangeException();
             return new Segment(Spatial.Vector.Add(s.Base, v), Spatial.Vector.Add(s.Tip, v));
         };
-        Segment.DistanceTo = function (s, v) {
+        Segment.DistanceToStatic = function (s, v) {
             Segment.DimensionCheck(s, v);
-            var vOnSegment = s.closestVector(v);
-            return vOnSegment.distanceTo(v);
+            var vOnSegment = s.ClosestVector(v);
+            return vOnSegment.DistanceTo(v);
         };
         Segment.DimensionCheck = function (s, v) {
-            if (s.dimension != v.dimension)
+            if (s.Dimension != v.Dimension)
                 throw new RangeException();
             return true;
         };
-        Segment.fromObj = function (obj) {
+        Segment.FromObj = function (obj) {
             switch (obj.t) {
                 case 2:
-                    return new Spatial.Segment2(Spatial.Vector2.fromObj(obj.b), Spatial.Vector2.fromObj(obj.e), Spatial.Ramp.fromObj(obj.r));
+                    return new Spatial.Segment2(Spatial.Vector2.FromObj(obj.b), Spatial.Vector2.FromObj(obj.e), Spatial.Ramp.FromObj(obj.r));
                 case 3:
-                    return new Spatial.Segment3(Spatial.Vector3.fromObj(obj.b), Spatial.Vector3.fromObj(obj.e), Spatial.Ramp.fromObj(obj.r));
+                    return new Spatial.Segment3(Spatial.Vector3.FromObj(obj.b), Spatial.Vector3.FromObj(obj.e), Spatial.Ramp.FromObj(obj.r));
                 case 4:
-                    return new Spatial.Segment4(Spatial.Vector4.fromObj(obj.b), Spatial.Vector4.fromObj(obj.e), Spatial.Ramp.fromObj(obj.r));
+                    return new Spatial.Segment4(Spatial.Vector4.FromObj(obj.b), Spatial.Vector4.FromObj(obj.e), Spatial.Ramp.FromObj(obj.r));
             }
             //default untyped
-            return new Segment(Spatial.Vector.fromObj(obj.b), Spatial.Vector.fromObj(obj.e), Spatial.Ramp.fromObj(obj.r));
+            return new Segment(Spatial.Vector.FromObj(obj.b), Spatial.Vector.FromObj(obj.e), Spatial.Ramp.FromObj(obj.r));
         };
-        Segment.fromStr = function (str) {
-            return Segment.fromObj(JSON.parse(str));
+        Segment.FromStr = function (str) {
+            return Segment.FromObj(JSON.parse(str));
         };
         return Segment;
     })();
@@ -596,7 +649,7 @@ var Spatial;
             var _this = this;
             if (r === void 0) { r = null; }
             _super.call(this, base, tip, r);
-            this.push = function (v) {
+            this.Push = function (v) {
                 return Segment2.Push(_this, v);
             };
         }
@@ -630,7 +683,7 @@ var Spatial;
             var _this = this;
             if (r === void 0) { r = null; }
             _super.call(this, base, tip, r);
-            this.push = function (v) {
+            this.Push = function (v) {
                 return Segment3.Push(_this, v);
             };
         }
@@ -659,10 +712,10 @@ var Spatial;
             return Spatial.Segment.Push(s, v);
         };
         Segment3.Cross = function (sA, sB) {
-            var aTip = Spatial.Vector3.Cast(sA.TipWithoutBase.clone());
-            var bTip = Spatial.Vector3.Cast(sB.TipWithoutBase.clone());
-            var cross = aTip.cross(bTip);
-            var newTip = Spatial.Vector3.Cast(sA.restoreBase(cross));
+            var aTip = Spatial.Vector3.Cast(sA.TipWithoutBase.Clone());
+            var bTip = Spatial.Vector3.Cast(sB.TipWithoutBase.Clone());
+            var cross = aTip.Cross(bTip);
+            var newTip = Spatial.Vector3.Cast(sA.RestoreBase(cross));
             return new Segment3(Spatial.Vector3.Cast(sA.Base), newTip);
         };
         return Segment3;
@@ -678,7 +731,7 @@ var Spatial;
             var _this = this;
             if (r === void 0) { r = null; }
             _super.call(this, base, tip, r);
-            this.push = function (v) {
+            this.Push = function (v) {
                 return Segment4.Push(_this, v);
             };
         }
@@ -711,85 +764,84 @@ var Spatial;
             var _this = this;
             this.segments = segments;
             this._dimension = 0;
-            this.distanceTo = function (v) {
+            this.DistanceTo = function (v) {
                 return _this.closestVectorDistanceIntensity(v)[1];
             };
-            this.intensityAt = function (v) {
+            this.IntensityAt = function (v) {
                 return _this.closestVectorDistanceIntensity(v)[2];
             };
-            this.closestVector = function (v) {
+            this.ClosestVector = function (v) {
                 return _this.closestVectorDistanceIntensity(v)[0];
             };
-            this.clone = function () {
-                return SegmentSet.Clone(_this);
+            this.Clone = function () {
+                return SegmentSet.CloneStatic(_this);
             };
-            this.equal = function (ss) {
-                return SegmentSet.Equal(_this, ss);
+            this.Equal = function (ss) {
+                return SegmentSet.EqualStatic(_this, ss);
             };
-            this.toObj = function () {
+            this.ToObj = function () {
                 return {
-                    s: _this.segments.map(function (s) {
-                        return s.toObj();
-                    })
+                    s: _this.segments.map(function (s) { return s.ToObj(); })
                 };
             };
-            this.toStr = function () {
-                return JSON.stringify(_this.toObj());
+            this.ToStr = function () {
+                return JSON.stringify(_this.ToObj());
             };
             this.closestVectorDistanceIntensity = function (v) {
                 var closestVectorFound = null;
                 var closestDistance = Number.MAX_VALUE;
                 var closestIntensity = 0;
                 for (var i = 0; i < _this.segments.length; i++) {
-                    var computedVector = _this.segments[i].closestVector(v);
-                    var computedDistance = _this.segments[i].distanceTo(v);
+                    var computedVector = _this.segments[i].ClosestVector(v);
+                    var computedDistance = _this.segments[i].DistanceTo(v);
                     if (closestVectorFound == null || computedDistance < closestDistance) {
                         closestVectorFound = computedVector;
                         closestDistance = computedDistance;
-                        closestIntensity = _this.segments[i].intensityAt(computedVector);
+                        closestIntensity = _this.segments[i].IntensityAt(computedVector);
                     }
                 }
                 return [closestVectorFound, closestDistance, closestIntensity];
             };
             if ((segments === void 0) || segments.length < 1)
                 throw new RangeException();
-            this._dimension = segments[0].dimension;
+            this._dimension = segments[0].Dimension;
+            // Ensure all dimensions match
             for (var i = 0; i < this.segments.length; i++) {
-                if (segments[i].dimension != this._dimension) {
+                if (segments[i].Dimension != this._dimension) {
                     throw new RangeException();
                 }
             }
         }
-        Object.defineProperty(SegmentSet.prototype, "dimension", {
+        Object.defineProperty(SegmentSet.prototype, "Dimension", {
             get: function () {
                 return this._dimension;
             },
             enumerable: true,
             configurable: true
         });
-        SegmentSet.fromObj = function (obj) {
+        SegmentSet.FromObj = function (obj) {
             var segs = obj.s.map(function (s) {
-                return Spatial.Segment.fromObj(s);
+                return Spatial.Segment.FromObj(s);
             });
             return new SegmentSet(segs);
         };
-        SegmentSet.fromStr = function (str) {
-            return SegmentSet.fromObj(JSON.parse(str));
+        SegmentSet.FromStr = function (str) {
+            return SegmentSet.FromObj(JSON.parse(str));
         };
-        SegmentSet.Clone = function (ss) {
-            return SegmentSet.fromObj(ss.toObj());
+        SegmentSet.CloneStatic = function (ss) {
+            return SegmentSet.FromObj(ss.ToObj());
         };
-        SegmentSet.Equal = function (ssA, ssB) {
+        SegmentSet.EqualStatic = function (ssA, ssB) {
             if (ssA.segments.length != ssB.segments.length)
                 return false;
             for (var i = 0; i < ssA.segments.length; i++) {
-                if (!ssA.segments[i].equal(ssB.segments[i]))
+                if (!ssA.segments[i].Equal(ssB.segments[i]))
                     return false;
             }
             return true;
         };
         SegmentSet.Merge = function (ssA, ssB) {
-            if (ssA.dimension != ssB.dimension)
+            if (ssA.Dimension != ssB.Dimension)
                 throw new RangeException();
             return new SegmentSet(ssA.segments.concat(ssB.segments));
         };
@@ -820,13 +872,13 @@ var Spatial;
             enumerable: true,
             configurable: true
         });
-        Vector2.fromObj = function (obj) {
-            return new Vector2(obj.v[0], obj.v[1], Spatial.Ramp.fromObj(obj.r));
+        Vector2.FromObj = function (obj) {
+            return new Vector2(obj.v[0], obj.v[1], Spatial.Ramp.FromObj(obj.r));
         };
-        Vector2.fromStr = function (str) {
-            return Vector2.fromObj(JSON.parse(str));
+        Vector2.FromStr = function (str) {
+            return Vector2.FromObj(JSON.parse(str));
         };
-        Vector2.build = function (values) {
+        Vector2.Build = function (values) {
             if (values.length != 2)
                 throw new RangeException();
             return new Vector2(values[0], values[1]);
@@ -844,8 +896,8 @@ var Spatial;
             var _this = this;
             if (_ramp === void 0) { _ramp = null; }
             _super.call(this, [_x, _y, _z], _ramp);
-            this.cross = function (vOther) {
-                return Vector3.Cross(_this, vOther);
+            this.Cross = function (vOther) {
+                return Vector3.CrossStatic(_this, vOther);
             };
         }
         Object.defineProperty(Vector3.prototype, "x", {
@@ -869,24 +921,24 @@ var Spatial;
             enumerable: true,
             configurable: true
         });
-        Vector3.Cross = function (vA, vB) {
+        Vector3.CrossStatic = function (vA, vB) {
             var x = vA.y * vB.z - vA.z * vB.y;
             var y = vA.z * vB.x - vA.x * vB.z;
             var z = vA.x * vB.y - vA.y * vB.x;
-            return new Vector3(x, y, z, vA.ramp.clone());
+            return new Vector3(x, y, z, vA.Ramp.Clone());
         };
         Vector3.Cast = function (v) {
-            if (v.values.length != 3)
+            if (v.Values.length != 3)
                 throw new RangeException();
-            return new Vector3(v.values[0], v.values[1], v.values[2], v.ramp);
+            return new Vector3(v.Values[0], v.Values[1], v.Values[2], v.Ramp);
         };
-        Vector3.fromObj = function (obj) {
-            return new Vector3(obj.v[0], obj.v[1], obj.v[2], Spatial.Ramp.fromObj(obj.r));
+        Vector3.FromObj = function (obj) {
+            return new Vector3(obj.v[0], obj.v[1], obj.v[2], Spatial.Ramp.FromObj(obj.r));
         };
-        Vector3.fromStr = function (str) {
-            return Vector3.fromObj(JSON.parse(str));
+        Vector3.FromStr = function (str) {
+            return Vector3.FromObj(JSON.parse(str));
         };
-        Vector3.build = function (values) {
+        Vector3.Build = function (values) {
             if (values.length != 3)
                 throw new RangeException();
             return new Vector3(values[0], values[1], values[2]);
@@ -932,13 +984,13 @@ var Spatial;
             enumerable: true,
             configurable: true
         });
-        Vector4.fromObj = function (obj) {
-            return new Vector4(obj.v[0], obj.v[1], obj.v[2], obj.v[3], Spatial.Ramp.fromObj(obj.r));
+        Vector4.FromObj = function (obj) {
+            return new Vector4(obj.v[0], obj.v[1], obj.v[2], obj.v[3], Spatial.Ramp.FromObj(obj.r));
         };
-        Vector4.fromStr = function (str) {
-            return Vector4.fromObj(JSON.parse(str));
+        Vector4.FromStr = function (str) {
+            return Vector4.FromObj(JSON.parse(str));
         };
-        Vector4.build = function (values) {
+        Vector4.Build = function (values) {
             if (values.length != 4)
                 throw new RangeException();
             return new Vector4(values[0], values[1], values[2], values[3]);

@@ -2,41 +2,47 @@
 /// <reference path="../typings/lib.d.ts" />
 declare module Spatial {
     interface IRanged {
-        distanceTo(v: Vector): number;
-        intensityAt(v: Vector): number;
-        closestVector(v: Vector): Vector;
+        DistanceTo(v: Vector): number;
+        IntensityAt(v: Vector): number;
+        ClosestVector(v: Vector): Vector;
     }
 }
 declare module Spatial {
     interface ISerializable {
-        toObj(): any;
-        toStr(): string;
+        ToObj(): any;
+        ToStr(): string;
     }
 }
 declare module Spatial {
     interface IEquality<T> {
-        equal(a: T, b: T): boolean;
+        Equal(a: T, b: T): boolean;
     }
 }
 declare module Spatial {
     class Ramp implements ISerializable, IEquality<Ramp> {
-        type: string;
-        valueStart: number;
-        valueEnd: number;
-        rangeStart: number;
-        rangeEnd: number;
-        private valueChange;
-        private duration;
-        constructor(type?: string, valueStart?: number, valueEnd?: number, rangeStart?: number, rangeEnd?: number);
-        valueAt: (range: number) => number;
-        equal: (b: Ramp) => boolean;
-        toObj: () => any;
-        toStr: () => string;
-        clone: () => Ramp;
-        static fromObj: (obj: any) => Ramp;
-        static fromStr: (str: string) => Ramp;
-        static Clone: (r: Ramp) => Ramp;
-        static ValueAt: (ramp: Ramp, range: number) => number;
+        private _type;
+        private _valueStart;
+        private _valueEnd;
+        private _rangeStart;
+        private _rangeEnd;
+        Type: string;
+        ValueStart: number;
+        ValueEnd: number;
+        RangeStart: number;
+        RangeEnd: number;
+        Duration: number;
+        ValueChange: number;
+        constructor(_type?: string, _valueStart?: number, _valueEnd?: number, _rangeStart?: number, _rangeEnd?: number);
+        private validateSelf;
+        ValueAt: (location: number) => number;
+        Equal: (b: Ramp) => boolean;
+        ToObj: () => any;
+        ToStr: () => string;
+        Clone: () => Ramp;
+        static FromObj: (obj: any) => Ramp;
+        static FromStr: (str: string) => Ramp;
+        static CloneRamp: (r: Ramp) => Ramp;
+        static ValueAtStatic: (ramp: Ramp, location: number) => number;
         static Equal: (r1: Ramp, r2: Ramp) => boolean;
         static Build: (r?: string | Ramp) => Ramp;
         static Mix: (r1: Ramp, r2: Ramp, fraction?: number, range?: number) => number;
@@ -47,28 +53,28 @@ declare module Spatial {
 declare module Spatial {
     class Vector implements IRanged, ISerializable, IEquality<Vector> {
         protected _values: Float32Array;
-        values: Float32Array;
-        dimension: number;
+        Values: Float32Array;
+        Dimension: number;
         protected _ramp: Ramp;
-        ramp: Ramp;
+        Ramp: Ramp;
         constructor(valueSet: Array<number>, r?: Ramp | string);
-        clone: () => Vector;
+        Clone: () => Vector;
         readableStr: () => string;
-        toObj: () => any;
-        toStr: () => string;
-        static fromObj: (obj: any) => Vector;
-        static fromStr: (str: string) => Vector;
-        equal: (v: Vector) => boolean;
-        distanceTo: (v: Vector) => number;
-        intensityAt: (v: Vector) => number;
-        closestVector: (v: Vector) => Vector;
-        static DistanceTo: (v1: Vector, v2: Vector) => number;
-        static Clone: (v1: Vector) => Vector;
+        ToObj: () => any;
+        ToStr: () => string;
+        static FromObj: (obj: any) => Vector;
+        static FromStr: (str: string) => Vector;
+        Equal: (v: Vector) => boolean;
+        DistanceTo: (v: Vector) => number;
+        IntensityAt: (v: Vector) => number;
+        ClosestVector: (v: Vector) => Vector;
+        static DistanceToStatic: (v1: Vector, v2: Vector) => number;
+        static CloneStatic: (v1: Vector) => Vector;
         static Add: (v1: Vector, v2: Vector) => Vector;
         static Subtract: (v1: Vector, v2: Vector) => Vector;
         static Scale: (v1: Vector, factor: number) => Vector;
         static Negate: (v1: Vector) => Vector;
-        static Equal: (v1: Vector, v2: Vector) => boolean;
+        static EqualStatic: (v1: Vector, v2: Vector) => boolean;
         static Dot: (v1: Vector, v2: Vector) => number;
         private static DimensionCheck;
         protected static isArray: (arg: any) => boolean;
@@ -81,28 +87,28 @@ declare module Spatial {
         Base: Vector;
         Tip: Vector;
         TipWithoutBase: Vector;
-        length: number;
-        dimension: number;
+        Length: number;
+        Dimension: number;
         protected _ramp: Ramp;
         Ramp: Ramp;
         constructor(_base: Vector, _tip: Vector, r?: Ramp | string);
-        distanceTo: (v: Vector) => number;
-        intensityAt: (v: Vector) => number;
-        closestVector: (v: Vector) => Vector;
+        DistanceTo: (v: Vector) => number;
+        IntensityAt: (v: Vector) => number;
+        ClosestVector: (v: Vector) => Vector;
         private closestFraction;
-        restoreBase: (v: Vector) => Vector;
-        push: (v: Vector) => Segment;
-        scale: (factor: number) => Segment;
-        equal: (s: Segment) => boolean;
-        static Equal: (s: Segment, s2: Segment) => boolean;
+        RestoreBase: (v: Vector) => Vector;
+        Push: (v: Vector) => Segment;
+        Scale: (factor: number) => Segment;
+        Equal: (s: Segment) => boolean;
+        static EqualStatic: (s: Segment, s2: Segment) => boolean;
         static Scale: (s: Segment, factor: number) => Segment;
         static Push: (s: Segment, v: Vector) => Segment;
-        static DistanceTo: (s: Segment, v: Vector) => number;
-        toObj: () => any;
-        toStr: () => string;
+        static DistanceToStatic: (s: Segment, v: Vector) => number;
+        ToObj: () => any;
+        ToStr: () => string;
         private static DimensionCheck;
-        static fromObj: (obj: any) => Segment;
-        static fromStr: (str: string) => Segment;
+        static FromObj: (obj: any) => Segment;
+        static FromStr: (str: string) => Segment;
     }
 }
 declare module Spatial {
@@ -110,7 +116,7 @@ declare module Spatial {
         Base: Vector2;
         Tip: Vector2;
         constructor(base: Vector2, tip: Vector2, r?: Ramp | string);
-        push: (v: Vector2) => Segment2;
+        Push: (v: Vector2) => Segment2;
         static Push: (s: Segment2, v: Vector2) => Segment2;
     }
 }
@@ -120,7 +126,7 @@ declare module Spatial {
         Tip: Vector3;
         TipWithoutBase: Vector;
         constructor(base: Vector3, tip: Vector3, r?: Ramp | string);
-        push: (v: Vector3) => Segment3;
+        Push: (v: Vector3) => Segment3;
         static Push: (s: Segment3, v: Vector3) => Segment3;
         static Cross: (sA: Segment3, sB: Segment3) => Segment3;
     }
@@ -130,7 +136,7 @@ declare module Spatial {
         Base: Vector4;
         Tip: Vector4;
         constructor(base: Vector4, tip: Vector4, r?: Ramp | string);
-        push: (v: Vector4) => Segment4;
+        Push: (v: Vector4) => Segment4;
         static Push: (s: Segment4, v: Vector4) => Segment4;
     }
 }
@@ -138,19 +144,19 @@ declare module Spatial {
     class SegmentSet implements IRanged, IEquality<SegmentSet>, ISerializable {
         private segments;
         private _dimension;
-        dimension: number;
+        Dimension: number;
         constructor(segments: Array<Segment>);
-        distanceTo: (v: Vector) => number;
-        intensityAt: (v: Vector) => number;
-        closestVector: (v: Vector) => Vector;
-        clone: () => SegmentSet;
-        equal: (ss: SegmentSet) => boolean;
-        toObj: () => any;
-        toStr: () => string;
-        static fromObj: (obj: any) => SegmentSet;
-        static fromStr: (str: string) => SegmentSet;
-        static Clone: (ss: SegmentSet) => SegmentSet;
-        static Equal: (ssA: SegmentSet, ssB: SegmentSet) => boolean;
+        DistanceTo: (v: Vector) => number;
+        IntensityAt: (v: Vector) => number;
+        ClosestVector: (v: Vector) => Vector;
+        Clone: () => SegmentSet;
+        Equal: (ss: SegmentSet) => boolean;
+        ToObj: () => any;
+        ToStr: () => string;
+        static FromObj: (obj: any) => SegmentSet;
+        static FromStr: (str: string) => SegmentSet;
+        static CloneStatic: (ss: SegmentSet) => SegmentSet;
+        static EqualStatic: (ssA: SegmentSet, ssB: SegmentSet) => boolean;
         static Merge: (ssA: SegmentSet, ssB: SegmentSet) => SegmentSet;
         protected closestVectorDistanceIntensity: (v: Vector) => [Vector, number, number];
     }
@@ -160,9 +166,9 @@ declare module Spatial {
         x: number;
         y: number;
         constructor(_x: number, _y: number, _ramp?: string | Ramp);
-        static fromObj: (obj: any) => Vector2;
-        static fromStr: (str: string) => Vector2;
-        static build: (values: number[]) => Vector2;
+        static FromObj: (obj: any) => Vector2;
+        static FromStr: (str: string) => Vector2;
+        static Build: (values: number[]) => Vector2;
     }
 }
 declare module Spatial {
@@ -171,12 +177,12 @@ declare module Spatial {
         y: number;
         z: number;
         constructor(_x: number, _y: number, _z: number, _ramp?: string | Ramp);
-        cross: (vOther: Vector3) => Vector3;
-        static Cross: (vA: Vector3, vB: Vector3) => Vector3;
+        Cross: (vOther: Vector3) => Vector3;
+        static CrossStatic: (vA: Vector3, vB: Vector3) => Vector3;
         static Cast: (v: Vector) => Vector3;
-        static fromObj: (obj: any) => Vector3;
-        static fromStr: (str: string) => Vector3;
-        static build: (values: number[]) => Vector3;
+        static FromObj: (obj: any) => Vector3;
+        static FromStr: (str: string) => Vector3;
+        static Build: (values: number[]) => Vector3;
     }
 }
 declare module Spatial {
@@ -186,8 +192,8 @@ declare module Spatial {
         z: number;
         w: number;
         constructor(_x: number, _y: number, _z: number, _w: number, _ramp?: string | Ramp);
-        static fromObj: (obj: any) => Vector4;
-        static fromStr: (str: string) => Vector4;
-        static build: (values: number[]) => Vector4;
+        static FromObj: (obj: any) => Vector4;
+        static FromStr: (str: string) => Vector4;
+        static Build: (values: number[]) => Vector4;
     }
 }
