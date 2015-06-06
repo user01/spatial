@@ -34,7 +34,7 @@ module Spatial {
       var tempRamp = Ramp.Build(r);
       //force the new ramp to conform to the 0,1 0,1 to handle
       // scaling along segment and fraction to give to each end
-      this._ramp = new Ramp(tempRamp.type,0,1,0,1);
+      this._ramp = new Ramp(tempRamp.Type,0,1,0,1);
     }
 
 
