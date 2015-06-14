@@ -124,7 +124,6 @@ grunt.initConfig({
 
 
 grunt.registerTask('test', [
-  'build',
   'typescript:tests',
   'simplemocha:all'
 ]);
