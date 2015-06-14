@@ -15,13 +15,20 @@ describe('Ramp', () => {
   it('Construct', () => {
     var r1: Spatial.Ramp = new Spatial.Ramp();
     r1.Type.should.be.a.String.and.be.exactly('easeOutQuad');
-    //true.should.be.exactly(false);
   });
   it('Clone', () => {
     var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
     var clone = r.Clone();
     r.Equal(clone).should.be.true;
-    //true.should.be.exactly(false);
+  });
+  it('Build', () => {
+    var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+    var rA = Spatial.Ramp.Build(r);
+    r.Equal(rA).should.be.true;
+    var rB = Spatial.Ramp.Build();
+    should.exist(rB);
+    var rC = Spatial.Ramp.Build('linear');
+    should.exist(rC);
   });
   describe('Basic', () => {
     it('Linear', () => {

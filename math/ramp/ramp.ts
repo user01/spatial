@@ -109,7 +109,9 @@ module Spatial {
       if (r == null) {
         return new Ramp();//default values
       } else if (typeof r == 'string') {
-        return Ramp.FromStr(<string>r);
+        return ((<string>r).indexOf('{') == 0) ?
+          Ramp.FromStr(<string>r) :
+          new Ramp(<string>r);
       }
       return <Ramp>r;
     }
