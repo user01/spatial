@@ -33,14 +33,19 @@ module Spatial {
       this.validateSelf();
     }
 
+    private static defaultEasingFunction: string = 'easeOutQuad';
     constructor(
-      private _type: string = 'easeOutQuad',
+      private _type: string = Ramp.defaultEasingFunction,
       private _valueStart: number = 1,
       private _valueEnd: number = 0,
       private _rangeStart: number = 0,
       private _rangeEnd: number = 10
       ) {
       this.validateSelf();
+      //check if type really exists. otherwise, fall back to easeOut
+      if (!Ramp.EasingFunctions[this._type]) {
+        this._type = Ramp.defaultEasingFunction;
+      }
     }
 
     private validateSelf = (): void => {
