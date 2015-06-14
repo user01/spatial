@@ -30,6 +30,85 @@ describe('Ramp', () => {
     var rC = Spatial.Ramp.Build('linear');
     should.exist(rC);
   });
+  it('Bad type', () => {
+    var rC = Spatial.Ramp.Build('mittens');
+    rC.Type.should.be.exactly('easeOutQuad');
+  });
+  describe('Setting new values', () => {
+
+    it('Type', () => {
+      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var rT = r.SetType('easeOutQuad');
+      r.Type.should.be.exactly('linear');
+      rT.Type.should.be.exactly('easeOutQuad');
+      r.ValueStart.should.be.exactly(-1);
+      rT.ValueStart.should.be.exactly(-1);
+      r.ValueEnd.should.be.exactly(1);
+      rT.ValueEnd.should.be.exactly(1);
+      r.RangeStart.should.be.exactly(0);
+      rT.RangeStart.should.be.exactly(0);
+      r.RangeEnd.should.be.exactly(10);
+      rT.RangeEnd.should.be.exactly(10);
+    });
+    it('ValueStart', () => {
+      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var rT = r.SetValueStart(-2);
+      r.Type.should.be.exactly('linear');
+      rT.Type.should.be.exactly('linear');
+      r.ValueStart.should.be.exactly(-1);
+      rT.ValueStart.should.be.exactly(-2);
+      r.ValueEnd.should.be.exactly(1);
+      rT.ValueEnd.should.be.exactly(1);
+      r.RangeStart.should.be.exactly(0);
+      rT.RangeStart.should.be.exactly(0);
+      r.RangeEnd.should.be.exactly(10);
+      rT.RangeEnd.should.be.exactly(10);
+    });
+    it('ValueEnd', () => {
+      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var rT = r.SetValueEnd(2);
+      r.Type.should.be.exactly('linear');
+      rT.Type.should.be.exactly('linear');
+      r.ValueStart.should.be.exactly(-1);
+      rT.ValueStart.should.be.exactly(-1);
+      r.ValueEnd.should.be.exactly(1);
+      rT.ValueEnd.should.be.exactly(2);
+      r.RangeStart.should.be.exactly(0);
+      rT.RangeStart.should.be.exactly(0);
+      r.RangeEnd.should.be.exactly(10);
+      rT.RangeEnd.should.be.exactly(10);
+    });
+    
+    it('RangeStart', () => {
+      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var rT = r.SetRangeStart(5);
+      r.Type.should.be.exactly('linear');
+      rT.Type.should.be.exactly('linear');
+      r.ValueStart.should.be.exactly(-1);
+      rT.ValueStart.should.be.exactly(-1);
+      r.ValueEnd.should.be.exactly(1);
+      rT.ValueEnd.should.be.exactly(1);
+      r.RangeStart.should.be.exactly(0);
+      rT.RangeStart.should.be.exactly(5);
+      r.RangeEnd.should.be.exactly(10);
+      rT.RangeEnd.should.be.exactly(10);
+    });
+    
+    it('RangeEnd', () => {
+      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var rT = r.SetRangeEnd(20);
+      r.Type.should.be.exactly('linear');
+      rT.Type.should.be.exactly('linear');
+      r.ValueStart.should.be.exactly(-1);
+      rT.ValueStart.should.be.exactly(-1);
+      r.ValueEnd.should.be.exactly(1);
+      rT.ValueEnd.should.be.exactly(1);
+      r.RangeStart.should.be.exactly(0);
+      rT.RangeStart.should.be.exactly(0);
+      r.RangeEnd.should.be.exactly(10);
+      rT.RangeEnd.should.be.exactly(20);
+    });
+  });
   describe('Basic', () => {
     it('Linear', () => {
       var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);

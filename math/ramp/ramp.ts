@@ -12,27 +12,6 @@ module Spatial {
     public get Duration(): number { return this._rangeEnd - this._rangeStart; }
     public get ValueChange(): number { return this._valueEnd - this._valueStart; }
 
-    public set Type(newType: string) {
-      this._type = newType;
-      this.validateSelf();
-    }
-    public set ValueStart(newValue: number) {
-      this._valueStart = newValue;
-      this.validateSelf();
-    }
-    public set ValueEnd(newValue: number) {
-      this._valueEnd = newValue;
-      this.validateSelf();
-    }
-    public set RangeStart(newValue: number) {
-      this._rangeStart = newValue;
-      this.validateSelf();
-    }
-    public set RangeEnd(newValue: number) {
-      this._rangeEnd = newValue;
-      this.validateSelf();
-    }
-
     private static defaultEasingFunction: string = 'easeOutQuad';
     constructor(
       private _type: string = Ramp.defaultEasingFunction,
@@ -41,15 +20,11 @@ module Spatial {
       private _rangeStart: number = 0,
       private _rangeEnd: number = 10
       ) {
-      this.validateSelf();
+      if (this._rangeStart > this._rangeEnd) this._rangeEnd = this._rangeStart;
       //check if type really exists. otherwise, fall back to easeOut
       if (!Ramp.EasingFunctions[this._type]) {
         this._type = Ramp.defaultEasingFunction;
       }
-    }
-
-    private validateSelf = (): void => {
-      if (this._rangeStart > this._rangeEnd) this._rangeEnd = this._rangeStart;
     }
 
     public ValueAt = (location: number): number => {
@@ -58,6 +33,34 @@ module Spatial {
 
     public Equal = (b: Ramp): boolean => {
       return Ramp.Equal(this, b);
+    }
+
+    public SetType = (type:string):Ramp => {
+      return Ramp.AlterValue(this,0,type);
+    }
+    public SetValueStart = (value:number):Ramp => {
+      return Ramp.AlterValue(this,1,value);
+    }
+    public SetValueEnd = (value:number):Ramp => {
+      return Ramp.AlterValue(this,2,value);
+    }
+    public SetRangeStart = (value:number):Ramp => {
+      return Ramp.AlterValue(this,3,value);
+    }
+    public SetRangeEnd = (value:number):Ramp => {
+      return Ramp.AlterValue(this,4,value);
+    }
+    
+    public ToArray = ():[string,number,number,number,number] => {
+      return [this.Type,this.ValueStart,this.ValueEnd,this.RangeStart,this.RangeEnd];
+    }
+    public static FromArray = (arr:[string,number,number,number,number]):Ramp => {
+      return new Ramp(arr[0],arr[1],arr[2],arr[3],arr[4]);
+    }
+    public static AlterValue = (ramp:Ramp, index:number,value:any):Ramp => {
+      var arr = ramp.ToArray();
+      arr[index] = value;
+      return Ramp.FromArray(arr);
     }
 
     public ToObj = (): any => {
