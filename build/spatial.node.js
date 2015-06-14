@@ -5,7 +5,7 @@ var Spatial;
     var Ramp = (function () {
         function Ramp(_type, _valueStart, _valueEnd, _rangeStart, _rangeEnd) {
             var _this = this;
-            if (_type === void 0) { _type = 'easeOutQuad'; }
+            if (_type === void 0) { _type = Ramp.defaultEasingFunction; }
             if (_valueStart === void 0) { _valueStart = 1; }
             if (_valueEnd === void 0) { _valueEnd = 0; }
             if (_rangeStart === void 0) { _rangeStart = 0; }
@@ -15,15 +15,29 @@ var Spatial;
             this._valueEnd = _valueEnd;
             this._rangeStart = _rangeStart;
             this._rangeEnd = _rangeEnd;
-            this.validateSelf = function () {
-                if (_this._rangeStart > _this._rangeEnd)
-                    _this._rangeEnd = _this._rangeStart;
-            };
             this.ValueAt = function (location) {
                 return Ramp.ValueAtStatic(_this, location);
             };
             this.Equal = function (b) {
                 return Ramp.Equal(_this, b);
+            };
+            this.SetType = function (type) {
+                return Ramp.AlterValue(_this, 0, type);
+            };
+            this.SetValueStart = function (value) {
+                return Ramp.AlterValue(_this, 1, value);
+            };
+            this.SetValueEnd = function (value) {
+                return Ramp.AlterValue(_this, 2, value);
+            };
+            this.SetRangeStart = function (value) {
+                return Ramp.AlterValue(_this, 3, value);
+            };
+            this.SetRangeEnd = function (value) {
+                return Ramp.AlterValue(_this, 4, value);
+            };
+            this.ToArray = function () {
+                return [_this.Type, _this.ValueStart, _this.ValueEnd, _this.RangeStart, _this.RangeEnd];
             };
             this.ToObj = function () {
                 return {
@@ -40,50 +54,35 @@ var Spatial;
             this.Clone = function () {
                 return Ramp.CloneRamp(_this);
             };
-            this.validateSelf();
+            if (this._rangeStart > this._rangeEnd)
+                this._rangeEnd = this._rangeStart;
+            //check if type really exists. otherwise, fall back to easeOut
+            if (!Ramp.EasingFunctions[this._type]) {
+                this._type = Ramp.defaultEasingFunction;
+            }
         }
         Object.defineProperty(Ramp.prototype, "Type", {
             get: function () { return this._type; },
-            set: function (newType) {
-                this._type = newType;
-                this.validateSelf();
-            },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(Ramp.prototype, "ValueStart", {
             get: function () { return this._valueStart; },
-            set: function (newValue) {
-                this._valueStart = newValue;
-                this.validateSelf();
-            },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(Ramp.prototype, "ValueEnd", {
             get: function () { return this._valueEnd; },
-            set: function (newValue) {
-                this._valueEnd = newValue;
-                this.validateSelf();
-            },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(Ramp.prototype, "RangeStart", {
             get: function () { return this._rangeStart; },
-            set: function (newValue) {
-                this._rangeStart = newValue;
-                this.validateSelf();
-            },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(Ramp.prototype, "RangeEnd", {
             get: function () { return this._rangeEnd; },
-            set: function (newValue) {
-                this._rangeEnd = newValue;
-                this.validateSelf();
-            },
             enumerable: true,
             configurable: true
         });
@@ -97,6 +96,15 @@ var Spatial;
             enumerable: true,
             configurable: true
         });
+        Ramp.defaultEasingFunction = 'easeOutQuad';
+        Ramp.FromArray = function (arr) {
+            return new Ramp(arr[0], arr[1], arr[2], arr[3], arr[4]);
+        };
+        Ramp.AlterValue = function (ramp, index, value) {
+            var arr = ramp.ToArray();
+            arr[index] = value;
+            return Ramp.FromArray(arr);
+        };
         Ramp.FromObj = function (obj) {
             return new Ramp(obj.t, obj.vs, obj.ve, obj.rs, obj.re);
         };
@@ -130,7 +138,9 @@ var Spatial;
                 return new Ramp(); //default values
             }
             else if (typeof r == 'string') {
-                return Ramp.FromStr(r);
+                return (r.indexOf('{') == 0) ?
+                    Ramp.FromStr(r) :
+                    new Ramp(r);
             }
             return r;
         };
