@@ -5,85 +5,85 @@
 module Spatial {
 
   export class SegmentSet implements
-          IRanged, IEquality<SegmentSet>, ISerializable {
+    IRanged, IEquality<SegmentSet>, ISerializable {
 
-    private _dimension:number=0;
-    public get Dimension():number {
+    private _dimension: number = 0;
+    public get Dimension(): number {
       return this._dimension;
     }
 
-    constructor(private segments:Array<Segment>){
+    constructor(private segments: Array<Segment>) {
       if ((segments === void 0) || segments.length < 1)
         throw new RangeException();
       this._dimension = segments[0].Dimension;
 
       // Ensure all dimensions match
-      for(var i=0; i < this.segments.length; i++){
-        if (segments[i].Dimension != this._dimension){
+      for (var i = 0; i < this.segments.length; i++) {
+        if (segments[i].Dimension != this._dimension) {
           throw new RangeException();
         }
       }
     }
 
-    public DistanceTo = (v:Vector):number => {
+    public DistanceTo = (v: Vector): number => {
       return this.closestVectorDistanceIntensity(v)[1];
     }
-    public IntensityAt = (v:Vector):number => {
+    public IntensityAt = (v: Vector): number => {
       return this.closestVectorDistanceIntensity(v)[2];
     }
-    public ClosestVector = (v:Vector):Vector => {
+    public ClosestVector = (v: Vector): Vector => {
       return this.closestVectorDistanceIntensity(v)[0];
     }
 
-    public Clone = ():SegmentSet => {
+    public Clone = (): SegmentSet => {
       return SegmentSet.CloneStatic(this);
     }
-    public Equal(ss:SegmentSet):boolean {
-      return SegmentSet.EqualStatic(this,ss);
+    public Equal(ss: SegmentSet): boolean {
+      return SegmentSet.EqualStatic(this, ss);
     }
-    public ToObj():any {
+    public ToObj(): any {
       return {
-        s:this.segments.map((s:Segment):any=>{ return s.ToObj(); })
+        s: this.segments.map((s: Segment): any=> { return s.ToObj(); })
       };
     }
-    public ToStr = ():string => {
+    public ToStr = (): string => {
       return JSON.stringify(this.ToObj());
     }
 
-    public static FromObj = (obj:any):SegmentSet => {
-      var segs = obj.s.map((s:any):Segment=>{
-          return Segment.FromObj(s);
-        });
+    public static FromObj = (obj: any): SegmentSet => {
+      var segs = obj.s.map((s: any): Segment=> {
+        return Segment.FromObj(s);
+      });
       return new SegmentSet(segs);
     }
 
-    public static FromStr = (str:string):SegmentSet => {
+    public static FromStr = (str: string): SegmentSet => {
       return SegmentSet.FromObj(JSON.parse(str));
     }
 
-    public static CloneStatic = (ss:SegmentSet):SegmentSet => {
+    public static CloneStatic = (ss: SegmentSet): SegmentSet => {
       return SegmentSet.FromObj(ss.ToObj());
     }
 
-    public static EqualStatic = (ssA:SegmentSet,ssB:SegmentSet):boolean => {
+    public static EqualStatic = (ssA: SegmentSet, ssB: SegmentSet): boolean => {
       if (ssA.segments.length != ssB.segments.length) return false;
-      for (var i=0;i<ssA.segments.length;i++){
+      for (var i = 0; i < ssA.segments.length; i++) {
         if (!ssA.segments[i].Equal(ssB.segments[i])) return false;
       }
       return true;
     }
 
-    public static Merge = (ssA:SegmentSet,ssB:SegmentSet):SegmentSet => {
+    public static Merge = (ssA: SegmentSet, ssB: SegmentSet): SegmentSet => {
       if (ssA.Dimension != ssB.Dimension) throw new RangeException();
       return new SegmentSet(ssA.segments.concat(ssB.segments));
     }
 
-    protected closestVectorDistanceIntensity = (v:Vector):[Vector,number,number] => {
+    protected closestVectorDistanceIntensity = (v: Vector): [Vector, number, number]=> {
       var closestVectorFound = null;
       var closestDistance = Number.MAX_VALUE;
       var closestIntensity = 0;
 
-      for(var i=0; i < this.segments.length; i++){
+      for (var i = 0; i < this.segments.length; i++) {
         var computedVector = this.segments[i].ClosestVector(v);
         var computedDistance = this.segments[i].DistanceTo(v);
         if (closestVectorFound == null || computedDistance < closestDistance) {
@@ -92,7 +92,7 @@ module Spatial {
           closestIntensity = this.segments[i].IntensityAt(computedVector);
         }
       }
-      return [closestVectorFound,closestDistance,closestIntensity];
+      return [closestVectorFound, closestDistance, closestIntensity];
     }
   }
 

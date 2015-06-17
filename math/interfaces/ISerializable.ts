@@ -1,7 +1,7 @@
 
 module Spatial {
   export interface ISerializable {
-    ToObj():any;
-    ToStr():string;
+    ToObj(): any;
+    ToStr(): string;
   }
 }

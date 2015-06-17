@@ -35,29 +35,29 @@ module Spatial {
       return Ramp.Equal(this, b);
     }
 
-    public SetType = (type:string):Ramp => {
-      return Ramp.AlterValue(this,0,type);
+    public SetType = (type: string): Ramp => {
+      return Ramp.AlterValue(this, 0, type);
     }
-    public SetValueStart = (value:number):Ramp => {
-      return Ramp.AlterValue(this,1,value);
+    public SetValueStart = (value: number): Ramp => {
+      return Ramp.AlterValue(this, 1, value);
     }
-    public SetValueEnd = (value:number):Ramp => {
-      return Ramp.AlterValue(this,2,value);
+    public SetValueEnd = (value: number): Ramp => {
+      return Ramp.AlterValue(this, 2, value);
     }
-    public SetRangeStart = (value:number):Ramp => {
-      return Ramp.AlterValue(this,3,value);
+    public SetRangeStart = (value: number): Ramp => {
+      return Ramp.AlterValue(this, 3, value);
     }
-    public SetRangeEnd = (value:number):Ramp => {
-      return Ramp.AlterValue(this,4,value);
+    public SetRangeEnd = (value: number): Ramp => {
+      return Ramp.AlterValue(this, 4, value);
     }
-    
-    public ToArray = ():[string,number,number,number,number] => {
-      return [this.Type,this.ValueStart,this.ValueEnd,this.RangeStart,this.RangeEnd];
+
+    public ToArray = (): [string, number, number, number, number]=> {
+      return [this.Type, this.ValueStart, this.ValueEnd, this.RangeStart, this.RangeEnd];
     }
-    public static FromArray = (arr:[string,number,number,number,number]):Ramp => {
-      return new Ramp(arr[0],arr[1],arr[2],arr[3],arr[4]);
+    public static FromArray = (arr: [string, number, number, number, number]): Ramp => {
+      return new Ramp(arr[0], arr[1], arr[2], arr[3], arr[4]);
     }
-    public static AlterValue = (ramp:Ramp, index:number,value:any):Ramp => {
+    public static AlterValue = (ramp: Ramp, index: number, value: any): Ramp => {
       var arr = ramp.ToArray();
       arr[index] = value;
       return Ramp.FromArray(arr);
