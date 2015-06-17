@@ -71,7 +71,7 @@ module Spatial {
     public Scale = (factor:number):Segment => {
       return Segment.Scale(this,factor);
     }
-    public Equal = (s:Segment):boolean => {
+    public Equal(s:Segment):boolean {
       return Segment.EqualStatic(this,s);
     }
 
@@ -96,7 +96,7 @@ module Spatial {
       return vOnSegment.DistanceTo(v);
     }
 
-    public ToObj = ():any => {
+    public ToObj():any {
       return {
         t:this.Dimension,
         b:this.Base.ToObj(),

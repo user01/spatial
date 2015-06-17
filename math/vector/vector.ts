@@ -37,7 +37,7 @@ module Spatial {
       return str + ']';
     }
 
-    public ToObj = ():any => {
+    public ToObj():any {
       return {
         t:this.Dimension,
         v:this._values,
@@ -65,7 +65,7 @@ module Spatial {
       return Vector.FromObj(JSON.parse(str));
     }
 
-    public Equal = (v:Vector):boolean => {
+    public Equal(v:Vector):boolean {
       return Vector.EqualStatic(this,v);
     }
 

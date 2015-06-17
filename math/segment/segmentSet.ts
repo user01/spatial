@@ -38,10 +38,10 @@ module Spatial {
     public Clone = ():SegmentSet => {
       return SegmentSet.CloneStatic(this);
     }
-    public Equal = (ss:SegmentSet):boolean => {
+    public Equal(ss:SegmentSet):boolean {
       return SegmentSet.EqualStatic(this,ss);
     }
-    public ToObj = ():any => {
+    public ToObj():any {
       return {
         s:this.segments.map((s:Segment):any=>{ return s.ToObj(); })
       };

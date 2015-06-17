@@ -31,7 +31,7 @@ module Spatial {
       return Ramp.ValueAtStatic(this, location);
     }
 
-    public Equal = (b: Ramp): boolean => {
+    public Equal(b: Ramp): boolean {
       return Ramp.Equal(this, b);
     }
 
@@ -63,7 +63,7 @@ module Spatial {
       return Ramp.FromArray(arr);
     }
 
-    public ToObj = (): any => {
+    public ToObj(): any {
       return {
         vs: this._valueStart,
         ve: this._valueEnd,
