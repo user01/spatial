@@ -26,13 +26,13 @@ module Spatial {
     }
 
     public DistanceTo = (v:Vector):number => {
-      return this.closestVectorDistanceIntensity(v)[1];
+      return this.closestVectorDistance(v)[1];
     }
     public IntensityAt = (v:Vector):number => {
-      return this.closestVectorDistanceIntensity(v)[2];
+      return this.closestVectorIntensity(v)[1];
     }
     public ClosestVector = (v:Vector):Vector => {
-      return this.closestVectorDistanceIntensity(v)[0];
+      return this.closestVectorDistance(v)[0];
     }
 
     public Clone = ():SegmentSet => {
@@ -78,10 +78,9 @@ module Spatial {
       return new SegmentSet(ssA.segments.concat(ssB.segments));
     }
 
-    protected closestVectorDistanceIntensity = (v:Vector):[Vector,number,number] => {
+    protected closestVectorDistance = (v:Vector):[Vector,number] => {
       var closestVectorFound = null;
       var closestDistance = Number.MAX_VALUE;
-      var closestIntensity = 0;
 
       for(var i=0; i < this.segments.length; i++){
         var computedVector = this.segments[i].ClosestVector(v);
@@ -89,10 +88,23 @@ module Spatial {
         if (closestVectorFound == null || computedDistance < closestDistance) {
           closestVectorFound = computedVector;
           closestDistance = computedDistance;
-          closestIntensity = this.segments[i].IntensityAt(computedVector);
         }
       }
-      return [closestVectorFound,closestDistance,closestIntensity];
+      return [closestVectorFound,closestDistance];
+    }
+    protected closestVectorIntensity = (v:Vector):[Vector,number] => {
+      var bestVectorFound = null;
+      var highestIntensity = Number.MIN_VALUE;
+
+      for(var i=0; i < this.segments.length; i++){
+        var highestVector = this.segments[i].ClosestVector(v);
+        var computedIntensity = this.segments[i].IntensityAt(v);
+        if (bestVectorFound == null || computedIntensity > highestIntensity) {
+          bestVectorFound = highestVector;
+          highestIntensity = computedIntensity;
+        }
+      }
+      return [bestVectorFound,highestIntensity];
     }
   }
 
