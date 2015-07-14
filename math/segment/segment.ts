@@ -37,7 +37,7 @@ module Segment {
       r: Ramp|string = null) {
       if (!this._base || !this._tip ||
         (this._base.Dimension != this._tip.Dimension)) {
-        throw new RangeException();
+        throw 'Dimension Mismatch';
       }
       var tempRamp = Ramp.Build(r);
       //force the new ramp to conform to the 0,1 0,1 to handle
@@ -95,7 +95,7 @@ module Segment {
       return new SegmentBase(s.Base.Clone(), newTip);
     }
     public static Push = (s: SegmentBase, v: Vector.VectorBase): SegmentBase => {
-      if (s.Dimension != v.Dimension) throw new RangeException();
+      if (s.Dimension != v.Dimension) throw 'Dimension Mismatch';
       return new SegmentBase(Vector.VectorBase.Add(s.Base, v), Vector.VectorBase.Add(s.Tip, v));
     }
     public static DistanceToStatic = (s: SegmentBase, v: Vector.VectorBase): number => {
@@ -119,7 +119,7 @@ module Segment {
 
     private static DimensionCheck = (s: SegmentBase, v: Vector.VectorBase): boolean => {
       if (s.Dimension != v.Dimension)
-        throw new RangeException();
+        throw 'Dimension Mismatch';
       return true;
     }
 
@@ -233,13 +233,13 @@ module Segment {
 
     constructor(private segments: Array<SegmentBase>) {
       if ((segments === void 0) || segments.length < 1)
-        throw new RangeException();
+        throw 'Dimension Mismatch';
       this._dimension = segments[0].Dimension;
 
       // Ensure all dimensions match
       for (var i = 0; i < this.segments.length; i++) {
         if (segments[i].Dimension != this._dimension) {
-          throw new RangeException();
+          throw 'Dimension Mismatch';
         }
       }
     }
@@ -293,7 +293,7 @@ module Segment {
     }
 
     public static Merge = (ssA: SegmentSet, ssB: SegmentSet): SegmentSet => {
-      if (ssA.Dimension != ssB.Dimension) throw new RangeException();
+      if (ssA.Dimension != ssB.Dimension) throw 'Dimension Mismatch';
       return new SegmentSet(ssA.segments.concat(ssB.segments));
     }
 

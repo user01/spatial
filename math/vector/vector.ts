@@ -25,7 +25,7 @@ module Vector {
 
     constructor(valueSet: Array<number>, r: Ramp|string = null) {
       if (valueSet.length < 1 || valueSet.length > 4) {
-        throw new RangeException();
+        throw 'Dimension Mismatch';
       }
       this._ramp = Ramp.Build(r);
       this._values = new Float32Array(valueSet);
@@ -76,7 +76,7 @@ module Vector {
 
     public DistanceTo(v: VectorBase): number {
       return VectorBase.DistanceToStatic(this, v);
-    };
+    }
     public IntensityAt = (v: VectorBase): number => {
       return this.Ramp.ValueAt(this.DistanceTo(v));
     };
@@ -140,7 +140,7 @@ module Vector {
 
     private static DimensionCheck = (v1: VectorBase, v2: VectorBase): boolean => {
       if (v1.Dimension != v2.Dimension)
-        throw new RangeException();
+        throw 'Dimension Mismatch';
       return true;
     }
 
@@ -168,7 +168,7 @@ module Vector {
       return Vector2.FromObj(JSON.parse(str));
     }
     public static Build = (values: Array<number>): Vector2 => {
-      if (values.length != 2) throw new RangeException();
+      if (values.length != 2) throw 'Dimension Mismatch';
       return new Vector2(values[0], values[1]);
     }
   }
@@ -200,7 +200,7 @@ module Vector {
       return new Vector3(x, y, z, vA.Ramp.Clone());
     }
     public static Cast = (v: VectorBase): Vector3 => {
-      if (v.Values.length != 3) throw new RangeException();
+      if (v.Values.length != 3) throw 'Dimension Mismatch';
       return new Vector3(v.Values[0], v.Values[1], v.Values[2], v.Ramp);
     }
 
@@ -211,7 +211,7 @@ module Vector {
       return Vector3.FromObj(JSON.parse(str));
     }
     public static Build = (values: Array<number>): Vector3 => {
-      if (values.length != 3) throw new RangeException();
+      if (values.length != 3) throw 'Dimension Mismatch';
       return new Vector3(values[0], values[1], values[2]);
     }
   }
@@ -243,7 +243,7 @@ module Vector {
       return Vector4.FromObj(JSON.parse(str));
     }
     public static Build = (values: Array<number>): Vector4 => {
-      if (values.length != 4) throw new RangeException();
+      if (values.length != 4) throw 'Dimension Mismatch';
       return new Vector4(values[0], values[1], values[2], values[3]);
     }
   }

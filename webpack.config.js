@@ -5,7 +5,7 @@ module.exports = {
     //These "entry points" will both respectively import their Typescript aand less dependencies
     entry: {
         app: [
-            './tests/segment-tests.ts',
+            './math/main.ts',
         ]
     },
     //The output is a single bundle of js and css which is loaded by index.html
