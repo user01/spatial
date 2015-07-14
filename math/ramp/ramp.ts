@@ -94,7 +94,6 @@ class Ramp implements ISerializable, IEquality<Ramp> {
   public static ValueAtStatic = (ramp: Ramp, location: number): number => {
     if (location >= ramp.RangeEnd) return ramp.ValueEnd;
     if (location <= ramp.RangeStart) return ramp.ValueStart;
-    var fractionComplete = (location - ramp.RangeStart) / ramp.Duration;
     var currentTime = (location - ramp._rangeStart);
 
     return Ramp.Ease(ramp._type,
