@@ -5,7 +5,7 @@
   "main": "build/spatial.node.js",
   "scripts": {
     "test": "grunt test",
-    "debug": "grunt tests && node-debug _mocha --ui bdd --debug-brk --reporter dot ./tests/segment-tests.js"
+    "debug": "grunt test && node-debug _mocha --ui bdd --debug-brk --reporter dot ./tests/"
 
   },
   "repository": {
