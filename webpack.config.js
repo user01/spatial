@@ -4,7 +4,10 @@ module.exports = {
     //The sources of this app are made from a Typescript file and a Less file,
     //These "entry points" will both respectively import their Typescript aand less dependencies
     entry: {
-        app: [
+        browser: [
+            './math/browser.ts',
+        ],
+        node: [
             './math/main.ts',
         ]
     },
@@ -12,7 +15,7 @@ module.exports = {
     output: {
         path: './build/', //Path where bundle.js is generated on the file system
         publicPath: '', //Relative parent URL of the bundle
-        filename: 'spatial.min.js'
+        filename: 'spatial.[name].js'
     },
     //The list of extension that will be resolved for modules
     resolve: {
