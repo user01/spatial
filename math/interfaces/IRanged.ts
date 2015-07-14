@@ -1,9 +1,11 @@
 /// <reference path='../references.ts'/>
 
-module Spatial {
-  export interface IRanged {
-    DistanceTo(v:Vector):number;
-    IntensityAt(v:Vector):number;
-    ClosestVector(v:Vector):Vector;
-  }
+import Vector = require('../vector/vector');
+
+interface IRanged {
+  DistanceTo(v: Vector.VectorBase): number;
+  IntensityAt(v: Vector.VectorBase): number;
+  ClosestVector(v: Vector.VectorBase): Vector.VectorBase;
 }
+
+export = IRanged;

@@ -45,9 +45,9 @@ grunt.initConfig({
   typescript: {
     tests: {
       src: [
+        './math/**/*.ts',
         './tests/**/*.ts'
       ],
-      dest: buildDirectory + '/tests/run.js',
       options: typescriptPureOptions
     },
     node: {
@@ -71,7 +71,11 @@ grunt.initConfig({
     ],
     generated: [
       "./math/**/*.js",
-      "./tests/**/*.js"
+      "./math/**/*.js.map",
+      "./math/**/*.d.ts",
+      "./tests/**/*.js",
+      "./tests/**/*.js.map",
+      "./tests/**/*.d.ts",
     ],
   },
 
@@ -103,7 +107,8 @@ grunt.initConfig({
         ui: 'bdd',
         //reporter: 'dot'
       },
-    all: { src: [buildDirectory + 'tests/**/*.js'] }
+    all: { src: ['./tests/**/*.js'] },
+    // one: { src: ['./tests/segment-tests.js'] }
   },
 
   //*********************************
@@ -124,6 +129,7 @@ grunt.initConfig({
 
 
 grunt.registerTask('test', [
+  'clean',
   'typescript:tests',
   'simplemocha:all'
 ]);

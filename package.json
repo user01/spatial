@@ -4,7 +4,9 @@
   "description": "A Vector Math Library. Clarity and brevity over speed.",
   "main": "build/spatial.node.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "debug": "grunt tests && node-debug _mocha --ui bdd --debug-brk --reporter dot ./tests/segment-tests.js"
+
   },
   "repository": {
     "type": "git",
@@ -21,7 +23,11 @@
     "grunt-simple-mocha": "^0.4.0",
     "grunt-typescript": "^0.6.1",
     "load-grunt-tasks": "^3.1.0",
+    "mocha": "^2.2.5",
     "should": "^4.6.5",
-    "typescript": "^1.4.1"
+    "ts-loader": "^0.3.3",
+    "typescript": "^1.5.0-beta",
+    "webpack": "^1.8.4",
+    "webpack-dev-server": "^1.8.0"
   }
 }

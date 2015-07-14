@@ -1,0 +1,13 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  	"files.exclude": {
+      "math/**/*.js": false,
+      "math/**/*.d.ts": true,
+      "math/**/*.js.map": false,
+      "tests/**/*.js": false,
+      "tests/**/*.d.ts": true,
+      "tests/**/*.js.map": false,
+		  "**/.git": true,
+		  "**/.DS_Store": true
+	}
+}

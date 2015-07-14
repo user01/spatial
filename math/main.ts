@@ -1,3 +1,7 @@
 /// <reference path="references.ts" />
 
-module.exports = Spatial;
+import Ramp = require('./ramp/ramp');
+
+export = {
+  Ramp: Ramp
+};
