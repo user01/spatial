@@ -10,34 +10,35 @@ var should: Internal = require('should');
 var tolerance = 0.05;
 
 
+import Ramp = require('../math/ramp/ramp');
 
 describe('Ramp', () => {
   it('Construct', () => {
-    var r1: Spatial.Ramp = new Spatial.Ramp();
+    var r1: Ramp = new Ramp();
     r1.Type.should.be.a.String.and.be.exactly('easeOutQuad');
   });
   it('Clone', () => {
-    var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+    var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
     var clone = r.Clone();
     r.Equal(clone).should.be.true;
   });
   it('Build', () => {
-    var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
-    var rA = Spatial.Ramp.Build(r);
+    var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
+    var rA = Ramp.Build(r);
     r.Equal(rA).should.be.true;
-    var rB = Spatial.Ramp.Build();
+    var rB = Ramp.Build();
     should.exist(rB);
-    var rC = Spatial.Ramp.Build('linear');
+    var rC = Ramp.Build('linear');
     should.exist(rC);
   });
   it('Bad type', () => {
-    var rC = Spatial.Ramp.Build('mittens');
+    var rC = Ramp.Build('mittens');
     rC.Type.should.be.exactly('easeOutQuad');
   });
   describe('Setting new values', () => {
 
     it('Type', () => {
-      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetType('easeOutQuad');
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('easeOutQuad');
@@ -51,7 +52,7 @@ describe('Ramp', () => {
       rT.RangeEnd.should.be.exactly(10);
     });
     it('ValueStart', () => {
-      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetValueStart(-2);
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('linear');
@@ -65,7 +66,7 @@ describe('Ramp', () => {
       rT.RangeEnd.should.be.exactly(10);
     });
     it('ValueEnd', () => {
-      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetValueEnd(2);
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('linear');
@@ -78,9 +79,9 @@ describe('Ramp', () => {
       r.RangeEnd.should.be.exactly(10);
       rT.RangeEnd.should.be.exactly(10);
     });
-    
+
     it('RangeStart', () => {
-      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetRangeStart(5);
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('linear');
@@ -93,9 +94,9 @@ describe('Ramp', () => {
       r.RangeEnd.should.be.exactly(10);
       rT.RangeEnd.should.be.exactly(10);
     });
-    
+
     it('RangeEnd', () => {
-      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetRangeEnd(20);
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('linear');
@@ -111,21 +112,21 @@ describe('Ramp', () => {
   });
   describe('Basic', () => {
     it('Linear', () => {
-      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
 
       r.ValueAt(0).should.be.approximately(-1, tolerance);
       r.ValueAt(10).should.be.approximately(1, tolerance);
       r.ValueAt(5).should.be.approximately(0, tolerance);
     });
     it('Serial', () => {
-      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
 
       var str = r.ToStr();
-      var rClone = Spatial.Ramp.FromStr(str);
+      var rClone = Ramp.FromStr(str);
       r.Equal(rClone).should.be.true;
     });
     it('Standard', () => {
-      var r: Spatial.Ramp = new Spatial.Ramp('easeOutQuad', -1, 1, 5, 15);
+      var r: Ramp = new Ramp('easeOutQuad', -1, 1, 5, 15);
 
       r.ValueAt(0).should.be.approximately(-1, tolerance);
       r.ValueAt(3).should.be.approximately(-1, tolerance);
@@ -138,7 +139,7 @@ describe('Ramp', () => {
       r.ValueAt(12).should.be.approximately(0.81, tolerance);
     });
     it('Value at Negatives', () => {
-      var r: Spatial.Ramp = new Spatial.Ramp('linear', -1, 1, -5, 15);
+      var r: Ramp = new Ramp('linear', -1, 1, -5, 15);
 
       r.ValueAt(-50).should.be.approximately(-1, tolerance);
       r.ValueAt(-5).should.be.approximately(-1, tolerance);
@@ -152,10 +153,10 @@ describe('Ramp', () => {
     });
   });
   describe('Mix', () => {
-    var Mix = Spatial.Ramp.Mix;
+    var Mix = Ramp.Mix;
     it('Simple', () => {
-      var r1: Spatial.Ramp = new Spatial.Ramp('linear', 0, 1, 0, 10);
-      var r2: Spatial.Ramp = new Spatial.Ramp('linear', 1, 2, 0, 10);
+      var r1: Ramp = new Ramp('linear', 0, 1, 0, 10);
+      var r2: Ramp = new Ramp('linear', 1, 2, 0, 10);
 
       //r1,r2,fraction 0-1,range
       var mix = Mix(r1, r2, 0, 0);
@@ -178,7 +179,7 @@ describe('Ramp', () => {
     });
   });
   describe('Ease', () => {
-    var Ease = Spatial.Ramp.Ease;
+    var Ease = Ramp.Ease;
     it('Default', () => {
       var result = Ease();
       result.should.be.a.Number.and.be.approximately(0, tolerance);
