@@ -10,7 +10,7 @@ var should: Internal = require('should');
 var tolerance = 0.05;
 
 
-import Ramp = require('../math/ramp/ramp');
+import Ramp = require('../math/ramp');
 
 describe('Ramp', () => {
   it('Construct', () => {

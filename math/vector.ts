@@ -1,11 +1,11 @@
 
-/// <reference path="../references.ts" />
+/// <reference path="./references.ts" />
 
-import Ramp = require('../ramp/ramp');
+import Ramp = require('./ramp');
 
-import IRanged = require('../interfaces/IRanged');
-import ISerializable = require('../interfaces/ISerializable');
-import IEquality = require('../interfaces/IEquality');
+import IRanged = require('./interfaces/IRanged');
+import ISerializable = require('./interfaces/ISerializable');
+import IEquality = require('./interfaces/IEquality');
 
 
 module Vector {

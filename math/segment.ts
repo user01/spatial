@@ -1,12 +1,12 @@
 
-/// <reference path="../references.ts" />
+/// <reference path="./references.ts" />
 
-import IRanged = require('../interfaces/IRanged');
-import ISerializable = require('../interfaces/ISerializable');
-import IEquality = require('../interfaces/IEquality');
+import IRanged = require('./interfaces/IRanged');
+import ISerializable = require('./interfaces/ISerializable');
+import IEquality = require('./interfaces/IEquality');
 
-import Vector = require('../vector/vector');
-import Ramp = require('../ramp/ramp');
+import Vector = require('./vector');
+import Ramp = require('./ramp');
 
 
 module Segment {

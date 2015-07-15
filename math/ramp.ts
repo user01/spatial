@@ -1,7 +1,7 @@
-/// <reference path='../references.ts'/>
+/// <reference path='./references.ts'/>
 
-import ISerializable = require('../interfaces/ISerializable');
-import IEquality = require('../interfaces/IEquality');
+import ISerializable = require('./interfaces/ISerializable');
+import IEquality = require('./interfaces/IEquality');
 
 class Ramp implements ISerializable, IEquality<Ramp> {
 

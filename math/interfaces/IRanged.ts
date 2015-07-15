@@ -1,6 +1,6 @@
 /// <reference path='../references.ts'/>
 
-import Vector = require('../vector/vector');
+import Vector = require('../vector');
 
 interface IRanged {
   DistanceTo(v: Vector.VectorBase): number;
