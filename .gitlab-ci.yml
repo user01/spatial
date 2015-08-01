@@ -1,0 +1,9 @@
+# Run basic tests
+Test:
+  script:
+  - npm install
+  - npm install grunt-cli
+  - npm test
+  tags:
+  except:
+  - tags
