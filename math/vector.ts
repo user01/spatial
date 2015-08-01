@@ -10,9 +10,9 @@ import IEquality = require('./interfaces/IEquality');
 
 module Vector {
   export class VectorBase implements IRanged, ISerializable, IEquality<VectorBase> {
-    protected _values: Float32Array;
+    protected _values: Array<number>;
 
-    public get Values(): Float32Array {
+    public get Values(): Array<number> {
       return this._values;
     }
     public get Dimension(): number {
@@ -28,7 +28,7 @@ module Vector {
         throw 'Dimension Mismatch';
       }
       this._ramp = Ramp.Build(r);
-      this._values = new Float32Array(valueSet);
+      this._values = valueSet;
     }
 
     public Clone = (): VectorBase => {
