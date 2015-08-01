@@ -131,7 +131,8 @@ grunt.initConfig({
 grunt.registerTask('test', [
   'clean',
   'typescript:tests',
-  'simplemocha:all'
+  'simplemocha:all',
+  'clean'
 ]);
 
 grunt.registerTask('production', [
