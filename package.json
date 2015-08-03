@@ -6,7 +6,6 @@
   "scripts": {
     "test": "grunt test",
     "debug": "grunt test && node-debug _mocha --ui bdd --debug-brk --reporter dot ./tests/"
-
   },
   "repository": {
     "type": "git",
@@ -14,7 +13,9 @@
   },
   "author": "Codex10",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "moment": "2.10.6"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
