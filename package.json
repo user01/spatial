@@ -5,7 +5,7 @@
   "main": "build/spatial.node.js",
   "scripts": {
     "test": "grunt test",
-    "debug": "grunt typescript:tests && node-debug _mocha --ui bdd --debug-brk --reporter dot ./tests/**/*.js"
+    "debug": "grunt clean && grunt typescript:tests && node-debug _mocha --ui bdd --debug-brk --reporter dot ./tests/**/*.js"
   },
   "repository": {
     "type": "git",
