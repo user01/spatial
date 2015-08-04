@@ -9,6 +9,7 @@ declare var it: any;
 var should: Internal = require('should');
 var tolerance = 0.05;
 
+import moment = require('moment');
 
 import Ramp = require('../math/ramp');
 
@@ -190,6 +191,84 @@ describe('Ramp.Ramp', () => {
       result.should.be.a.Number.and.be.approximately(0, tolerance);
       result = Ease('linear', 7.5, 10, -20, 10);
       result.should.be.a.Number.and.be.approximately(-5, tolerance);
+    });
+  });
+  describe('Falloff', () => {
+    it('Init', () => {
+      var falloff = new Ramp.Falloff([]);
+      falloff.Ramps.should.have.lengthOf(0);
+
+      falloff.ValueAt(0).should.be.approximately(1, tolerance, '0');
+      falloff.ValueAt(1).should.be.approximately(1, tolerance, '1');
+      falloff.ValueAt(2).should.be.approximately(1, tolerance);
+      falloff.ValueAt(190).should.be.approximately(1, tolerance);
+    });
+    it('Basic', () => {
+      var falloff = new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]);
+      falloff.Ramps.should.have.lengthOf(1);
+
+      falloff.ValueAt(0).should.be.approximately(4, tolerance, '0');
+      falloff.ValueAt(1).should.be.approximately(2, tolerance, '1');
+      falloff.ValueAt(2).should.be.approximately(0, tolerance);
+      falloff.ValueAt(190).should.be.approximately(0, tolerance);
+    });
+    it('Multiple', () => {
+      var falloff = new Ramp.Falloff([
+        new Ramp.Ramp('linear', 4, 0, 10, 20),
+        new Ramp.Ramp('linear', 50, 10, 15, 25)
+      ]);
+      falloff.Ramps.should.have.lengthOf(2);
+
+      falloff.ValueAt(0).should.be.approximately(4, tolerance, '0');
+      falloff.ValueAt(5).should.be.approximately(4, tolerance, '1');
+      falloff.ValueAt(10).should.be.approximately(4, tolerance);
+      falloff.ValueAt(15).should.be.approximately(2 * 50, tolerance);
+      falloff.ValueAt(20).should.be.approximately(0 * 30, tolerance);
+      falloff.ValueAt(25).should.be.approximately(10, tolerance);
+      falloff.ValueAt(225).should.be.approximately(10, tolerance);
+    });
+  });
+  describe('Decay', () => {
+    it('Init', () => {
+      var decay = new Ramp.Decay(moment.duration(2, 'hours'),
+        new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
+      decay.Falloff.Ramps.should.have.lengthOf(1);
+    });
+    it('Basic', () => {
+      var decay = new Ramp.Decay(moment.duration(2, 'hours'),
+        new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
+
+      var originDate: moment.Moment = moment("2015-08-04T00:00:00.000Z");
+      var currentDate: moment.Moment = moment("2015-08-04T00:00:00.000Z");
+      decay.ValueAt(originDate, currentDate).should.be.approximately(4, tolerance);
+
+      originDate = moment("2015-08-04T00:00:00.000Z");
+      currentDate = moment("2015-08-04T01:00:00.000Z");
+      decay.ValueAt(originDate, currentDate).should.be.approximately(2, tolerance);
+
+      originDate = moment("2015-08-04T00:00:00.000Z");
+      currentDate = moment("2015-08-04T02:00:00.000Z");
+      decay.ValueAt(originDate, currentDate).should.be.approximately(0, tolerance);
+
+      originDate = moment("2015-08-04T00:00:00.000Z");
+      currentDate = moment("2015-08-04T05:00:00.000Z");
+      decay.ValueAt(originDate, currentDate).should.be.approximately(0, tolerance);
+
+
+      originDate = moment("2015-08-04T00:00:00.000Z");
+      currentDate = moment("2015-08-03T23:00:00.000Z");
+      decay.ValueAt(originDate, currentDate).should.be.approximately(2, tolerance,'-1');
+
+      originDate = moment("2015-08-04T00:00:00.000Z");
+      currentDate = moment("2015-08-03T22:00:00.000Z");
+      decay.ValueAt(originDate, currentDate).should.be.approximately(0, tolerance, '-2');
+
+      originDate = moment("2015-08-04T00:00:00.000Z");
+      currentDate = moment("2015-08-01T22:00:00.000Z");
+      decay.ValueAt(originDate, currentDate).should.be.approximately(0, tolerance, '-many');
+
+    });
+    it('Multiple', () => {
     });
   });
 });
