@@ -206,14 +206,14 @@ module Ramp {
 
     public ToObj = (): any => {
       return {
-        r: R.map((ramp: Ramp): any=> { return ramp.ToObj(); })(this._ramps)
+        r: this._ramps.map((ramp: Ramp): any=> { return ramp.ToObj(); })
       };
     }
     public ToStr = (): string => {
       return JSON.stringify(this.ToObj());
     }
     public static FromObj = (obj: any): Falloff => {
-      var ramps = R.map(Ramp.FromObj)(obj.r);
+      var ramps = obj.r ? obj.r.map(Ramp.FromObj) : [];
       return new Falloff(ramps);
     }
     public static FromStr = (str: string): Falloff => {
@@ -225,8 +225,10 @@ module Ramp {
     }
     public static EqualStatic = (dt1: Falloff, dt2: Falloff): boolean => {
       if (dt1.Ramps.length != dt2.Ramps.length) return false;
-      var matches = R.zipWith(Ramp.Equal, dt1.Ramps, dt2.Ramps);
-      return R.all(R.identity)(matches);
+      for (var i = 0; i < dt1.Ramps.length; i++) {
+        if (!Ramp.Equal(dt1.Ramps[i], dt2.Ramps[i])) return false;
+      }
+      return true;
     }
 
     public static StandardRampSetRamps = (): Array<Ramp> => {
