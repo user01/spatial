@@ -12,33 +12,20 @@ var tolerance = 0.05;
 
 import Ramp = require('../math/ramp');
 
-describe('Ramp', () => {
+describe('Ramp.Ramp', () => {
   it('Construct', () => {
-    var r1: Ramp = new Ramp();
+    var r1: Ramp.Ramp = new Ramp.Ramp();
     r1.Type.should.be.a.String.and.be.exactly('easeOutQuad');
   });
   it('Clone', () => {
-    var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
+    var r: Ramp.Ramp = new Ramp.Ramp('linear', -1, 1, 0, 10);
     var clone = r.Clone();
     r.Equal(clone).should.be.true;
-  });
-  it('Build', () => {
-    var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
-    var rA = Ramp.Build(r);
-    r.Equal(rA).should.be.true;
-    var rB = Ramp.Build();
-    should.exist(rB);
-    var rC = Ramp.Build('linear');
-    should.exist(rC);
-  });
-  it('Bad type', () => {
-    var rC = Ramp.Build('mittens');
-    rC.Type.should.be.exactly('easeOutQuad');
   });
   describe('Setting new values', () => {
 
     it('Type', () => {
-      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp.Ramp = new Ramp.Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetType('easeOutQuad');
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('easeOutQuad');
@@ -52,7 +39,7 @@ describe('Ramp', () => {
       rT.RangeEnd.should.be.exactly(10);
     });
     it('ValueStart', () => {
-      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp.Ramp = new Ramp.Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetValueStart(-2);
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('linear');
@@ -66,7 +53,7 @@ describe('Ramp', () => {
       rT.RangeEnd.should.be.exactly(10);
     });
     it('ValueEnd', () => {
-      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp.Ramp = new Ramp.Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetValueEnd(2);
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('linear');
@@ -81,7 +68,7 @@ describe('Ramp', () => {
     });
 
     it('RangeStart', () => {
-      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp.Ramp = new Ramp.Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetRangeStart(5);
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('linear');
@@ -96,7 +83,7 @@ describe('Ramp', () => {
     });
 
     it('RangeEnd', () => {
-      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp.Ramp = new Ramp.Ramp('linear', -1, 1, 0, 10);
       var rT = r.SetRangeEnd(20);
       r.Type.should.be.exactly('linear');
       rT.Type.should.be.exactly('linear');
@@ -112,21 +99,21 @@ describe('Ramp', () => {
   });
   describe('Basic', () => {
     it('Linear', () => {
-      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp.Ramp = new Ramp.Ramp('linear', -1, 1, 0, 10);
 
       r.ValueAt(0).should.be.approximately(-1, tolerance);
       r.ValueAt(10).should.be.approximately(1, tolerance);
       r.ValueAt(5).should.be.approximately(0, tolerance);
     });
     it('Serial', () => {
-      var r: Ramp = new Ramp('linear', -1, 1, 0, 10);
+      var r: Ramp.Ramp = new Ramp.Ramp('linear', -1, 1, 0, 10);
 
       var str = r.ToStr();
-      var rClone = Ramp.FromStr(str);
+      var rClone = Ramp.Ramp.FromStr(str);
       r.Equal(rClone).should.be.true;
     });
     it('Standard', () => {
-      var r: Ramp = new Ramp('easeOutQuad', -1, 1, 5, 15);
+      var r: Ramp.Ramp = new Ramp.Ramp('easeOutQuad', -1, 1, 5, 15);
 
       r.ValueAt(0).should.be.approximately(-1, tolerance);
       r.ValueAt(3).should.be.approximately(-1, tolerance);
@@ -139,7 +126,7 @@ describe('Ramp', () => {
       r.ValueAt(12).should.be.approximately(0.81, tolerance);
     });
     it('Value at Negatives', () => {
-      var r: Ramp = new Ramp('linear', -1, 1, -5, 15);
+      var r: Ramp.Ramp = new Ramp.Ramp('linear', -1, 1, -5, 15);
 
       r.ValueAt(-50).should.be.approximately(-1, tolerance);
       r.ValueAt(-5).should.be.approximately(-1, tolerance);
@@ -153,10 +140,10 @@ describe('Ramp', () => {
     });
   });
   describe('Mix', () => {
-    var Mix = Ramp.Mix;
+    var Mix = Ramp.Ramp.Mix;
     it('Simple', () => {
-      var r1: Ramp = new Ramp('linear', 0, 1, 0, 10);
-      var r2: Ramp = new Ramp('linear', 1, 2, 0, 10);
+      var r1: Ramp.Ramp = new Ramp.Ramp('linear', 0, 1, 0, 10);
+      var r2: Ramp.Ramp = new Ramp.Ramp('linear', 1, 2, 0, 10);
 
       //r1,r2,fraction 0-1,range
       var mix = Mix(r1, r2, 0, 0);
@@ -179,7 +166,7 @@ describe('Ramp', () => {
     });
   });
   describe('Ease', () => {
-    var Ease = Ramp.Ease;
+    var Ease = Ramp.Ramp.Ease;
     it('Default', () => {
       var result = Ease();
       result.should.be.a.Number.and.be.approximately(0, tolerance);
