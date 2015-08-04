@@ -10,25 +10,18 @@ import IEquality = require('./interfaces/IEquality');
 
 module Vector {
   export class VectorBase implements IRanged, ISerializable, IEquality<VectorBase> {
-    protected _values: Array<number>;
 
-    public get Values(): Array<number> {
-      return this._values;
-    }
-    public get Dimension(): number {
-      return this._values.length;
-    }
-    protected _ramp: Ramp;
-    public get Ramp(): Ramp {
-      return this._ramp;
-    }
+    public get Values(): Array<number> { return this._values; }
+    public get Dimension(): number { return this._values.length; }
+    /** How the value responds over time and distance from the vector */
+    public get Factor(): Ramp.Factor { return this._factor; }
 
-    constructor(valueSet: Array<number>, r: Ramp|string = null) {
-      if (valueSet.length < 1 || valueSet.length > 4) {
+    constructor(protected _values: Array<number>,
+      private _factor: Ramp.Factor = Ramp.Factor.PermanentFactor()
+      ) {
+      if (this._values.length < 1 || this._values.length > 4) {
         throw 'Dimension Mismatch';
       }
-      this._ramp = Ramp.Build(r);
-      this._values = valueSet;
     }
 
     public Clone = (): VectorBase => {
@@ -46,7 +39,7 @@ module Vector {
       return {
         t: this.Dimension,
         v: this._values,
-        r: this.Ramp.ToObj()
+        f: this.Factor.ToObj()
       };
     }
 
@@ -63,7 +56,7 @@ module Vector {
         case 4:
           return Vector4.FromObj(obj);
       }
-      return new VectorBase(obj.v, Ramp.FromObj(obj.r));
+      return new VectorBase(obj.v, Ramp.Factor.FromObj(obj.f));
     }
 
     public static FromStr = (str: string): VectorBase => {
@@ -77,9 +70,26 @@ module Vector {
     public DistanceTo(v: VectorBase): number {
       return VectorBase.DistanceToStatic(this, v);
     }
-    public IntensityAt = (v: VectorBase): number => {
-      return this.Ramp.ValueAt(this.DistanceTo(v));
+    public IntensityAtDistance = (v: VectorBase): number => {
+      return this.Factor.IntensityAtDistance(this.DistanceTo(v));
     };
+    /** Intensity against time */
+    public IntensityAtTime = (originTime: moment.Moment, currentTime: moment.Moment): number => {
+      return this.Factor.IntensityAtTime(originTime, currentTime);
+    }
+    /** Intensity based on duration */
+    public IntensityAtDuration = (d: moment.Duration): number => {
+      return this.Factor.IntensityAtDuration(d);
+    }
+    /** Intensity based on distance and time */
+    public IntensityAtDistanceAndTime = (v: Vector.VectorBase, originTime: moment.Moment, currentTime: moment.Moment): number => {
+      return this.Factor.IntensityAtDistanceAndTime(this.DistanceTo(v), originTime, currentTime);
+    }
+    /** Intensity based on distance and duration */
+    public IntensityAtDistanceAndDuration = (v: Vector.VectorBase, d: moment.Duration): number => {
+      return this.Factor.IntensityAtDistanceAndDuration(this.DistanceTo(v), d);
+    }
+
     public ClosestVector = (v: VectorBase): VectorBase => {
       return this.Clone();
     };
@@ -101,7 +111,7 @@ module Vector {
       var values: Array<number> = new Array<number>();
       for (var i = 0; i < v1.Dimension; i++)
         values.push(v1.Values[i] + v2.Values[i]);
-      return new VectorBase(values, v1.Ramp.ToStr());
+      return new VectorBase(values, v1.Factor);
     }
 
     public static Subtract = (v1: VectorBase, v2: VectorBase): VectorBase => {
@@ -112,7 +122,7 @@ module Vector {
       var values: Array<number> = new Array<number>();
       for (var i = 0; i < v1.Dimension; i++)
         values.push(v1.Values[i] * factor);
-      return new VectorBase(values, v1.Ramp.ToStr());
+      return new VectorBase(values, v1.Factor);
     }
 
     public static Negate = (v1: VectorBase): VectorBase => {
@@ -121,7 +131,7 @@ module Vector {
 
     public static EqualStatic = (v1: VectorBase, v2: VectorBase): boolean => {
       if (v1.Dimension != v2.Dimension) return false;
-      if (!v1.Ramp.Equal(v2.Ramp)) return false;
+      if (!v1.Factor.Equal(v2.Factor)) return false;
       for (var i = 0; i < v1.Dimension; i++)
         //if (Math.abs(v1.values[i] - v2.values[i]) > common.MARGIN_OF_ERROR)
         if (Math.abs(v1.Values[i] - v2.Values[i]) > 0.05)
@@ -157,12 +167,12 @@ module Vector {
       return this._values[1];
     }
 
-    constructor(_x: number, _y: number, _ramp: string|Ramp = null) {
-      super([_x, _y], _ramp);
+    constructor(_x: number, _y: number, factor: Ramp.Factor = Ramp.Factor.PermanentFactor()) {
+      super([_x, _y], factor);
     }
 
     public static FromObj = (obj: any): Vector2 => {
-      return new Vector2(obj.v[0], obj.v[1], Ramp.FromObj(obj.r));
+      return new Vector2(obj.v[0], obj.v[1], Ramp.Factor.FromObj(obj.f));
     }
     public static FromStr = (str: string): Vector2 => {
       return Vector2.FromObj(JSON.parse(str));
@@ -185,8 +195,8 @@ module Vector {
       return this._values[2];
     }
 
-    constructor(_x: number, _y: number, _z: number, _ramp: string|Ramp = null) {
-      super([_x, _y, _z], _ramp);
+    constructor(_x: number, _y: number, _z: number, factor: Ramp.Factor = Ramp.Factor.PermanentFactor()) {
+      super([_x, _y, _z], factor);
     }
 
     public Cross = (vOther: Vector3): Vector3 => {
@@ -197,15 +207,15 @@ module Vector {
       var x = vA.y * vB.z - vA.z * vB.y;
       var y = vA.z * vB.x - vA.x * vB.z;
       var z = vA.x * vB.y - vA.y * vB.x;
-      return new Vector3(x, y, z, vA.Ramp.Clone());
+      return new Vector3(x, y, z, vA.Factor);
     }
     public static Cast = (v: VectorBase): Vector3 => {
       if (v.Values.length != 3) throw 'Dimension Mismatch';
-      return new Vector3(v.Values[0], v.Values[1], v.Values[2], v.Ramp);
+      return new Vector3(v.Values[0], v.Values[1], v.Values[2], v.Factor);
     }
 
     public static FromObj = (obj: any): Vector3 => {
-      return new Vector3(obj.v[0], obj.v[1], obj.v[2], Ramp.FromObj(obj.r));
+      return new Vector3(obj.v[0], obj.v[1], obj.v[2], Ramp.Factor.FromObj(obj.f));
     }
     public static FromStr = (str: string): Vector3 => {
       return Vector3.FromObj(JSON.parse(str));
@@ -232,12 +242,12 @@ module Vector {
       return this._values[3];
     }
 
-    constructor(_x: number, _y: number, _z: number, _w: number, _ramp: string|Ramp = null) {
-      super([_x, _y, _z, _w], _ramp);
+    constructor(_x: number, _y: number, _z: number, _w: number, factor: Ramp.Factor = Ramp.Factor.PermanentFactor()) {
+      super([_x, _y, _z, _w], factor);
     }
 
     public static FromObj = (obj: any): Vector4 => {
-      return new Vector4(obj.v[0], obj.v[1], obj.v[2], obj.v[3], Ramp.FromObj(obj.r));
+      return new Vector4(obj.v[0], obj.v[1], obj.v[2], obj.v[3], Ramp.Factor.FromObj(obj.f));
     }
     public static FromStr = (str: string): Vector4 => {
       return Vector4.FromObj(JSON.parse(str));
