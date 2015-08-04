@@ -101,7 +101,7 @@ module Ramp {
 
     /** Compute factor based on minute numbers */
     private valueAtMinutes(minutesDifference: number): number {
-      var fractionOfRangeConsumedByTime = minutesDifference / this._durationMinutes;
+      var fractionOfRangeConsumedByTime = Math.abs(minutesDifference) / this._durationMinutes;
       // includes 0, so will always base off the 0, not the start
       var fractionOfRange = fractionOfRangeConsumedByTime * this.Falloff.RangeEnd;
       var factor = this.Falloff.ValueAt(fractionOfRange);
