@@ -257,7 +257,7 @@ describe('Ramp.Ramp', () => {
 
       originDate = moment("2015-08-04T00:00:00.000Z");
       currentDate = moment("2015-08-03T23:00:00.000Z");
-      decay.ValueAt(originDate, currentDate).should.be.approximately(2, tolerance,'-1');
+      decay.ValueAt(originDate, currentDate).should.be.approximately(2, tolerance, '-1');
 
       originDate = moment("2015-08-04T00:00:00.000Z");
       currentDate = moment("2015-08-03T22:00:00.000Z");
@@ -268,7 +268,51 @@ describe('Ramp.Ramp', () => {
       decay.ValueAt(originDate, currentDate).should.be.approximately(0, tolerance, '-many');
 
     });
-    it('Multiple', () => {
+  });
+  describe('Factor', () => {
+    it('Init', () => {
+      var decay = new Ramp.Decay(moment.duration(2, 'hours'),
+        new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
+      var falloff = new Ramp.Falloff([new Ramp.Ramp('linear', 10, 2, 0, 4)]);
+      var factor = new Ramp.Factor(decay, falloff);
+      factor.Falloff.Ramps.should.have.lengthOf(1);
+
+    });
+    it('Basic', () => {
+      var decay = new Ramp.Decay(moment.duration(2, 'hours'),
+        new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
+      var falloff = new Ramp.Falloff([new Ramp.Ramp('linear', 10, 2, 0, 4)]);
+      var factor = new Ramp.Factor(decay, falloff);
+
+      factor.IntensityAtDistance(1).should.be.approximately(falloff.ValueAt(1), tolerance);
+      factor.IntensityAtDistance(20).should.be.approximately(falloff.ValueAt(20), tolerance);
+      factor.IntensityAtDistance(-51).should.be.approximately(falloff.ValueAt(-51), tolerance);
+      factor.IntensityAtDistance(0).should.be.approximately(falloff.ValueAt(0), tolerance);
+      factor.IntensityAtDistance(9032465.346).should.be.approximately(falloff.ValueAt(9032465.346), tolerance);
+
+
+      var duration = moment.duration(1, 'hours');
+      factor.IntensityAtDuration(duration).should.be.approximately(decay.ValueAfterDuration(duration), tolerance);
+      duration = moment.duration(2, 'hours');
+      factor.IntensityAtDuration(duration).should.be.approximately(decay.ValueAfterDuration(duration), tolerance);
+      duration = moment.duration(200, 'hours');
+      factor.IntensityAtDuration(duration).should.be.approximately(decay.ValueAfterDuration(duration), tolerance);
+      duration = moment.duration(24, 'hours');
+      factor.IntensityAtDuration(duration).should.be.approximately(decay.ValueAfterDuration(duration), tolerance);
+
+      var distance = 1;
+      duration = moment.duration(2, 'hours');
+      factor.IntensityAtDistanceAndDuration(distance, duration)
+        .should.be.approximately(
+          falloff.ValueAt(distance) * decay.ValueAfterDuration(duration), tolerance);
+
+
+      distance = 51;
+      duration = moment.duration(0.2, 'hours');
+      factor.IntensityAtDistanceAndDuration(distance, duration)
+        .should.be.approximately(
+          falloff.ValueAt(distance) * decay.ValueAfterDuration(duration), tolerance);
+
     });
   });
 });
