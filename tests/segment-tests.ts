@@ -276,36 +276,38 @@ describe('Segment', () => {
 
     });
 
-    // it('Intensity Simple', () => {
-    //   var ramp1 = new Ramp.Ramp('linear', 1, 2, 0, 1);
-    //   var s2: Segment.Segment2 = new Segment.Segment2(
-    //     new Vector.Vector2(0, 0, new Ramp.Factor(Ramp.Decay.PermanentDecay(), new Ramp.Falloff([ramp1]))),
-    //     new Vector.Vector2(10, 0, new Ramp.Factor(Ramp.Decay.PermanentDecay(), new Ramp.Falloff([new Ramp.Ramp('linear', -1, -2, 0, 1)]))),
-    //     new Ramp.Falloff([new Ramp.Ramp('linear')])
-    //     );
-    //   var ss: Segment.SegmentSet = new Segment.SegmentSet([s2]);
+    it('Intensity Simple', () => {
+      var ramp1 = new Ramp.Ramp('linear', 1, 2, 0, 1);
+      var ramp2 = new Ramp.Ramp('linear', -1, -2, 0, 1);
+      var s2: Segment.Segment2 = new Segment.Segment2(
+        new Vector.Vector2(0, 0, new Ramp.Factor(Ramp.Decay.PermanentDecay(), new Ramp.Falloff([ramp1]))),
+        new Vector.Vector2(10, 0, new Ramp.Factor(Ramp.Decay.PermanentDecay(), new Ramp.Falloff([ramp2]))),
+        new Ramp.Falloff([new Ramp.Ramp('linear', 0, 1, 0, 1)])
+        );
+      var ss: Segment.SegmentSet = new Segment.SegmentSet([s2]);
 
+      var v = new Vector.Vector2(-1, 0);
+      ss.DistanceTo(v).should.be.approximately(1, tolerance);
+      var rampValue = ramp1.ValueAt(1);
+      rampValue.should.be.approximately(2, tolerance, 'ramp1');
+      ss.IntensityAtDistance(v).should.be.approximately(2, tolerance, 'int at distance 1');
 
-    //   var v = new Vector.Vector2(-1, 0);
-    //   ss.DistanceTo(v).should.be.approximately(1, tolerance);
-    //   var rampValue = ramp1.ValueAt(1);
-    //   rampValue.should.be.approximately(2, tolerance);
-    //   ss.IntensityAtDistance(v).should.be.approximately(2, tolerance);
+      var v = new Vector.Vector2(-0.5, 0);
+      ss.IntensityAtDistance(v).should.be.approximately(1.5, tolerance, 'int at distance 2');
 
-    //   var v = new Vector.Vector2(-0.5, 0);
-    //   ss.IntensityAtDistance(v).should.be.approximately(1.5, tolerance);
+      var v = new Vector.Vector2(0, 0.5);
+      ss.IntensityAtDistance(v).should.be.approximately(1.5, tolerance, 'int at distance 3');
 
-    //   var v = new Vector.Vector2(0, 0.5);
-    //   ss.IntensityAtDistance(v).should.be.approximately(1.5, tolerance);
+      var v = new Vector.Vector2(10, 0.5);
+      ss.IntensityAtDistance(v).should.be.approximately(-1.5, tolerance, 'int at distance 4');
 
-    //   var v = new Vector.Vector2(10, 0.5);
-    //   ss.IntensityAtDistance(v).should.be.approximately(-1.5, tolerance);
+      var v = new Vector.Vector2(10.5, 0);
+      ss.IntensityAtDistance(v).should.be.approximately(-1.5, tolerance, 'int at distance 5');
 
-    //   var v = new Vector.Vector2(10.5, 0);
-    //   ss.IntensityAtDistance(v).should.be.approximately(-1.5, tolerance);
+      var v = new Vector.Vector2(5, 0);
+      ss.IntensityAtDistance(v).should.be.approximately(0, tolerance, 'int at distance 5');
 
-
-    // });
+    });
 
   });
 });
