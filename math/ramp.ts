@@ -63,8 +63,8 @@ module Ramp {
       return f1.Falloff.Equal(f2.Falloff);
     }
 
-    public static PermanentFactor = (): Factor => {
-      return new Factor(Decay.PermanentDecay(), Falloff.PermanentFalloff());
+    public static PermanentFactor = (value: number = 1): Factor => {
+      return new Factor(Decay.PermanentDecay(), Falloff.PermanentFalloff(value));
     }
 
 
@@ -238,8 +238,8 @@ module Ramp {
     public static StandardRampSet = (): Falloff => {
       return new Falloff(Falloff.StandardRampSetRamps());
     }
-    public static PermanentFalloff = (): Falloff => {
-      return new Falloff([new Ramp('linear', 1, 1)]);
+    public static PermanentFalloff = (value: number = 1): Falloff => {
+      return new Falloff([new Ramp('linear', value, value)]);
     }
     /** Simple linear fall from 1 to 0 */
     public static LinearFalloff = (): Falloff => {
