@@ -1,6 +1,6 @@
 {
   "name": "spatial",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A Vector Math Library. Clarity and brevity over speed.",
   "main": "build/spatial.node.js",
   "scripts": {
