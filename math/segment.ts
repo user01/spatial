@@ -37,7 +37,7 @@ module Segment {
 
     public DistanceTo = (v: Vector.VectorBase): number => {
       return SegmentBase.DistanceToStatic(this, v);
-    };
+    }
 
     /** Intensity from segment, only via distance
      * Uses segment falloff to mix between base and tip intensity
@@ -51,7 +51,7 @@ module Segment {
       var intensity = SegmentBase.MixIntensity(c1, c2, fractionForIntensity);
 
       return intensity;
-    };
+    }
 
     /** Intensity from segment, via distance and time difference */
     public IntensityAtDistanceAndTime(v: Vector.VectorBase, originTime: moment.Moment, currentTime: moment.Moment): number {
@@ -63,7 +63,7 @@ module Segment {
       var intensity = SegmentBase.MixIntensity(c1, c2, fractionForIntensity);
 
       return intensity;
-    };
+    }
 
     /** Intensity from segment, via distance and duration */
     public IntensityAtDistanceAndDuration(v: Vector.VectorBase, d: moment.Duration): number {
@@ -75,7 +75,7 @@ module Segment {
       var intensity = SegmentBase.MixIntensity(c1, c2, fractionForIntensity);
 
       return intensity;
-    };
+    }
 
     /** Computes the fraction between base/tip using the Falloff Mix */
     private fractionBetweenBaseAndTip(v: Vector.VectorBase): number {
@@ -98,7 +98,7 @@ module Segment {
       var t = this.closestFraction(v);
       var newSegment = this.Scale(t);
       return newSegment.Tip.Clone();
-    };
+    }
     private closestFraction = (v: Vector.VectorBase): number => {
       SegmentBase.DimensionCheck(this, v);
       var length = this.Length;
@@ -158,7 +158,7 @@ module Segment {
         b: this.Base.ToObj(),
         e: this.Tip.ToObj(),
         f: this.FalloffMix.ToObj()
-      };
+      }
     }
     public ToStr = (): string => {
       return JSON.stringify(this.ToObj());
@@ -305,19 +305,19 @@ module Segment {
      */
     public IntensityAtDistance(v: Vector.VectorBase): number {
       return this.closestVectorIntensityAtDistance(v)[1];
-    };
+    }
 
     /** Intensity from segment, via distance and time difference */
     public IntensityAtDistanceAndTime(v: Vector.VectorBase, originTime: moment.Moment, currentTime: moment.Moment): number {
       return this.closestVectorIntensityAtDistanceAndTime(v, originTime, currentTime)[1];
       return 0;
-    };
+    }
 
     /** Intensity from segment, via distance and duration */
     public IntensityAtDistanceAndDuration(v: Vector.VectorBase, d: moment.Duration): number {
       return this.closestVectorIntensityAtDistanceAndDuration(v,d)[1];
       return 0;
-    };
+    }
 
     public ClosestVector = (v: Vector.VectorBase): Vector.VectorBase => {
       return this.closestVectorDistance(v)[0];
@@ -332,7 +332,7 @@ module Segment {
     public ToObj = (): any => {
       return {
         s: this.segments.map((s: SegmentBase): any=> { return s.ToObj(); })
-      };
+      }
     }
     public ToStr = (): string => {
       return JSON.stringify(this.ToObj());
