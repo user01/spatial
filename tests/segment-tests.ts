@@ -14,6 +14,7 @@ import Vector = require('../math/vector');
 
 import Segment = require('../math/segment');
 
+import moment = require('moment');
 
 describe('Segment', () => {
 
@@ -274,6 +275,22 @@ describe('Segment', () => {
 
       ssV.Equal(sBV).should.be.true;
 
+    });
+
+    it('Duration', () => {
+      var ramp1 = new Ramp.Ramp('linear', 1, 2, 0, 1);
+      var duration1 = moment.duration(5, 'hours');
+      var duration2 = moment.duration(15, 'days');
+      var factor1 = new Ramp.Factor(new Ramp.Decay(duration1, new Ramp.Falloff([ramp1])), new Ramp.Falloff([ramp1]));
+      var factor2 = new Ramp.Factor(new Ramp.Decay(duration2, new Ramp.Falloff([ramp1])), new Ramp.Falloff([ramp1]));
+      var s2: Segment.Segment2 = new Segment.Segment2(new Vector.Vector2(0, 0, factor1),
+        new Vector.Vector2(10, 0, factor1));
+      var s2B: Segment.Segment2 = new Segment.Segment2(new Vector.Vector2(0, 10, factor1),
+        new Vector.Vector2(10, 10, factor2));
+      var ss: Segment.SegmentSet = new Segment.SegmentSet([s2, s2B]);
+
+      var duration = ss.Duration;
+      duration.asMilliseconds().should.be.exactly(duration2.asMilliseconds());
     });
 
     it('Intensity Simple', () => {

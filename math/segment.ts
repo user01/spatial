@@ -19,6 +19,13 @@ module Segment {
     public get Dimension(): number { return this._tip.Dimension; }
     public get FalloffMix(): Ramp.Falloff { return this._falloff; }
 
+    /** Longest duration for changes in decays */
+    public get Duration(): moment.Duration {
+      var baseDuration = this.Base.Factor.Decay.Duration;
+      var tipDuration = this.Tip.Factor.Decay.Duration;
+      return baseDuration.asMilliseconds() > tipDuration.asMilliseconds() ? baseDuration : tipDuration;
+    }
+
     constructor(protected _base: Vector.VectorBase,
       protected _tip: Vector.VectorBase,
       protected _falloff: Ramp.Falloff) {
@@ -279,6 +286,19 @@ module Segment {
       return this._dimension;
     }
 
+
+    /** Longest duration for changes in segmentsets */
+    public get Duration(): moment.Duration {
+      var durations = this.segments.map((segmentBase: SegmentBase): moment.Duration => {
+        return segmentBase.Duration;
+      });
+
+      return durations.reduce((accumulateDuration: moment.Duration, temporalDuration: moment.Duration): moment.Duration => {
+        return accumulateDuration.asMilliseconds() > temporalDuration.asMilliseconds() ? accumulateDuration : temporalDuration;
+      }, durations[0]);
+    }
+
+
     constructor(private segments: Array<SegmentBase>) {
       if ((segments === void 0) || segments.length < 1)
         throw 'Dimension Mismatch';
@@ -315,7 +335,7 @@ module Segment {
 
     /** Intensity from segment, via distance and duration */
     public IntensityAtDistanceAndDuration(v: Vector.VectorBase, d: moment.Duration): number {
-      return this.closestVectorIntensityAtDistanceAndDuration(v,d)[1];
+      return this.closestVectorIntensityAtDistanceAndDuration(v, d)[1];
       return 0;
     }
 
