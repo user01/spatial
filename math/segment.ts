@@ -298,6 +298,11 @@ module Segment {
       }, durations[0]);
     }
 
+    /** Current segment sets */
+    public get Segments():Array<SegmentBase> {
+      return this.segments;
+    }
+
 
     constructor(private segments: Array<SegmentBase>) {
       if ((segments === void 0) || segments.length < 1)
