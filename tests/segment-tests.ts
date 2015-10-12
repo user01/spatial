@@ -202,6 +202,69 @@ describe('Segment', () => {
 
   });
 
+
+  describe('Segment3', () => {
+    it('Closest Vector', () => {
+
+      var vect1DecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect1Falloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect1Factor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), vect1DecayFalloff),
+        vect1Falloff);
+      var vect1 = new Vector.Vector3(1, 1, 1, vect1Factor);
+
+      var vect2DecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect2Falloff = new Ramp.Falloff([new Ramp.Ramp('linear', 0, 0, 0, 1)]);
+      var vect2Factor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), vect2DecayFalloff),
+        vect2Falloff);
+      var vect2 = new Vector.Vector3(0, 0, 0, vect2Factor);
+
+      var s3 = new Segment.Segment3(
+        vect1,
+        vect2,
+        new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)])
+        );
+
+      s3.ClosestVector(new Vector.Vector3(1, 1, 1)).readableStr().should.be.exactly('V3[1,1,1,]');
+      s3.ClosestVector(new Vector.Vector3(10, 1, 1)).readableStr().should.be.exactly('V3[1,1,1,]');
+      s3.ClosestVector(new Vector.Vector3(0, 0, 0)).readableStr().should.be.exactly('V3[0,0,0,]');
+      s3.ClosestVector(new Vector.Vector3(-1, -1, -1)).readableStr().should.be.exactly('V3[0,0,0,]');
+      s3.ClosestVector(new Vector.Vector3(-5321, -1, -1)).readableStr().should.be.exactly('V3[0,0,0,]');
+    });
+
+    it('Intensity', () => {
+
+      var vect1DecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect1Falloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect1Factor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), vect1DecayFalloff),
+        vect1Falloff);
+      var vect1 = new Vector.Vector3(1, 0, 0, vect1Factor);
+
+      var vect2DecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect2Falloff = new Ramp.Falloff([new Ramp.Ramp('linear', -1, 1, 0, 2)]);
+      var vect2Factor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), vect2DecayFalloff),
+        vect2Falloff);
+      var vect2 = new Vector.Vector3(0, 0, 0, vect2Factor);
+
+      var s3 = new Segment.Segment3(
+        vect1,
+        vect2,
+        new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)])
+        );
+
+      s3.ClosestVector(new Vector.Vector3(0, 0.5, 0)).readableStr().should.be.exactly('V3[0,0,0,]');
+      s3.ClosestVector(new Vector.Vector3(0.5, 0.5, 0)).readableStr().should.be.exactly('V3[0.5,0,0,]');
+
+      s3.IntensityAtDistance(new Vector.Vector3(0, 0, 0)).should.be.approximately(-1, tolerance);
+      s3.IntensityAtDistance(new Vector.Vector3(0, 1, 0)).should.be.approximately(0, tolerance);
+      s3.IntensityAtDistance(new Vector.Vector3(0, 2, 0)).should.be.approximately(1, tolerance);
+
+    });
+  });
+
   describe('Segment.SegmentSets', () => {
     it('Init', () => {
       var ss: Segment.SegmentSet = new Segment.SegmentSet([
@@ -326,5 +389,67 @@ describe('Segment', () => {
 
     });
 
+    it('Intensity 3d', () => {
+
+      var vect1DecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect1Falloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect1Factor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), vect1DecayFalloff),
+        vect1Falloff);
+      var base = new Vector.Vector3(1, 0, 0, vect1Factor);
+
+      var vect2DecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect2Falloff = new Ramp.Falloff([new Ramp.Ramp('linear', -1, 1, 0, 2)]);
+      var vect2Factor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), vect2DecayFalloff),
+        vect2Falloff);
+      var tip = new Vector.Vector3(0, 0, 0, vect2Factor);
+
+      var s3 = new Segment.Segment3(
+        base,
+        tip,
+        new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)])
+        );
+
+      var ss = new Segment.SegmentSet([s3]);
+
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0, 0)).should.be.approximately(-1, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 1, 0)).should.be.approximately(0, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 2, 0)).should.be.approximately(1, tolerance);
+
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0, 0)).should.be.approximately(-1, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0, 1)).should.be.approximately(0, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0, 2)).should.be.approximately(1, tolerance);
+
+    });
+
+    it('Intensity Advanced', () => {
+
+      var vect1DecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect1Falloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 0, 0, 2)]);
+      var vect1Factor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), vect1DecayFalloff),
+        vect1Falloff);
+      var base = new Vector.Vector3(0, 0, 1, vect1Factor);
+
+      var vect2DecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var vect2Falloff = new Ramp.Falloff([new Ramp.Ramp('linear', 0, 0, 0, 1)]);
+      var vect2Factor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), vect2DecayFalloff),
+        vect2Falloff);
+      var tip = new Vector.Vector3(0, 0, -1, vect2Factor);
+
+      var s2 = new Segment.Segment3(
+        base,
+        tip,
+        new Ramp.Falloff([new Ramp.Ramp('linear', 0, 1, 0, 1)])
+        );
+      var ss: Segment.SegmentSet = new Segment.SegmentSet([s2]);
+
+      var position1 = new Vector.Vector3(0, 0, 2);
+      ss.DistanceTo(position1).should.be.approximately(1, tolerance);
+      ss.IntensityAtDistance(position1).should.be.approximately(vect1Falloff.ValueAt(ss.DistanceTo(position1)), tolerance, 'intensity at distance vs actual at distance');
+
+    });
   });
 });
