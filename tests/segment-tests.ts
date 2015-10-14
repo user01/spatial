@@ -24,12 +24,12 @@ describe('Segment', () => {
       var s: Segment.Segment2 = new Segment.Segment2(
         new Vector.Vector2(0, 0),
         new Vector.Vector2(1, 2)
-        );
+      );
       s = new Segment.Segment2(
         new Vector.Vector2(0, 0),
         new Vector.Vector2(1, 2),
         new Ramp.Falloff([new Ramp.Ramp('linear')])
-        );
+      );
     });
     it('Init Error', () => {
       (() => {
@@ -41,7 +41,7 @@ describe('Segment', () => {
       var s: Segment.Segment2 = new Segment.Segment2(
         new Vector.Vector2(0, 0),
         new Vector.Vector2(10, 0)
-        );
+      );
 
       var tester = new Vector.Vector2(5, 0);
       var dist = s.DistanceTo(tester);
@@ -61,7 +61,7 @@ describe('Segment', () => {
       var s: Segment.Segment2 = new Segment.Segment2(
         new Vector.Vector2(0, 10),
         new Vector.Vector2(10, 10)
-        );
+      );
 
       var tester = new Vector.Vector2(5, 10);
       var dist = s.DistanceTo(tester);
@@ -81,7 +81,7 @@ describe('Segment', () => {
         var s: Segment.Segment2 = new Segment.Segment2(
           new Vector.Vector2(0, 10),
           new Vector.Vector2(10, 10)
-          );
+        );
 
         var tester = new Vector.Vector2(5, 10);
         var result = s.ClosestVector(tester);
@@ -91,7 +91,7 @@ describe('Segment', () => {
         var s: Segment.Segment2 = new Segment.Segment2(
           new Vector.Vector2(0, 10),
           new Vector.Vector2(10, 10)
-          );
+        );
 
         var tester = new Vector.Vector2(5, 12);
         var hand = new Vector.Vector2(5, 10);
@@ -105,7 +105,7 @@ describe('Segment', () => {
         var s: Segment.Segment2 = new Segment.Segment2(
           new Vector.Vector2(0, 0),
           new Vector.Vector2(0, 10)
-          );
+        );
 
         // this should always be 1, since the default factor is permenant
         var tester = new Vector.Vector2(0, 0);
@@ -144,7 +144,7 @@ describe('Segment', () => {
           new Vector.Vector2(0, 0, factor1),
           new Vector.Vector2(0, 10, factor2),
           new Ramp.Falloff([new Ramp.Ramp('linear', 0, 1, 0, 1)])
-          );
+        );
 
         // this should always be 1, since the default factor is permenant
         var tester = new Vector.Vector2(0, 0);
@@ -194,7 +194,7 @@ describe('Segment', () => {
       var s: Segment.Segment2 = new Segment.Segment2(
         new Vector.Vector2(0, 0),
         new Vector.Vector2(10, 0)
-        );
+      );
       var str = s.ToStr();
       var s2 = Segment.Segment2.FromStr(str);
       s.Equal(s2).should.be.true;
@@ -224,7 +224,7 @@ describe('Segment', () => {
         vect1,
         vect2,
         new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)])
-        );
+      );
 
       s3.ClosestVector(new Vector.Vector3(1, 1, 1)).readableStr().should.be.exactly('V3[1,1,1,]');
       s3.ClosestVector(new Vector.Vector3(10, 1, 1)).readableStr().should.be.exactly('V3[1,1,1,]');
@@ -253,7 +253,7 @@ describe('Segment', () => {
         vect1,
         vect2,
         new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)])
-        );
+      );
 
       s3.ClosestVector(new Vector.Vector3(0, 0.5, 0)).readableStr().should.be.exactly('V3[0,0,0,]');
       s3.ClosestVector(new Vector.Vector3(0.5, 0.5, 0)).readableStr().should.be.exactly('V3[0.5,0,0,]');
@@ -263,6 +263,52 @@ describe('Segment', () => {
       s3.IntensityAtDistance(new Vector.Vector3(0, 2, 0)).should.be.approximately(1, tolerance);
 
     });
+  });
+
+  describe('Segment4', () => {
+    it('Closest Vector', () => {
+
+      var baseDecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var baseFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var baseFactor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), baseDecayFalloff),
+        baseFalloff);
+      var base = new Vector.Vector4(0, 0, 0, 0, baseFactor);
+
+      var tipDecayFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)]);
+      var tipFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 0, 0, 0, 1)]);
+      var tipFactor = new Ramp.Factor(
+        new Ramp.Decay(moment.duration(5, 'minutes'), tipDecayFalloff),
+        tipFalloff);
+      var tip = new Vector.Vector4(1, 0, 0, 0, tipFactor);
+
+      var s4 = new Segment.Segment4(
+        base,
+        tip,
+        new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)])
+      );
+
+      should.ok(s4.ClosestVector(new Vector.Vector4(1, 0, 0, 0)).Equal(new Vector.Vector4(1, 0, 0, 0)), 'on tip');
+      should.ok(s4.ClosestVector(new Vector.Vector4(0, 0, 0, 0)).Equal(new Vector.Vector4(0, 0, 0, 0)), 'on base');
+      should.ok(s4.ClosestVector(new Vector.Vector4(0.5, 0, 0, 0)).Equal(new Vector.Vector4(0.5, 0, 0, 0)), 'on segment');
+      should.ok(s4.ClosestVector(new Vector.Vector4(5, 0, 0, 0)).Equal(new Vector.Vector4(1, 0, 0, 0)), 'past tip');
+      should.ok(s4.ClosestVector(new Vector.Vector4(-5, 0, 0, 0)).Equal(new Vector.Vector4(0, 0, 0, 0)), 'past base');
+
+      var vectors = [
+        new Vector.Vector4(0.5, 1, 0, 0),
+        new Vector.Vector4(0.5, 1, 1, 0),
+        new Vector.Vector4(0.5, 1, 1, 1),
+        new Vector.Vector4(0.5, 0, 1, 1),
+        new Vector.Vector4(0.5, 0, 0, 1),
+        new Vector.Vector4(0.5, 0, 0, 100),
+      ];
+
+      vectors.forEach((v: Vector.Vector4) => {
+        should.ok(s4.ClosestVector(v).Equal(new Vector.Vector4(0.5, 0, 0, 0)), 'on segment ' + v.readableStr());
+      });
+
+    });
+
   });
 
   describe('Segment.SegmentSets', () => {
@@ -363,7 +409,7 @@ describe('Segment', () => {
         new Vector.Vector2(0, 0, new Ramp.Factor(Ramp.Decay.PermanentDecay(), new Ramp.Falloff([ramp1]))),
         new Vector.Vector2(10, 0, new Ramp.Factor(Ramp.Decay.PermanentDecay(), new Ramp.Falloff([ramp2]))),
         new Ramp.Falloff([new Ramp.Ramp('linear', 0, 1, 0, 1)])
-        );
+      );
       var ss: Segment.SegmentSet = new Segment.SegmentSet([s2]);
 
       var v = new Vector.Vector2(-1, 0);
@@ -409,7 +455,7 @@ describe('Segment', () => {
         base,
         tip,
         new Ramp.Falloff([new Ramp.Ramp('linear', 1, 1, 0, 1)])
-        );
+      );
 
       var ss = new Segment.SegmentSet([s3]);
 
@@ -443,7 +489,7 @@ describe('Segment', () => {
         base,
         tip,
         new Ramp.Falloff([new Ramp.Ramp('linear', 0, 1, 0, 1)])
-        );
+      );
       var ss: Segment.SegmentSet = new Segment.SegmentSet([s2]);
 
       var position1 = new Vector.Vector3(0, 0, 2);
