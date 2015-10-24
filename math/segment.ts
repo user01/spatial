@@ -299,7 +299,7 @@ module Segment {
     }
 
     /** Current segment sets */
-    public get Segments():Array<SegmentBase> {
+    public get Segments(): Array<SegmentBase> {
       return this.segments;
     }
 
@@ -335,13 +335,11 @@ module Segment {
     /** Intensity from segment, via distance and time difference */
     public IntensityAtDistanceAndTime(v: Vector.VectorBase, originTime: moment.Moment, currentTime: moment.Moment): number {
       return this.closestVectorIntensityAtDistanceAndTime(v, originTime, currentTime)[1];
-      return 0;
     }
 
     /** Intensity from segment, via distance and duration */
     public IntensityAtDistanceAndDuration(v: Vector.VectorBase, d: moment.Duration): number {
       return this.closestVectorIntensityAtDistanceAndDuration(v, d)[1];
-      return 0;
     }
 
     public ClosestVector = (v: Vector.VectorBase): Vector.VectorBase => {
@@ -424,20 +422,30 @@ module Segment {
     }
 
 
+    /**  */
     private computeClosestVectorByCallback = (v: Vector.VectorBase, cb: (sb: SegmentBase) => number): [Vector.VectorBase, number]=> {
       var bestVectorFound = null;
       var highestIntensity = Number.MIN_VALUE;
+      var nonZerosFound = 0;
+      var runningTotal = 0;
 
       for (var i = 0; i < this.segments.length; i++) {
         var highestVector = this.segments[i].ClosestVector(v);
         var computedIntensity = cb(this.segments[i]);
+        if (Math.abs(computedIntensity) > 0.01) {
+          nonZerosFound++;
+          runningTotal += computedIntensity;
+        }
+
         if (bestVectorFound == null || computedIntensity > highestIntensity) {
           bestVectorFound = highestVector;
           highestIntensity = computedIntensity;
         }
       }
-      return [bestVectorFound, highestIntensity];
-      return [v, 0];
+      return [
+        bestVectorFound,
+        nonZerosFound < 1 ? 0 : runningTotal / nonZerosFound
+      ];
     }
 
   }

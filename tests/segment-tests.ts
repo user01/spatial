@@ -497,5 +497,87 @@ describe('Segment', () => {
       ss.IntensityAtDistance(position1).should.be.approximately(vect1Falloff.ValueAt(ss.DistanceTo(position1)), tolerance, 'intensity at distance vs actual at distance');
 
     });
+
+    it('Intensity 3d - multiple - simple', () => {
+
+      var permFalloff = Ramp.Falloff.PermanentFalloff(1);
+      var permDecay = new Ramp.Decay(moment.duration(5, 'minutes'), permFalloff);
+      var vectDistanceFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 0, 0, 1)]);
+      var segmentAFactor = new Ramp.Factor(
+        permDecay,
+        vectDistanceFalloff);
+      var baseA = new Vector.Vector3(1, 0, 0, segmentAFactor);
+      var tipA = new Vector.Vector3(0, 0, 0, segmentAFactor);
+
+      var sA = new Segment.Segment3(
+        baseA,
+        tipA,
+        new Ramp.Falloff([new Ramp.Ramp('linear', 0, 1, 0, 1)])
+      );
+
+      var vectDistanceFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', -1, 0, 0, 1)]);
+      var segmentBFactor = new Ramp.Factor(
+        permDecay,
+        vectDistanceFalloff);
+      var baseB = new Vector.Vector3(1, 1, 0, segmentBFactor);
+      var tipB = new Vector.Vector3(0, 1, 0, segmentBFactor);
+      var sB = new Segment.Segment3(
+        baseB,
+        tipB,
+        new Ramp.Falloff([new Ramp.Ramp('linear', 0, 1, 0, 1)])
+      );
+
+      var ss = new Segment.SegmentSet([sA, sB]);
+
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0, 0)).should.be.approximately(1, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0.25, 0)).should.be.approximately((-0.25 + 0.75) / 2, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0.5, 0)).should.be.approximately(0, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0.75, 0)).should.be.approximately((-0.75 + 0.25) / 2, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 1, 0)).should.be.approximately(-1, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 2, 0)).should.be.approximately(0, tolerance);
+
+    });
+
+    it('Intensity 3d - multiple - complex', () => {
+
+      var permFalloff = Ramp.Falloff.PermanentFalloff(1);
+      var permDecay = new Ramp.Decay(moment.duration(5, 'minutes'), permFalloff);
+      var vectDistanceFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', 1, 0, 0, 1)]);
+      var segmentAFactor = new Ramp.Factor(
+        permDecay,
+        vectDistanceFalloff);
+      var baseA = new Vector.Vector3(1, 0, 0, segmentAFactor);
+      var tipA = new Vector.Vector3(0, 0, 0, segmentAFactor);
+
+      var sA = new Segment.Segment3(
+        baseA,
+        tipA,
+        new Ramp.Falloff([new Ramp.Ramp('linear', 0, 1, 0, 1)])
+      );
+
+      var vectDistanceFalloff = new Ramp.Falloff([new Ramp.Ramp('linear', -1, 0, 0, 1)]);
+      var segmentBFactor = new Ramp.Factor(
+        permDecay,
+        vectDistanceFalloff);
+      var baseB = new Vector.Vector3(1, 1.4, 0, segmentBFactor);
+      var tipB = new Vector.Vector3(0, 1.4, 0, segmentBFactor);
+      var sB = new Segment.Segment3(
+        baseB,
+        tipB,
+        new Ramp.Falloff([new Ramp.Ramp('linear', 0, 1, 0, 1)])
+      );
+
+      var ss = new Segment.SegmentSet([sA, sB]);
+
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0, 0)).should.be.approximately(1, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0.2, 0)).should.be.approximately(0.8, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0.4, 0)).should.be.approximately(0.6, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0.6, 0)).should.be.approximately((0.4 + -0.2) / 2, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 0.8, 0)).should.be.approximately((0.2 + -0.4) / 2, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 1, 0)).should.be.approximately(-0.6, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 1.2, 0)).should.be.approximately(-0.8, tolerance);
+      ss.IntensityAtDistance(new Vector.Vector3(0, 1.4, 0)).should.be.approximately(-1, tolerance);
+
+    });
   });
 });
