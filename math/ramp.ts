@@ -85,6 +85,9 @@ module Ramp {
       this._durationMinutes = this._duration.asMinutes();
     }
 
+    public ReadableStr = () => {
+      return 'D ' + this.Duration.humanize() + ' ' + this.Falloff.ReadableStr();
+    }
 
     /** Product of all Ramp values at given time
      * No ramps default to factor of 1
@@ -163,9 +166,13 @@ module Ramp {
 
     constructor(
       private _ramps: Array<Ramp> = []
-      ) {
+    ) {
       this.rangeEnd = this.rangeEndCompute();
       this.rangeStart = this.rangeStartCompute();
+    }
+
+    public ReadableStr = () => {
+      return '{' + this.Ramps.map(r => r.ReadableStr()) + '}';
     }
 
 
@@ -264,12 +271,17 @@ module Ramp {
       private _valueEnd: number = 0,
       private _rangeStart: number = 0,
       private _rangeEnd: number = 1
-      ) {
+    ) {
       if (this._rangeStart > this._rangeEnd) this._rangeEnd = this._rangeStart;
       //check if type really exists. otherwise, fall back to easeOut
       if (!Ramp.EasingFunctions[this._type]) {
         this._type = Ramp.defaultEasingFunction;
       }
+    }
+
+    public ReadableStr = () => {
+      return 'R:' + this.Type + ' From ' + this.ValueStart + '-' +
+        this.ValueEnd + ' over ' + this.RangeStart + '-' + this.RangeEnd;
     }
 
     public ValueAt = (location: number): number => {
@@ -374,7 +386,7 @@ module Ramp {
       beginingValue: number = 0,
       changeInValue: number = 0,
       duration: number = 0
-      ): number => {
+    ): number => {
       if (!Ramp.EasingFunctions.hasOwnProperty(func)) {
         func = 'easeOutQuad';
       }

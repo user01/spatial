@@ -41,6 +41,9 @@ module Segment {
       // this._falloff = new Ramp.Falloff(ramps);
     }
 
+    public ReadableStr = (): string => {
+      return 'S' + this.Dimension + ' ' + this.Base.readableStr() + ' > ' + this.Tip.readableStr() + ' ' + this.FalloffMix.ReadableStr();
+    }
 
     public DistanceTo = (v: Vector.VectorBase): number => {
       return SegmentBase.DistanceToStatic(this, v);
@@ -321,7 +324,9 @@ module Segment {
       return this.closestVectorDistance(v)[1];
     }
 
-
+    public readableStr = (): string => {
+      return 'SS' + this.Dimension + ' ' + this.Segments.map(s => s.ReadableStr).join(';');
+    }
 
 
 
