@@ -8,8 +8,8 @@ declare var it: any;
 
 var should: Internal = require('should');
 
-import Ramp = require('../math/ramp');
-import Vector = require('../math/vector');
+import * as Ramp from '../math/ramp';
+import * as Vector from '../math/vector';
 
 describe('Vector', () => {
   describe('Vector2', () => {

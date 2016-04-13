@@ -1,7 +1,7 @@
 
 
-interface IEquality<T> {
+export interface IEquality<T> {
   Equal(a: T, b: T): boolean;
 }
 
-export = IEquality;
+export default IEquality;

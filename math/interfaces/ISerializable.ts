@@ -1,7 +1,7 @@
 
-interface ISerializable {
+export interface ISerializable {
   ToObj(): any;
   ToStr(): string;
 }
 
-export = ISerializable;
+export default ISerializable;
