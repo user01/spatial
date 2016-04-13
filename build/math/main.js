@@ -1,11 +1,11 @@
-/// <reference path="references.ts" />
 "use strict";
-var Ramp = require('./ramp');
-var Vector = require("./vector");
-var Segment = require("./segment");
-module.exports = {
-    Ramp: Ramp,
-    Vector: Vector,
-    Segment: Segment
-};
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+__export(require("./ramp"));
+var vector_1 = require("./vector");
+exports.Vector2 = vector_1.Vector2;
+exports.Vector3 = vector_1.Vector3;
+exports.Vector4 = vector_1.Vector4;
+__export(require("./segment"));
 //# sourceMappingURL=main.js.map

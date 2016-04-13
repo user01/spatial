@@ -1,1 +1,1 @@
-{"version":3,"file":"main.js","sourceRoot":"","sources":["../../math/main.ts"],"names":[],"mappings":"AAAA,sCAAsC;;AAEtC,IAAO,IAAI,WAAW,QAAQ,CAAC,CAAC;AAChC,IAAO,MAAM,WAAW,UAAU,CAAC,CAAC;AACpC,IAAO,OAAO,WAAW,WAAW,CAAC,CAAC;AAEtC,MAAM,CAAC,OAAO,GAAG;IACf,MAAA,IAAI;IACJ,QAAA,MAAM;IACN,SAAA,OAAO;CACR,CAAC"}
+{"version":3,"file":"main.js","sourceRoot":"","sources":["../../math/main.ts"],"names":[],"mappings":";;;;AACA,iBAAc,QAAQ,CAAC,EAAA;AACvB,uBAAwC,UAAU,CAAC;AAA3C,mCAAO;AAAE,mCAAO;AAAE,mCAAyB;AACnD,iBAAc,WAAW,CAAC,EAAA"}
