@@ -3,9 +3,9 @@
 
 import * as Ramp from './ramp';
 
-import IRanged from './interfaces/IRanged';
-import ISerializable from './interfaces/ISerializable';
-import IEquality from './interfaces/IEquality';
+import IRanged from './interfaces/iranged';
+import ISerializable from './interfaces/iserializable';
+import IEquality from './interfaces/iequality';
 
 
 export class VectorBase implements IRanged, ISerializable, IEquality<VectorBase> {

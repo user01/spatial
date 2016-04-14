@@ -1,2 +1,2 @@
 "use strict";
-//# sourceMappingURL=IEquality.js.map
+//# sourceMappingURL=iequality.js.map

@@ -1,2 +1,2 @@
 "use strict";
-//# sourceMappingURL=ISerializable.js.map
+//# sourceMappingURL=iserializable.js.map

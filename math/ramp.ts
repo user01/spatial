@@ -1,7 +1,7 @@
 /// <reference path='./references.ts'/>
 
-import ISerializable from './interfaces/ISerializable';
-import IEquality from './interfaces/IEquality';
+import ISerializable from './interfaces/iserializable';
+import IEquality from './interfaces/iequality';
 
 import * as moment from 'moment';
 

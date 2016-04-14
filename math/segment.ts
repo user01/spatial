@@ -1,9 +1,9 @@
 
 /// <reference path="./references.ts" />
 
-import IRanged from './interfaces/IRanged';
-import ISerializable from './interfaces/ISerializable';
-import IEquality from './interfaces/IEquality';
+import IRanged from './interfaces/iranged';
+import ISerializable from './interfaces/iserializable';
+import IEquality from './interfaces/iequality';
 
 import * as Vector from './vector';
 import * as Ramp from './ramp';
