@@ -1,4 +1,4 @@
-/// <reference path="../references.d.ts" />
+// [ts-npm-lint] disabled triple slash reference to '../references.d.ts'
 import * as Vector from '../vector';
 export interface IRanged {
     DistanceTo(v: Vector.VectorBase): number;

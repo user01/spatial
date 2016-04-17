@@ -1,4 +1,4 @@
-/// <reference path="references.d.ts" />
+// [ts-npm-lint] disabled triple slash reference to 'references.d.ts'
 import IRanged from './interfaces/iranged';
 import ISerializable from './interfaces/iserializable';
 import IEquality from './interfaces/iequality';
