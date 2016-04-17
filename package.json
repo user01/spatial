@@ -1,11 +1,12 @@
 {
   "name": "spatial",
   "version": "0.3.0",
-  "description": "A Vector Math Library. Clarity and brevity over speed.",
+  "description": "An Immutable Vector Math Library. Clarity and brevity over speed.",
   "main": "build/main.js",
   "typings": "build/main.d.ts",
   "files": [
-    "build/"
+    "build/",
+    "!build/tests/"
   ],
   "scripts": {
     "build": "npm run test && npm run lint-build",
@@ -18,9 +19,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:erik_langenborg/spatial.git"
+    "url": "git@gitlab.com:root77/spatial.git"
   },
-  "author": "Codex10",
+  "author": "Codex10 <dev@codex10.com>",
   "license": "MIT",
   "dependencies": {
     "moment": "2.10.6"
