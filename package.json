@@ -2,7 +2,10 @@
   "name": "spatial",
   "version": "0.3.0",
   "description": "A Vector Math Library. Clarity and brevity over speed.",
-  "main": "build/math/main.js",
+  "main": "build/main.ts",
+  "typings": [
+    "build/"
+  ],
   "scripts": {
     "build": "./node_modules/.bin/tsc",
     "test-simple": "./node_modules/.bin/_mocha  --ui bdd --reporter dot ./build/tests/**/*.js",

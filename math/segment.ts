@@ -9,7 +9,7 @@ import * as Vector from './vector';
 import * as Ramp from './ramp';
 
 
-class SegmentBase implements ISerializable, IRanged, IEquality<SegmentBase> {
+export class SegmentBase implements ISerializable, IRanged, IEquality<SegmentBase> {
 
   public get Base(): Vector.VectorBase { return this._base; }
   public get Tip(): Vector.VectorBase { return this._tip; }
