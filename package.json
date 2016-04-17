@@ -3,7 +3,8 @@
   "version": "0.3.0",
   "description": "A Vector Math Library. Clarity and brevity over speed.",
   "main": "build/main.ts",
-  "typings": [
+  "typings": "build/main",
+  "files": [
     "build/"
   ],
   "scripts": {
