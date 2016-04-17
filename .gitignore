@@ -4,6 +4,7 @@ math/**/*.js
 math/**/*.d.ts
 math/**/*.js.map
 tests/**/*.js
+node_modules/*
 !build/spatial.d.ts
 !build/spatial.min.js
 !build/spatial.node.js
