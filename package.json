@@ -1,34 +1,36 @@
 {
   "name": "spatial",
   "version": "0.3.0",
-  "description": "A Vector Math Library. Clarity and brevity over speed.",
-  "main": "build/spatial.node.js",
+  "description": "An Immutable Vector Math Library. Clarity and brevity over speed.",
+  "main": "build/main.js",
+  "typings": "build/main.d.ts",
+  "files": [
+    "build/",
+    "!build/tests/"
+  ],
   "scripts": {
-    "test": "grunt test",
-    "debug": "grunt clean && grunt typescript:tests && node-debug _mocha --ui bdd --debug-brk --reporter dot ./tests/**/*.js"
+    "build": "npm run test && npm run lint-build",
+    "build-ts": "./node_modules/.bin/tsc",
+    "lint-build": "./node_modules/.bin/ts-npm-lint --fix-typings",
+    "test-simple": "./node_modules/.bin/_mocha  --ui bdd --reporter dot ./build/tests/**/*.js",
+    "test-coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --ui bdd --debug-brk --reporter dot ./build/tests/**/*.js",
+    "coverage": "npm run build-ts && npm run test-coverage",
+    "test": "npm run build-ts && npm run test-simple"
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:erik_langenborg/spatial.git"
+    "url": "git@gitlab.com:root77/spatial.git"
   },
-  "author": "Codex10",
+  "author": "Codex10 <dev@codex10.com>",
   "license": "MIT",
   "dependencies": {
     "moment": "2.10.6"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-copy": "^0.8.0",
-    "grunt-contrib-uglify": "^0.7.0",
-    "grunt-simple-mocha": "^0.4.0",
-    "grunt-typescript": "^0.6.1",
-    "load-grunt-tasks": "^3.1.0",
-    "mocha": "^2.2.5",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.4.5",
     "should": "^4.6.5",
-    "ts-loader": "^0.3.3",
-    "typescript": "^1.5.0-beta",
-    "webpack": "^1.8.4",
-    "webpack-dev-server": "^1.8.0"
+    "ts-npm-lint": "^0.1.0",
+    "typescript": "^1.8.10"
   }
 }

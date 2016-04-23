@@ -11,7 +11,7 @@ var tolerance = 0.05;
 
 import moment = require('moment');
 
-import Ramp = require('../math/ramp');
+import * as Ramp from '../math/ramp';
 
 describe('Ramp.Ramp', () => {
   it('Construct', () => {
@@ -322,14 +322,14 @@ describe('Ramp.Ramp', () => {
       duration = moment.duration(2, 'hours');
       factor.IntensityAtDistanceAndDuration(distance, duration)
         .should.be.approximately(
-          falloff.ValueAt(distance) * decay.ValueAfterDuration(duration), tolerance);
+        falloff.ValueAt(distance) * decay.ValueAfterDuration(duration), tolerance);
 
 
       distance = 51;
       duration = moment.duration(0.2, 'hours');
       factor.IntensityAtDistanceAndDuration(distance, duration)
         .should.be.approximately(
-          falloff.ValueAt(distance) * decay.ValueAfterDuration(duration), tolerance);
+        falloff.ValueAt(distance) * decay.ValueAfterDuration(duration), tolerance);
 
     });
     it('Permenant', () => {

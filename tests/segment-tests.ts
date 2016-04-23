@@ -9,10 +9,10 @@ declare var it: any;
 var should: Internal = require('should');
 var tolerance = 0.05;
 
-import Ramp = require('../math/ramp');
-import Vector = require('../math/vector');
+import * as Ramp from '../math/ramp';
+import * as Vector from '../math/vector';
 
-import Segment = require('../math/segment');
+import * as Segment from '../math/segment';
 
 import moment = require('moment');
 

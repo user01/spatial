@@ -1,8 +1,8 @@
 /// <reference path='../references.ts'/>
 
-import Vector = require('../vector');
+import * as Vector from '../vector';
 
-interface IRanged {
+export interface IRanged {
   DistanceTo(v: Vector.VectorBase): number;
   IntensityAtDistance(v: Vector.VectorBase): number;
   IntensityAtDistanceAndTime(v: Vector.VectorBase, originTime: moment.Moment, currentTime: moment.Moment): number;
@@ -10,4 +10,4 @@ interface IRanged {
   ClosestVector(v: Vector.VectorBase): Vector.VectorBase;
 }
 
-export = IRanged;
+export default IRanged;
