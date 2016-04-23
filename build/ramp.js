@@ -39,6 +39,9 @@ var Factor = (function () {
         this.ToStr = function () {
             return JSON.stringify(_this.ToObj());
         };
+        this.Clone = function () {
+            return Factor.CloneStatic(_this);
+        };
         this.Equal = function (other) {
             return Factor.EqualStatic(_this, other);
         };
@@ -58,6 +61,9 @@ var Factor = (function () {
     };
     Factor.FromStr = function (str) {
         return Factor.FromObj(JSON.parse(str));
+    };
+    Factor.CloneStatic = function (factor) {
+        return new Factor(factor.Decay.Clone(), factor.Falloff.Clone());
     };
     Factor.EqualStatic = function (f1, f2) {
         if (!f1.Decay.Equal(f1.Decay))
@@ -106,6 +112,9 @@ var Decay = (function () {
         this.ToStr = function () {
             return JSON.stringify(_this.ToObj());
         };
+        this.Clone = function () {
+            return Decay.CloneState(_this);
+        };
         this.Equal = function (other) {
             return Decay.EqualStatic(_this, other);
         };
@@ -134,6 +143,9 @@ var Decay = (function () {
     };
     Decay.FromStr = function (str) {
         return Decay.FromObj(JSON.parse(str));
+    };
+    Decay.CloneState = function (other) {
+        return new Decay(other.Duration, other.Falloff.Clone());
     };
     Decay.EqualStatic = function (dt1, dt2) {
         if (Math.abs(dt1.Duration.asSeconds() - dt2.Duration.asSeconds()) > 0.001)
@@ -184,6 +196,9 @@ var Falloff = (function () {
         };
         this.ToStr = function () {
             return JSON.stringify(_this.ToObj());
+        };
+        this.Clone = function () {
+            return Falloff.CloneStatic(_this);
         };
         this.Equal = function (other) {
             return Falloff.EqualStatic(_this, other);
@@ -238,6 +253,9 @@ var Falloff = (function () {
     };
     Falloff.FromStr = function (str) {
         return Falloff.FromObj(JSON.parse(str));
+    };
+    Falloff.CloneStatic = function (other) {
+        return new Falloff(other.Ramps.map(Ramp.CloneRamp));
     };
     Falloff.EqualStatic = function (dt1, dt2) {
         if (dt1.Ramps.length != dt2.Ramps.length)
@@ -379,7 +397,7 @@ var Ramp = (function () {
         return Ramp.FromObj(JSON.parse(str));
     };
     Ramp.CloneRamp = function (r) {
-        return Ramp.FromObj(r.ToObj());
+        return Ramp.FromArray(r.ToArray());
     };
     Ramp.ValueAtStatic = function (ramp, location) {
         if (location >= ramp.RangeEnd)

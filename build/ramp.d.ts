@@ -25,6 +25,8 @@ export declare class Factor implements ISerializable, IEquality<Factor> {
     ToStr: () => string;
     static FromObj: (obj: any) => Factor;
     static FromStr: (str: string) => Factor;
+    Clone: () => Factor;
+    static CloneStatic: (factor: Factor) => Factor;
     Equal: (other: Factor) => boolean;
     static EqualStatic: (f1: Factor, f2: Factor) => boolean;
     static PermanentFactor: (value?: number) => Factor;
@@ -54,6 +56,8 @@ export declare class Decay implements ISerializable, IEquality<Decay> {
     ToStr: () => string;
     static FromObj: (obj: any) => Decay;
     static FromStr: (str: string) => Decay;
+    Clone: () => Decay;
+    static CloneState: (other: Decay) => Decay;
     Equal: (other: Decay) => boolean;
     static EqualStatic: (dt1: Decay, dt2: Decay) => boolean;
     static PermanentDecay: () => Decay;
@@ -87,6 +91,8 @@ export declare class Falloff implements ISerializable, IEquality<Falloff> {
     ToStr: () => string;
     static FromObj: (obj: any) => Falloff;
     static FromStr: (str: string) => Falloff;
+    Clone: () => Falloff;
+    static CloneStatic: (other: Falloff) => Falloff;
     Equal: (other: Falloff) => boolean;
     static EqualStatic: (dt1: Falloff, dt2: Falloff) => boolean;
     static StandardRampSetRamps: () => Ramp[];
@@ -123,9 +129,9 @@ export declare class Ramp implements ISerializable, IEquality<Ramp> {
     static AlterValue: (ramp: Ramp, index: number, value: any) => Ramp;
     ToObj: () => any;
     ToStr: () => string;
-    Clone: () => Ramp;
     static FromObj: (obj: any) => Ramp;
     static FromStr: (str: string) => Ramp;
+    Clone: () => Ramp;
     static CloneRamp: (r: Ramp) => Ramp;
     static ValueAtStatic: (ramp: Ramp, location: number) => number;
     static Equal: (r1: Ramp, r2: Ramp) => boolean;

@@ -106,15 +106,16 @@ export class SegmentBase implements ISerializable, IRanged, IEquality<SegmentBas
   public ClosestVector = (v: Vector.VectorBase): Vector.VectorBase => {
     var t = this.closestFraction(v);
     var newSegment = this.Scale(t);
-    return newSegment.Tip.Clone();
+    return newSegment.Tip;
   }
   private closestFraction = (v: Vector.VectorBase): number => {
     SegmentBase.DimensionCheck(this, v);
-    var length = this.Length;
+    const length = this.Length;
     if (length < 0.001) return 0;
 
-    var vWithoutBase = Vector.VectorBase.Subtract(v, this.Base);
-    var t = Vector.VectorBase.Dot(vWithoutBase, this.TipWithoutBase) / (length * length);
+    // const vWithoutBase = Vector.VectorBase.Subtract(v, this.Base);
+    const vWithoutBase = Vector.VectorBase.Subtract(v, this.Base);
+    const t = Vector.VectorBase.Dot(vWithoutBase, this.TipWithoutBase) / (length * length);
     return Math.max(0, Math.min(1, t));
   }
   public RestoreBase = (v: Vector.VectorBase): Vector.VectorBase => {
@@ -147,9 +148,8 @@ export class SegmentBase implements ISerializable, IRanged, IEquality<SegmentBas
     return true;
   }
   public static Scale = (s: SegmentBase, factor: number): SegmentBase => {
-    var newTip = s.RestoreBase(
-      Vector.VectorBase.Scale(s.TipWithoutBase, factor))
-    return new SegmentBase(s.Base.Clone(), newTip, s.FalloffMix);
+    var newTip = s.RestoreBase(Vector.VectorBase.Scale(s.TipWithoutBase, factor));
+    return new SegmentBase(s.Base, newTip, s.FalloffMix);
   }
   public static Push = (s: SegmentBase, v: Vector.VectorBase): SegmentBase => {
     if (s.Dimension != v.Dimension) throw 'Dimension Mismatch';
@@ -248,8 +248,8 @@ export class Segment3 extends SegmentBase {
     return <Segment3>SegmentBase.Push(s, v);
   }
   public static Cross = (sA: Segment3, sB: Segment3): Segment3 => {
-    var aTip = Vector.Vector3.Cast(sA.TipWithoutBase.Clone());
-    var bTip = Vector.Vector3.Cast(sB.TipWithoutBase.Clone());
+    var aTip = Vector.Vector3.Cast(sA.TipWithoutBase);
+    var bTip = Vector.Vector3.Cast(sB.TipWithoutBase);
     var cross = aTip.Cross(bTip);
     var newTip = Vector.Vector3.Cast(sA.RestoreBase(cross));
     return new Segment3(Vector.Vector3.Cast(sA.Base), newTip);

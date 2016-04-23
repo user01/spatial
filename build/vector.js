@@ -101,7 +101,16 @@ var VectorBase = (function () {
         return Math.sqrt(total);
     };
     VectorBase.CloneStatic = function (v1) {
-        return VectorBase.FromObj(v1.ToObj());
+        switch (v1.Dimension) {
+            case 2:
+                return new Vector2(v1.Values[0], v1.Values[1], v1.Factor.Clone());
+            case 3:
+                return new Vector3(v1.Values[0], v1.Values[1], v1.Values[2], v1.Factor.Clone());
+            case 4:
+                return new Vector4(v1.Values[0], v1.Values[1], v1.Values[2], v1.Values[3], v1.Factor.Clone());
+            default:
+                throw 'Invalid Vector to Clone';
+        }
     };
     VectorBase.Add = function (v1, v2) {
         VectorBase.DimensionCheck(v1, v2);
@@ -111,7 +120,11 @@ var VectorBase = (function () {
         return new VectorBase(values, v1.Factor);
     };
     VectorBase.Subtract = function (v1, v2) {
-        return VectorBase.Add(v1, VectorBase.Negate(v2));
+        VectorBase.DimensionCheck(v1, v2);
+        var values = new Array();
+        for (var i = 0; i < v1.Dimension; i++)
+            values.push(v1.Values[i] - v2.Values[i]);
+        return new VectorBase(values, v1.Factor);
     };
     VectorBase.Scale = function (v1, factor) {
         var values = new Array();

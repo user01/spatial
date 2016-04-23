@@ -22,13 +22,14 @@ var SegmentBase = (function () {
         this.ClosestVector = function (v) {
             var t = _this.closestFraction(v);
             var newSegment = _this.Scale(t);
-            return newSegment.Tip.Clone();
+            return newSegment.Tip;
         };
         this.closestFraction = function (v) {
             SegmentBase.DimensionCheck(_this, v);
             var length = _this.Length;
             if (length < 0.001)
                 return 0;
+            // const vWithoutBase = Vector.VectorBase.Subtract(v, this.Base);
             var vWithoutBase = Vector.VectorBase.Subtract(v, _this.Base);
             var t = Vector.VectorBase.Dot(vWithoutBase, _this.TipWithoutBase) / (length * length);
             return Math.max(0, Math.min(1, t));
@@ -168,7 +169,7 @@ var SegmentBase = (function () {
     };
     SegmentBase.Scale = function (s, factor) {
         var newTip = s.RestoreBase(Vector.VectorBase.Scale(s.TipWithoutBase, factor));
-        return new SegmentBase(s.Base.Clone(), newTip, s.FalloffMix);
+        return new SegmentBase(s.Base, newTip, s.FalloffMix);
     };
     SegmentBase.Push = function (s, v) {
         if (s.Dimension != v.Dimension)
@@ -268,8 +269,8 @@ var Segment3 = (function (_super) {
         return SegmentBase.Push(s, v);
     };
     Segment3.Cross = function (sA, sB) {
-        var aTip = Vector.Vector3.Cast(sA.TipWithoutBase.Clone());
-        var bTip = Vector.Vector3.Cast(sB.TipWithoutBase.Clone());
+        var aTip = Vector.Vector3.Cast(sA.TipWithoutBase);
+        var bTip = Vector.Vector3.Cast(sB.TipWithoutBase);
         var cross = aTip.Cross(bTip);
         var newTip = Vector.Vector3.Cast(sA.RestoreBase(cross));
         return new Segment3(Vector.Vector3.Cast(sA.Base), newTip);
