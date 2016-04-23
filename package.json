@@ -9,13 +9,16 @@
     "!build/tests/"
   ],
   "scripts": {
-    "build": "npm run test && npm run lint-build",
+    "build": "npm run build-ts && npm run lint-build",
+    "db": "npm run build-ts-tests && npm run debug-tests",
+    "debug-tests": "node-debug ./node_modules/mocha/bin/_mocha --ui bdd --debug-brk --reporter dot ./build/tests/**/*.js",
     "build-ts": "./node_modules/.bin/tsc",
+    "build-ts-tests": "./node_modules/.bin/tsc --p tsconfig.tests.json",
     "lint-build": "./node_modules/.bin/ts-npm-lint --fix-typings",
     "test-simple": "./node_modules/.bin/_mocha  --ui bdd --reporter dot ./build/tests/**/*.js",
     "test-coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --ui bdd --debug-brk --reporter dot ./build/tests/**/*.js",
-    "coverage": "npm run build-ts && npm run test-coverage",
-    "test": "npm run build-ts && npm run test-simple"
+    "coverage": "npm run build-ts-tests && npm run test-coverage",
+    "test": "npm run build-ts-tests && npm run test-simple"
   },
   "repository": {
     "type": "git",
