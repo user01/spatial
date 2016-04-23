@@ -27,7 +27,7 @@ describe('Vector', () => {
     });
 
     it('Clone', () => {
-      var v2: Vector.Vector2 = new Vector.Vector2(5, 10);
+      var v2: Vector.Vector2 = new Vector.Vector2(5, 10, Ramp.Factor.PermanentFactor(50));
       var v2Clone = v2.Clone();
       v2.Equal(v2Clone).should.be.true;
     });

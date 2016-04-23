@@ -102,7 +102,16 @@ export class VectorBase implements IRanged, ISerializable, IEquality<VectorBase>
   }
 
   public static CloneStatic = (v1: VectorBase): VectorBase => {
-    return VectorBase.FromObj(v1.ToObj());
+    switch (v1.Dimension) {
+      case 2:
+        return new Vector2(v1.Values[0], v1.Values[1], v1.Factor.Clone());
+      case 3:
+        return new Vector3(v1.Values[0], v1.Values[1], v1.Values[2], v1.Factor.Clone());
+      case 4:
+        return new Vector4(v1.Values[0], v1.Values[1], v1.Values[2], v1.Values[3], v1.Factor.Clone());
+      default:
+        throw 'Invalid Vector to Clone';
+    }
   }
 
   public static Add = (v1: VectorBase, v2: VectorBase): VectorBase => {
