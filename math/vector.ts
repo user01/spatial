@@ -123,7 +123,11 @@ export class VectorBase implements IRanged, ISerializable, IEquality<VectorBase>
   }
 
   public static Subtract = (v1: VectorBase, v2: VectorBase): VectorBase => {
-    return VectorBase.Add(v1, VectorBase.Negate(v2));
+    VectorBase.DimensionCheck(v1, v2);
+    var values: Array<number> = new Array<number>();
+    for (var i = 0; i < v1.Dimension; i++)
+      values.push(v1.Values[i] - v2.Values[i]);
+    return new VectorBase(values, v1.Factor);
   }
 
   public static Scale = (v1: VectorBase, factor: number): VectorBase => {
