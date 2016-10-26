@@ -6,10 +6,10 @@ import IEquality from './interfaces/iequality';
 export declare class VectorBase implements IRanged, ISerializable, IEquality<VectorBase> {
     protected _values: Array<number>;
     private _factor;
-    Values: Array<number>;
-    Dimension: number;
+    readonly Values: Array<number>;
+    readonly Dimension: number;
     /** How the value responds over time and distance from the vector */
-    Factor: Ramp.Factor;
+    readonly Factor: Ramp.Factor;
     constructor(_values: Array<number>, _factor?: Ramp.Factor);
     Clone: () => VectorBase;
     readableStr: () => string;
@@ -41,17 +41,17 @@ export declare class VectorBase implements IRanged, ISerializable, IEquality<Vec
     protected static isArray: (arg: any) => boolean;
 }
 export declare class Vector2 extends VectorBase {
-    x: number;
-    y: number;
+    readonly x: number;
+    readonly y: number;
     constructor(_x: number, _y: number, factor?: Ramp.Factor);
     static FromObj: (obj: any) => Vector2;
     static FromStr: (str: string) => Vector2;
     static Build: (values: number[]) => Vector2;
 }
 export declare class Vector3 extends VectorBase {
-    x: number;
-    y: number;
-    z: number;
+    readonly x: number;
+    readonly y: number;
+    readonly z: number;
     constructor(_x: number, _y: number, _z: number, factor?: Ramp.Factor);
     Cross: (vOther: Vector3) => Vector3;
     static CrossStatic: (vA: Vector3, vB: Vector3) => Vector3;
@@ -61,10 +61,10 @@ export declare class Vector3 extends VectorBase {
     static Build: (values: number[]) => Vector3;
 }
 export declare class Vector4 extends VectorBase {
-    x: number;
-    y: number;
-    z: number;
-    w: number;
+    readonly x: number;
+    readonly y: number;
+    readonly z: number;
+    readonly w: number;
     constructor(_x: number, _y: number, _z: number, _w: number, factor?: Ramp.Factor);
     static FromObj: (obj: any) => Vector4;
     static FromStr: (str: string) => Vector4;
