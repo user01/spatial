@@ -7,8 +7,8 @@ import IEquality from './interfaces/iequality';
 export declare class Factor implements ISerializable, IEquality<Factor> {
     private _decay;
     private _falloff;
-    Decay: Decay;
-    Falloff: Falloff;
+    readonly Decay: Decay;
+    readonly Falloff: Falloff;
     constructor(_decay: Decay, _falloff: Falloff);
     /** Product of all Decay values at given time, ignores Falloff
      */
@@ -39,8 +39,8 @@ export declare class Factor implements ISerializable, IEquality<Factor> {
 export declare class Decay implements ISerializable, IEquality<Decay> {
     private _duration;
     private _falloff;
-    Duration: moment.Duration;
-    Falloff: Falloff;
+    readonly Duration: moment.Duration;
+    readonly Falloff: Falloff;
     private _durationMinutes;
     constructor(_duration: moment.Duration, _falloff: Falloff);
     ReadableStr: () => string;
@@ -69,15 +69,15 @@ export declare class Decay implements ISerializable, IEquality<Decay> {
  */
 export declare class Falloff implements ISerializable, IEquality<Falloff> {
     private _ramps;
-    Ramps: Array<Ramp>;
+    readonly Ramps: Array<Ramp>;
     /** Earliest Start Value in ramps */
-    RangeStart: number;
+    readonly RangeStart: number;
     private rangeStart;
     /** Latest End Value in ramps */
-    RangeEnd: number;
+    readonly RangeEnd: number;
     private rangeEnd;
     /** Length of combined ramps */
-    Range: number;
+    readonly Range: number;
     constructor(_ramps?: Array<Ramp>);
     ReadableStr: () => string;
     private rangeStartCompute();
@@ -107,13 +107,13 @@ export declare class Ramp implements ISerializable, IEquality<Ramp> {
     private _valueEnd;
     private _rangeStart;
     private _rangeEnd;
-    Type: string;
-    ValueStart: number;
-    ValueEnd: number;
-    RangeStart: number;
-    RangeEnd: number;
-    Duration: number;
-    ValueChange: number;
+    readonly Type: string;
+    readonly ValueStart: number;
+    readonly ValueEnd: number;
+    readonly RangeStart: number;
+    readonly RangeEnd: number;
+    readonly Duration: number;
+    readonly ValueChange: number;
     private static defaultEasingFunction;
     constructor(_type?: string, _valueStart?: number, _valueEnd?: number, _rangeStart?: number, _rangeEnd?: number);
     ReadableStr: () => string;
