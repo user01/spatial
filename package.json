@@ -1,7 +1,7 @@
 {
-  "name": "spatial",
+  "name": "spatial-vector",
   "version": "0.4.0",
-  "description": "An Immutable Vector Math Library. Clarity and brevity over speed.",
+  "description": "Typescript enabled, Immutable Vector Math Library",
   "main": "build/main.js",
   "typings": "build/main.d.ts",
   "files": [
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.com:root77/spatial.git"
+    "url": "git@github.com:user01/spatial.git"
   },
   "author": "Codex10 <dev@codex10.com>",
   "license": "MIT",
