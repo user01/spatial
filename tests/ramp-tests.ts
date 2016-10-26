@@ -252,6 +252,23 @@ describe('Ramp.Ramp', () => {
         new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
       decay.Falloff.Ramps.should.have.lengthOf(1);
     });
+    it('ReadableStr', () => {
+      var decay = new Ramp.Decay(moment.duration(2, 'hours'),
+        new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
+      decay.ReadableStr().should.eql("D 2 hours {R:linear From 4-0 over 0-2}");
+    });
+    it('ToStr', () => {
+      var decay = new Ramp.Decay(moment.duration(2, 'hours'),
+        new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
+      Ramp.Decay.FromStr(decay.ToStr()).Equal(decay).should.be.true;
+    });
+    it('Equals', () => {
+      var decay1 = new Ramp.Decay(moment.duration(2, 'hours'),
+        new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
+      var decay2 = new Ramp.Decay(moment.duration(4, 'hours'),
+        new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
+      decay1.Equal(decay2).should.be.false;
+    });
     it('Basic', () => {
       var decay = new Ramp.Decay(moment.duration(2, 'hours'),
         new Ramp.Falloff([new Ramp.Ramp('linear', 4, 0, 0, 2)]));
@@ -332,7 +349,19 @@ describe('Ramp.Ramp', () => {
         falloff.ValueAt(distance) * decay.ValueAfterDuration(duration), tolerance);
 
     });
-    it('Permenant', () => {
+    it('ToStr', () => {
+      const f = Ramp.Factor.PermanentFactor();
+      const str = f.ToStr();
+      f.Equal(Ramp.Factor.FromStr(str)).should.be.true;
+    });
+    // it('Decay Not equal', () => {
+    //   const f1 = new Ramp.Factor(Ramp.Decay.PermanentDecay(), Ramp.Falloff.PermanentFalloff(4));
+    //   const f2 = new Ramp.Factor(
+    //                 new Ramp.Decay(moment.duration(2, 'hours'), new Ramp.Falloff([new Ramp.Ramp('linear', 20, 2, 0, 4)])),
+    //                 Ramp.Falloff.PermanentFalloff(4));
+    //   f1.Equal(f2).should.be.false;
+    // });
+    it('Permanent', () => {
       var factor = Ramp.Factor.PermanentFactor();
 
       factor.IntensityAtDistance(0).should.be.approximately(1, tolerance);
