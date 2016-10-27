@@ -403,7 +403,7 @@ export class Ramp implements ISerializable, IEquality<Ramp> {
 
   public static Ease = (func: string = 'easeOutQuad',
     currentTime: number = 0,
-    beginingValue: number = 0,
+    beginningValue: number = 0,
     changeInValue: number = 0,
     duration: number = 0
   ): number => {
@@ -412,10 +412,10 @@ export class Ramp implements ISerializable, IEquality<Ramp> {
     }
 
     var result = Ramp.EasingFunctions[func](currentTime,
-      beginingValue,
+      beginningValue,
       changeInValue,
       duration);
-    return isNaN(result) ? beginingValue : result;
+    return isNaN(result) ? beginningValue : result;
   }
 
   /* ============================================================
