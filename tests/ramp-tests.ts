@@ -182,6 +182,33 @@ describe('Ramp.Ramp', () => {
       result.should.be.a.Number.and.be.approximately(3.75, tolerance);
 
     });
+    it('EasingFunctions', () => {
+      Ease().should.be.a.Number.and.be.approximately(0, tolerance);
+      Ease('easeInQuad', 5, -10, 20, 10).should.be.a.Number.and.be.approximately(-5, tolerance);
+      Ease('easeInQuad', 2, 0, 10, 5).should.be.a.Number.and.be.approximately(1.6, tolerance);
+      Ease('easeInOutQuad', 3, 0, 20, 10).should.be.a.Number.and.be.approximately(3.6, tolerance);
+      Ease('easeInCubic', 7, 0, 20, 10).should.be.a.Number.and.be.approximately(6.86, tolerance);
+      Ease('easeOutCubic', 8, -10, 20, 10).should.be.a.Number.and.be.approximately(9.84, tolerance);
+      Ease('easeInOutCubic', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.25, tolerance);
+      Ease('easeInQuart', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.013, tolerance);
+      Ease('easeOutQuart', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(4.73, tolerance);
+      Ease('easeInOutQuart', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.1, tolerance);
+      Ease('easeInQuint', 14, 0, 8, 20).should.be.a.Number.and.be.approximately(1.35, tolerance);
+      Ease('easeOutQuint', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(5.38, tolerance);
+      Ease('easeInOutQuint', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.04, tolerance);
+      Ease('easeInSine', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.39, tolerance);
+      Ease('easeOutSine', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(2.47, tolerance);
+      Ease('easeInOutSine', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.76, tolerance);
+      Ease('easeInExpo', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.03125, tolerance);
+      Ease('easeOutExpo', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(6, tolerance);
+      Ease('easeInOutExpo', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.0625, tolerance);
+      Ease('easeInCirc', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.1616, tolerance);
+      Ease('easeOutCirc', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(4.8, tolerance);
+      Ease('easeInOutCirc', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(0.33, tolerance);
+      Ease('easeInElastic', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(-0.015, tolerance);
+      Ease('easeOutElastic', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(9, tolerance);
+      Ease('easeInOutElastic', 4, 0, 8, 20).should.be.a.Number.and.be.approximately(-0.03, tolerance);
+    });
     it('Linear', () => {
       var result = Ease('linear', 0, -10, 20, 10);
       result.should.be.a.Number.and.be.approximately(-10, tolerance);
