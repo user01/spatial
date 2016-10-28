@@ -43,10 +43,22 @@ describe('Vector', () => {
       var v2A = new Vector.Vector2(5, 10);
       Vector.Vector2.EqualStatic(v2, v2A).should.be.exactly(true);
       v2.Equal(v2A).should.be.exactly(true);
+
       var v2 = new Vector.Vector2(5, 11);
       var v2A = new Vector.Vector2(5, 10);
       Vector.Vector2.EqualStatic(v2, v2A).should.be.exactly(false);
       v2.Equal(v2A).should.be.exactly(false);
+
+      var v2 = new Vector.Vector2(5, 11);
+      var v3A = new Vector.Vector3(5, 10, 4);
+      Vector.Vector2.EqualStatic(v2, v3A).should.be.exactly(false);
+      v2.Equal(v3A).should.be.exactly(false);
+
+      var v2 = new Vector.Vector2(5, 10, Ramp.Factor.PermanentFactor(3));
+      var v2B = new Vector.Vector2(5, 10, Ramp.Factor.PermanentFactor(4));
+      Vector.Vector2.EqualStatic(v2, v2B).should.be.exactly(false);
+      v2.Equal(v2B).should.be.exactly(false);
+
     });
     describe('Distance', () => {
       it('Simple static', () => {
@@ -60,6 +72,12 @@ describe('Vector', () => {
         var v2B = new Vector.Vector2(10, 0);
         var distance = v2A.DistanceTo(v2B);
         distance.should.be.exactly(10);
+      });
+      it('Negate', () => {
+        var v2 = new Vector.Vector2(10, 0);
+        var v2invert = new Vector.Vector2(-10, 0);
+        var invert = Vector.VectorBase.Negate(v2);
+        invert.Equal(v2invert).should.be.true;
       });
       it('Complex', () => {
         var v2A = new Vector.Vector2(-10, -10);
